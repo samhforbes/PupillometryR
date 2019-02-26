@@ -1,19 +1,20 @@
 Package: PupillometryR
 Type: Package
 Title: An R package for pupillometry data
-Version: 0.0.1
+Version: 0.0.1.1
 Authors@R: person("Samuel", "Forbes", email = "samuel.h.forbes@gmail.com", role = c("aut", "cre"))
 Description: An R package for pupillometry data, to clean, prepare, 
     and run basic analyses on pupillometry experiments
 License: MIT
 Encoding: UTF-8
 LazyData: true
-Depends: dplyr
+Depends: dplyr,
+         ggplot2
 Imports: data.table,
          fda,
          fractal,
-         ggplot2,
          lazyeval,
+         mgcv,
          rlang,
          signal,
          tidyr,

@@ -1,3 +1,92 @@
+# Helper function flat violin
+"%||%" <- function(a, b) {
+  if (!is.null(a))
+    a
+  else
+    b
+}
+
+geom_flat_violin <-
+  function(mapping = NULL,
+           data = NULL,
+           stat = "ydensity",
+           position = "dodge",
+           trim = TRUE,
+           scale = "area",
+           show.legend = NA,
+           inherit.aes = TRUE,
+           ...) {
+    ggplot2::layer(
+      data = data,
+      mapping = mapping,
+      stat = stat,
+      geom = GeomFlatViolin,
+      position = position,
+      show.legend = show.legend,
+      inherit.aes = inherit.aes,
+      params = list(trim = trim,
+                    scale = scale,
+                    ...)
+    )
+  }
+
+GeomFlatViolin <-
+  ggplot2::ggproto(
+    "GeomFlatViolin",
+    ggplot2::Geom,
+    setup_data = function(data, params) {
+      data$width <- data$width %||%
+        params$width %||% (ggplot2::resolution(data$x, FALSE) * 0.9)
+
+      # ymin, ymax, xmin, and xmax define the bounding rectangle for each group
+      data %>%
+        dplyr::group_by(.data = ., group) %>%
+        dplyr::mutate(
+          .data = .,
+          ymin = min(y),
+          ymax = max(y),
+          xmin = x,
+          xmax = x + width / 2
+        )
+    },
+
+    draw_group = function(data, panel_scales, coord)
+    {
+      # Find the points for the line to go all the way around
+      data <- base::transform(data,
+                              xminv = x,
+                              xmaxv = x + violinwidth * (xmax - x))
+
+      # Make sure it's sorted properly to draw the outline
+      newdata <-
+        base::rbind(
+          dplyr::arrange(.data = base::transform(data, x = xminv), y),
+          dplyr::arrange(.data = base::transform(data, x = xmaxv), -y)
+        )
+
+      # Close the polygon: set first and last point the same
+      # Needed for coord_polar and such
+      newdata <- rbind(newdata, newdata[1,])
+
+      ggplot2:::ggname("geom_flat_violin",
+                       GeomPolygon$draw_panel(newdata, panel_scales, coord))
+    },
+
+    draw_key = ggplot2::draw_key_polygon,
+
+    default_aes = ggplot2::aes(
+      weight = 1,
+      colour = "grey20",
+      fill = "white",
+      size = 0.5,
+      alpha = NA,
+      linetype = "solid"
+    ),
+
+    required_aes = c("x", "y")
+  )
+
+
 #' Pre-prepared plots of PupillometryR data
 #'
 #' The plot functions are designed to run with just data and pupil selections,
@@ -22,7 +111,7 @@
 #' @return A ggplot object
 
 
-plot.PupillometryR <- function(data, pupil, group = c('none', 'condition', 'subject')){
+plot.PupillometryR <- function(data, pupil, group = c('none', 'condition', 'subject'), model = NULL){
 
   if('PupillometryR' %in% class(data) == FALSE){
     stop('Dataframe is not of class PupillometryR. Did you forget to run make_pupillometryr_data? Some tidyverse functions associated with dplyr and tidyr can also interfere with this functionality.')
@@ -33,7 +122,9 @@ plot.PupillometryR <- function(data, pupil, group = c('none', 'condition', 'subj
   subject <- options$Subject
   time <- options$Time
   pupil <- deparse(substitute(pupil))
+  if(!is.null(model)){fit <- model$fitted.values}
 
+  if(is.null(model)){
   if(group == 'condition'){
     p <- data %>% ggplot2::ggplot(
                          ggplot2::aes_string(x = time, y = pupil, colour = condition, shape = condition))
@@ -56,6 +147,37 @@ plot.PupillometryR <- function(data, pupil, group = c('none', 'condition', 'subj
       ggplot2::theme(legend.position = c(0.85, 0.85))
 
   q
+  }else{
+    if('gam' %in% class(model)){
+      data$fit <- fit
+    if(group == 'condition'){
+      p <- data %>%
+        ggplot2::ggplot(
+        ggplot2::aes_string(x = time, y = pupil, colour = condition, shape = condition))
+    }
+    else{
+      if(group == 'subject'){
+        p <- data %>%
+          ggplot2::ggplot(
+          ggplot2::aes_string(x = time, y = pupil, group = subject))
+      }
+      else{
+        p <- data %>%
+          ggplot2::ggplot(
+          ggplot2::aes_string(x = time, y = pupil))
+      }
+    }
+
+    #Add plot layers
+    q <- p + ggplot2::stat_summary(geom = 'pointrange', fun.data = 'mean_se', size = 1, inherit.aes = T, alpha = 0.1) +
+      ggplot2::stat_summary(inherit.aes = T, ggplot2::aes(y = fit), geom = 'line', fun.y = 'mean', size = 2) +
+      ggplot2::ylab('Pupil Size') +
+      ggplot2::xlab('Time') +
+      ggplot2::theme(legend.position = c(0.85, 0.85))
+
+    q
+    }
+  }
 }
 
 #' Pre-prepared plots of PupillometryR data
@@ -67,7 +189,7 @@ plot.PupillometryR <- function(data, pupil, group = c('none', 'condition', 'subj
 #' @param data A Pupil_window_data dataframe
 #' @param pupil Column name of pupil data to be plotted
 #' @param windows Whether you want to include time windows in the plot - logical
-#' @param geom violin plots or boxplots
+#' @param geom violin plots or boxplots. The newest version adds raincloud plots using Ben Marwick's flat violin plot.
 #'
 #' @examples
 #' window <- create_window_data(data = base_data,pupil = mpupil)
@@ -78,7 +200,7 @@ plot.PupillometryR <- function(data, pupil, group = c('none', 'condition', 'subj
 #'
 #' @return A ggplot object
 
-plot.Pupil_window_data <- function(data, pupil, windows = c(FALSE, TRUE), geom = c('violin', 'boxplot')){
+plot.Pupil_window_data <- function(data, pupil, windows = c(FALSE, TRUE), geom = c('raincloud', 'violin', 'boxplot')){
 
   if('Pupil_window_data' %in% class(data) == FALSE){
     stop('Dataframe is not of class Pupil_window_data. Did you forget to run create_window_data? Some tidyverse functions associated with dplyr and tidyr can also interfere with this functionality.')
@@ -97,26 +219,38 @@ plot.Pupil_window_data <- function(data, pupil, windows = c(FALSE, TRUE), geom =
       stop('This data frame has no time windows included. Try running create_time_windows and rerun.')
     }
     p <- ggplot2::ggplot(data = data,
-                        ggplot2::aes_string(x = window, y = pupil,
-                                     colour = condition, fill = condition))
+                        ggplot2::aes_string(x = window, y = pupil, colour = condition, fill = condition))
     if(geom == 'boxplot'){
       q <- p + ggplot2::geom_boxplot(alpha = 0.2)
     }else{
+      if(geom == 'violin'){
       q <- p + ggplot2::geom_violin(alpha = 0.2) +
         ggplot2::stat_summary(geom = 'pointrange', fun.data = 'mean_se', position = ggplot2::position_dodge(1))
+      }else{ #raincloud
+        q <- p + geom_flat_violin(position = ggplot2::position_nudge(x = .2, y = 0), alpha = .5, colour = NA) +
+          ggplot2::geom_boxplot(width = .2,  outlier.shape = NA, alpha = 0.2) +
+          ggplot2::geom_point(position = ggplot2::position_jitter(width = .15), size = .8, alpha = 0.8)
+
+      }
     }
   }else{
     p <- ggplot2::ggplot(data = data,
-                         ggplot2::aes_string(x = condition, y = pupil, group = condition))
+                         ggplot2::aes_string(x = condition, y = pupil, colour = condition, fill = condition))
     if(geom == 'boxplot'){
-      q <- p + ggplot2::geom_boxplot()
+      q <- p + ggplot2::geom_boxplot(alpha = 0.2)
     }
     else{
-      q <- p + ggplot2::geom_violin() +
+      if(geom == 'violin'){
+      q <- p + ggplot2::geom_violin(alpha = 0.2) +
         ggplot2::stat_summary(geom = 'pointrange', fun.data = 'mean_se')
+      }else{
+        q <- p + geom_flat_violin(position = position_nudge(x = .2, y = 0), alpha = .5, colour = NA) +
+          ggplot2::geom_boxplot(width = .2,  outlier.shape = NA, alpha = 0.2) +
+          ggplot2::geom_point(position = position_jitter(width = .15), size = .8, alpha = 0.8)
+      }
     }
   }
-  q + ggplot2::ylab('Pupil Size')
+  q + ggplot2::ylab('Change in Pupil Size')
 }
 
 #' Pre-prepared plots of PupillometryR data
