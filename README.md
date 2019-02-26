@@ -8,7 +8,7 @@ devtools](https://www.r-project.org/nosvn/pandoc/devtools.html). It
 first needs to be downloaded before running, if you have devtools, it
 can be done directly from the console in R:
 
-    devtools::install_github(samhforbes/PupillometryR)
+    devtools::install_github("samhforbes/PupillometryR")
 
 Once we have the package downloaded, we need to load in the package to
 get started:
