@@ -32,28 +32,37 @@ subset_data <- function(data, start, stop, rezero = T, remove = T){
     stop('Dataframe is not of class PupillometryR. Did you forget to run make_pupillometryr_data? Some tidyverse functions associated with dplyr and tidyr can also interfere with this functionality.')
   }
 
-  if(start < min(data[[time]])){
-    stop("Cannot rezero to less than the minimum value in time column")
-  }
-  if(stop > max(data[[time]])){
-    stop("Cannot rezero to great than the maximum value in time column")
-  }
   options <- attr(data, 'PupillometryR')
   subject <- options$Subject
   trial <- options$Trial
   time <- options$Time
   condition <- options$Condition
   other <- options$Other
+  start <- as.numeric(start)
+  stop <- as.numeric(stop)
+
+  data2 <- data
+
+  if(start < min(data[[time]])){
+    stop("Cannot rezero to less than the minimum value in time column")
+  }
+  if(stop > max(data[[time]])){
+    stop("Cannot rezero to great than the maximum value in time column")
+  }
 
   if(remove == T){
-  data <- subset(data, time <= stop)
-  data <- subset(data, time >= start)
+  data <- data[data[[time]] <= stop,]
+  data <- data[data[[time]] >= start,]
+  }else{
+    data <- data
   }
 
   if(rezero == T){
     data[[time]] <- data[[time]] - min(data[[time]])
+  }else{
+    data = data
   }
-  class(data) <- c(class(data))
+  class(data) <- c(class(data2))
   attr(data, 'PupillometryR') <- options
   return(data)
 }
