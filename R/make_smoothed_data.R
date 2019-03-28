@@ -61,7 +61,7 @@ replace_missing_data <- function(data, rpupil, lpupil){
   subdata <- data.frame(Subject, Trial, Timestamp)
 
   names(subdata)[c(1,2,3)] <- c(subject, trial, time)
-  data3 <- merge(data, subdata, by = c(subject, trial, time), all.y = T)
+  data3 <- right_join(data, subdata, by = c(subject, trial, time), all.y = T)
 
   #rearrange
   vars = c(subject, trial, time)
@@ -93,14 +93,13 @@ replace_missing_data <- function(data, rpupil, lpupil){
 #' @export
 #' @return filtered pupil data
 
-filter_data <- function(data, pupil, filter = c('lowpass', 'hanning', 'median'), degree = 11){
-
-  pupil <- deparse(substitute(pupil))
+filter_data <- function(data, pupil, filter = c('median', 'hanning', 'lowpass'), degree = 11){
 
   if('PupillometryR' %in% class(data) == FALSE){
     stop('Dataframe is not of class PupillometryR. Did you forget to run make_pupillometryr_data? Some tidyverse functions associated with dplyr and tidyr can also interfere with this functionality.')
   }
 
+  pupil <- deparse(substitute(pupil))
   options <- attr(data, 'PupillometryR')
   subject <- options$Subject
   trial <- options$Trial
@@ -112,80 +111,89 @@ filter_data <- function(data, pupil, filter = c('lowpass', 'hanning', 'median'),
   rdata <- data
   rdata[[pupil]][rdata[[pupil]] == 0] <- NA
   rdata[[pupil]][rdata[[pupil]] < 0] <- NA
+  rdata[[pupil]][rdata[[pupil]] == '.'] <- NA
 
-  # The old way of doing things - assumes trials are equal length, which we can't do
-  # names(rdata)[c(1:4)] <- c('ID', 'Tr', 'Tim', 'Pup')
-  # rdata <- data.table::dcast(rdata, Tim ~ ID + Tr, value.var = 'Pup')
-  #
-  # rdata2 <- rdata
-  # rdata2[1] <- NULL
-
-  rdata1 <- rdata %>% tidyr::unite(utrial, subject, trial, remove = F)
-  rdata2 <- split(rdata1, rdata1$utrial)
-
+  #make filtering functions
+  #interpolate
   .int_data <- function(x){
-    x[[pupil]] = zoo::na.approx(x[[pupil]], na.rm = F, rule = 2)
+    x <- zoo::na.approx(x, na.rm = F, yleft = min(x, na.rm = T) + 1, yright = max(x, na.rm = T) - 1)
+    return(x)
+  }
+  #filtfilt2 (based on danielson's solution from stackoverflow)
+  bf <- signal::butter(degree, 0.1)
+  .filtfilt2 <- function(filters, x)  {
+    filt <- filters$b
+    a <- filters$a
+    y <- signal::filter(filt, a, c(x, numeric(2 * max(length(a), length(filt)))),
+                        init = rep(mean(x, na.rm = T) + 1, degree))
+    y <- rev(signal::filter(filt, a, rev(y)))[seq_along(x)]
+    return(y)
+  }
+  #lowpass
+
+  .lowpass <- function(x){
+    x <- .filtfilt2(bf, x)
+    return(x)
+  }
+  #hanning
+  hanning_filter <- function(x, n){
+    i <- 0:(n - 1)
+    w <- 0.5 - 0.5 * cos((2 * pi * i)/(n - 1))
+    w <- w/sum(w)
+    # class(w) <- 'Ma'
+    y <- as.vector(stats::filter(x, w))
+    y
+  }
+  .hanning <- function(x){
+    x <- hanning_filter(x, n = degree)
+    return(x)
+  }
+  #median
+  .median <- function(x){
+    x[[pupil]] <- stats::runmed(x[[pupil]], degree, endrule = 'keep')
     return(x)
   }
 
-  rdata3 <- lapply(rdata2, .int_data)
+  #reorder
+  vars = c(subject, trial, time)
+  rdata <- dplyr::arrange(rdata, UQS(syms(vars)))
 
   if(filter == 'lowpass'){
-    warning('lowpass filter is still under development - it can do some strange things at the start and end of trials. Check your data to see that it works before proceeding.')
-    #make function
-    .lowpass <- function(x){
-      x[[pupil]] = signal::filtfilt(bf, x[[pupil]])
-      return(x)
-    }
-    bf <- signal::butter(degree, 0.1)
-    rdata4 <- lapply(rdata3, .lowpass)
+    cat('Performing lowpass filter \n')
+    warning('Lowpass filter is still under development - it can do some strange things at the start and end of trials. Check your data to see that it works before proceeding.')
+    rdata2 <- rdata %>%
+      group_by(!!sym(subject), !!sym(trial), !!sym(condition), !!sym(other)) %>%
+      mutate(!!sym(pupil) := .int_data(!!sym(pupil))) %>%
+      mutate(!!sym(pupil) := .lowpass(!!sym(pupil))) %>%
+      ungroup()
   }
 
   else{
     if(filter == 'hanning'){
-      #make filter
-      hanning_filter <- function(x, n){
-        i <- 0:(n - 1)
-        w <- 0.5 - 0.5 * cos((2 * pi * i)/(n - 1))
-        w <- w/sum(w)
-        # class(w) <- 'Ma'
-        y <- as.vector(stats::filter(x, w))
-        y
-      }
-      #make function
-      .hanning <- function(x){
-        x[[pupil]] <- hanning_filter(x[[pupil]], n = degree)
-        return(x)
-      }
-      rdata4 <- lapply(rdata3, .hanning)
-
+      cat('Performing hanning filter \n')
+      rdata2 <- rdata %>%
+        group_by(!!sym(subject), !!sym(trial), !!sym(condition), !!sym(other)) %>%
+        mutate(!!sym(pupil) := .int_data(!!sym(pupil))) %>%
+        mutate(!!sym(pupil) := .hanning(!!sym(pupil))) %>%
+        ungroup()
     }
-    else{#median
-      #function
-      .median <- function(x){
-        x[[pupil]] <- stats::runmed(x[[pupil]], degree, endrule = 'keep')
-        return(x)
-      }
-      rdata4 <- lapply(rdata3, .median)
+    else{
+      cat('Performing median filter \n')
+      rdata2 <- rdata %>%
+        group_by(!!sym(subject), !!sym(trial), !!sym(condition), !!sym(other)) %>%
+        mutate(!!sym(pupil) := .int_data(!!sym(pupil))) %>%
+        mutate(!!sym(pupil) := .median(!!sym(pupil))) %>%
+        ungroup()
     }
   }
 
-  rdatasub <- rdata
-
-  rdata33 <- unsplit(rdata4, rdata1$utrial)
-  rdata33$utrial <- NULL
-
   #remove the badly interpolated NAs
-  rdata33[[pupil]][is.na(rdatasub[[pupil]])] <- NA
-
-  #reorder
-  vars = c(subject, trial, time)
-  smoothdata <- dplyr::arrange(rdata33, UQS(syms(vars)))
+  rdata2[[pupil]][is.na(rdata[[pupil]])] <- NA
 
   #update class
-  class(smoothdata) <- c(class(data))
-  attr(smoothdata, 'PupillometryR') <- options
-  return(smoothdata)
+  class(rdata2) <- c(class(data))
+  attr(rdata2, 'PupillometryR') <- options
+  return(rdata2)
 }
 
 #' Regress one pupil against another for extra smoothing
@@ -225,35 +233,20 @@ regress_data <- function(data, pupil1, pupil2) {
 
   regdata <- data
 
-  #split for usability
-  regdata1 <- regdata %>% tidyr::unite(utrial, subject, trial, remove = F)
-  regdata11 <- split(regdata1, regdata1$utrial)
-
-  .predict_right = function(x){
-    x$rpmodel <- predict(lm(paste(pupil1, '~',pupil2), na.action = na.exclude, data = x))
-    return(x)
+  #make functions
+  .predict_right = function(x, y){
+    pupilz <- predict(lm(x ~ y, na.action = na.exclude))
+    return(pupilz)
   }
-  .predict_left = function(x){
-    x$lpmodel <- predict(lm(paste(pupil2, '~' ,pupil1), na.action = na.exclude, data = x))
-    return(x)
-  }
-
-  regdata11 <- lapply(regdata11, .predict_right)
-  regdata11 <- lapply(regdata11, .predict_left)
-
-  regdata111 <- unsplit(regdata11, regdata1$utrial)
-  #rearrange
-  regdata111$utrial <- NULL
-
-  regdata111[[pupil1]] <- regdata111[['rpmodel']]
-  regdata111[[pupil2]] <- regdata111[['lpmodel']]
-
-  regdata111[['rpmodel']] <- NULL
-  regdata111[['lpmodel']] <- NULL
-
-  #check arrangement
-  vars = c(subject, trial, time)
-  regdata2 <- dplyr::arrange(regdata111, UQS(syms(vars)))
+  #run
+  regdata2 <- regdata %>%
+    group_by(!!sym(subject), !!sym(trial), !!sym(condition), !!sym(other)) %>%
+    mutate(pupil1newkk = .predict_right(!!sym(pupil1), !!sym(pupil2))) %>%
+    mutate(pupil2newkk = .predict_right(!!sym(pupil2), !!sym(pupil1))) %>%
+    mutate(!!sym(pupil1) := pupil1newkk,
+           !!sym(pupil2) := pupil2newkk) %>%
+    select(-pupil1newkk, -pupil2newkk) %>%
+    ungroup()
 
   #update class
   class(regdata2) <- c(class(data))
@@ -295,35 +288,36 @@ interpolate_data <- function(data, pupil, type = c('linear', 'cubic')){
   other <- options$Other
 
   intdata <- data
-  #split
-  intdata1 <- intdata %>% tidyr::unite(utrial, subject, trial, remove = F)
-  intdata2 <- split(intdata1, intdata1$utrial)
 
+  #make functions
+  .spline <- function(x){
+    x <- zoo::na.spline(x, na.rm = F)
+    return(x)
+  }
+  .approx <- function(x){
+    x <- zoo::na.approx(x, na.rm = F, rule = 2)
+    return(x)
+  }
   #interpolate
-  if(type == 'linear'){
-    .approx <- function(x){
-      x[[pupil]] <- zoo::na.approx(x[[pupil]], na.rm = F, rule = 2)
-      return(x)
-    }
-    pupils <- lapply(intdata2, .approx)
+  if(type == 'cubic'){
+    cat('Performing cubic interpolation \n')
+    warning('If start and end values are missing, cubic interpolation can return extreme values. Check data before continuing. If in doubt you should opt for linear interpolation.')
+
+    intdata2 <- intdata %>%
+      group_by(!!sym(subject), !!sym(trial), !!sym(condition), !!sym(other)) %>%
+      mutate(!!sym(pupil) := .spline(!!sym(pupil))) %>%
+      ungroup()
   }else{
-    if(type =='cubic'){  #cubic
-      warning('If start and end values are missing, cubic interpolation can return extreme values. Check data before continuing.')
-      .spline <- function(x){
-        x[[pupil]] <- zoo::na.spline(x[[pupil]], na.rm = F)
-        return(x)
-      }
-      pupils <- lapply(intdata2, .spline)
+    if(type =='linear'){
+      cat('Performing linear interpolation \n')
+      intdata2 <- intdata %>%
+        group_by(!!sym(subject), !!sym(trial), !!sym(condition), !!sym(other)) %>%
+        mutate(!!sym(pupil) := .approx(!!sym(pupil))) %>%
+        ungroup()
     }
   }
   #cleanup
-  pupils2 <- unsplit(pupils, intdata1$utrial)
-  pupils2$utrial <- NULL
-
-  vars = c(subject, trial, time)
-  pupils3 <- dplyr::arrange(pupils2, UQS(syms(vars)))
-
-  class(pupils3) <- c(class(data))
-  attr(pupils3, 'PupillometryR') <- options
-  return(pupils3)
+  class(intdata2) <- c(class(data))
+  attr(intdata2, 'PupillometryR') <- options
+  return(intdata2)
 }

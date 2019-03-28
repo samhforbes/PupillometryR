@@ -54,7 +54,7 @@ baseline_data <- function(data, pupil, start, stop){
     ungroup()
 
 
-  baselined <- merge(basedata, baseline3, by = c(subject, trial), all.x = T)
+  baselined <- merge(basedata, baseline3, by = c(subject, trial), all.x = T, sort = F)
   baselined[[pupil]] <- baselined[[pupil]] - baselined[['Base']]
 
   baselined[['Base']] <- NULL
