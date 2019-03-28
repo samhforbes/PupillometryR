@@ -6,8 +6,6 @@
 #' This should only be run after running make_pupillometry_data.
 #'
 #' @param data your data of class pupillometryR
-#' @param rpupil column name for right pupil data
-#' @param lpupil column name for left pupil data
 #'
 #' @examples
 #' data(pupil_data)
@@ -16,18 +14,14 @@
 #' trial = Trial,
 #' time = Time,
 #' condition = Type)
-#' new_data <- replace_missing_data(data = Sdata,
-#' rpupil = RPupil,
-#' lpupil = LPupil)
+#' new_data <- replace_missing_data(data = Sdata)
 #'
 #' @export
 #' @return A time-stepped data frame
 
-replace_missing_data <- function(data, rpupil, lpupil){
+replace_missing_data <- function(data){
 
   warning('replace_missing_data will only help if you have missing timepoints, and a reliable time column.')
-  lpupil <- deparse(substitute(lpupil))
-  rpupil <- deparse(substitute(rpupil))
 
   if('PupillometryR' %in% class(data) == FALSE){
     stop('Dataframe is not of class PupillometryR. Did you forget to run make_pupillometryr_data? Some tidyverse functions associated with dplyr and tidyr can also interfere with this functionality.')
@@ -40,9 +34,6 @@ replace_missing_data <- function(data, rpupil, lpupil){
   condition <- options$Condition
   other <- options$Other
 
-  data[[lpupil]] <- as.numeric(data[[lpupil]])
-  data[[rpupil]] <- as.numeric(data[[rpupil]])
-
   #add missing values
   framesize = data[[time]][2] - data[[time]][1]
   min <- min(data[[time]])
@@ -53,15 +44,15 @@ replace_missing_data <- function(data, rpupil, lpupil){
   nti <- length(unique(data[[time]]))
   tot <- nid*ntr
 
-  Timestamp <- rep(seq(min, max, framesize), times = tot)
-  Subject <- rep(unique(data[[subject]]), each = nti * ntr)
+  Timestampkk <- rep(seq(min, max, framesize), times = tot)
+  Subjectkk <- rep(unique(data[[subject]]), each = nti * ntr)
 
-  Trial <- rep(unique(data[[trial]]), each = nti, times = nid)
+  Trialkk <- rep(unique(data[[trial]]), each = nti, times = nid)
 
-  subdata <- data.frame(Subject, Trial, Timestamp)
+  subdata <- data.frame(Subjectkk, Trialkk, Timestampkk)
 
   names(subdata)[c(1,2,3)] <- c(subject, trial, time)
-  data3 <- right_join(data, subdata, by = c(subject, trial, time), all.y = T)
+  data3 <- merge(data, subdata, by = c(subject, trial, time), all.y = T, sort = F)
 
   #rearrange
   vars = c(subject, trial, time)

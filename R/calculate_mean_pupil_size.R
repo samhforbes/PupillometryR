@@ -1,10 +1,10 @@
-#' Calculate a mean of two pupil sizes
+#' Calculate a mean size across two pupils over time
 #'
 #' This function is useful when you have left and right eye eyetracking data, and a mean of the two would be useful.
 #'
 #' @param data a PupillometryR dataframe
-#' @param rpupil column name indicating right pupil size
-#' @param lpupil column name indicating left pupil size
+#' @param pupil1 column name indicating pupil size
+#' @param pupil2 column name indicating pupil size
 #'
 #' @examples
 #' Sdata <- make_pupillometryr_data(data = pupil_data,
@@ -19,9 +19,9 @@
 #'
 #' @return A PupillometryR dataframe with a mean pupil column
 
-calculate_mean_pupil_size <- function(data, rpupil, lpupil){
-lpupil <- deparse(substitute(lpupil))
-rpupil <- deparse(substitute(rpupil))
+calculate_mean_pupil_size <- function(data, pupil1, pupil2){
+pupil1 <- deparse(substitute(pupil1))
+pupil2 <- deparse(substitute(pupil2))
 
 if('PupillometryR' %in% class(data) == FALSE){
   stop('Dataframe is not of class PupillometryR. Did you forget to run make_pupillometryr_data? Some tidyverse functions associated with dplyr and tidyr can also interfere with this functionality.')
@@ -34,12 +34,12 @@ time <- options$Time
 condition <- options$Condition
 other <- options$Other
 
-ind <- which(is.na(lpupil))
-lpupil[ind] <- rpupil[ind]
-ind <- which(is.na(rpupil))
-rpupil[ind] <- lpupil[ind]
+ind <- which(is.na(pupil2))
+pupil2[ind] <- pupil1[ind]
+ind <- which(is.na(pupil1))
+pupil1[ind] <- pupil2[ind]
 
-mpupil <- (data[[rpupil]] + data[[lpupil]])/2
+mpupil <- (data[[pupil1]] + data[[pupil2]])/2
 newdata <- cbind(data,mpupil)
 
 class(newdata) <- c(class(data))
