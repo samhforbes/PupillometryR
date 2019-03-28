@@ -356,7 +356,7 @@ plot.Pupil_test_data <- function(data, show_divergence = TRUE, colour = 'black',
       q <- p + ggplot2::stat_summary(geom = 'line', fun.y = 'mean', size = 1, colour = colour) +
         ggplot2::geom_rect(data = rects, inherit.aes = F,
                            ggplot2::aes(xmin = start, xmax = end,
-                                        ymin = 100*min, ymax = 100*max,
+                                        ymin = -100*max, ymax = 100*max,
                                         group = group),
                            colour = 'transparent', fill = fill, alpha = 0.3) +
         ggplot2::geom_hline(yintercept = critical, linetype = 'dotted') +
