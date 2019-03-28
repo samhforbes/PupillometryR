@@ -2,16 +2,16 @@
 % Please edit documentation in R/calculate_mean_pupil_size.R
 \name{calculate_mean_pupil_size}
 \alias{calculate_mean_pupil_size}
-\title{Calculate a mean of two pupil sizes}
+\title{Calculate a mean size across two pupils over time}
 \usage{
-calculate_mean_pupil_size(data, rpupil, lpupil)
+calculate_mean_pupil_size(data, pupil1, pupil2)
 }
 \arguments{
 \item{data}{a PupillometryR dataframe}
 
-\item{rpupil}{column name indicating right pupil size}
+\item{pupil1}{column name indicating pupil size}
 
-\item{lpupil}{column name indicating left pupil size}
+\item{pupil2}{column name indicating pupil size}
 }
 \value{
 A PupillometryR dataframe with a mean pupil column

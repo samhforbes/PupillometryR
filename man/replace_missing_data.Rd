@@ -4,14 +4,10 @@
 \alias{replace_missing_data}
 \title{replaces missing observations if you have some degree of incomplete observations}
 \usage{
-replace_missing_data(data, rpupil, lpupil)
+replace_missing_data(data)
 }
 \arguments{
 \item{data}{your data of class pupillometryR}
-
-\item{rpupil}{column name for right pupil data}
-
-\item{lpupil}{column name for left pupil data}
 }
 \value{
 A time-stepped data frame
@@ -29,8 +25,6 @@ subject = ID,
 trial = Trial,
 time = Time,
 condition = Type)
-new_data <- replace_missing_data(data = Sdata,
-rpupil = RPupil,
-lpupil = LPupil)
+new_data <- replace_missing_data(data = Sdata)
 
 }

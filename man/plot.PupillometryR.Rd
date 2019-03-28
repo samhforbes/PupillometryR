@@ -5,7 +5,7 @@
 \title{Pre-prepared plots of PupillometryR data}
 \usage{
 \method{plot}{PupillometryR}(data, pupil, group = c("none", "condition",
-  "subject"))
+  "subject"), model = NULL)
 }
 \arguments{
 \item{data}{A PupillometryR dataframe}
