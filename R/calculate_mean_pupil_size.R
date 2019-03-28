@@ -39,8 +39,8 @@ pupil2[ind] <- pupil1[ind]
 ind <- which(is.na(pupil1))
 pupil1[ind] <- pupil2[ind]
 
-mpupil <- (data[[pupil1]] + data[[pupil2]])/2
-newdata <- cbind(data,mpupil)
+newdata <- data
+newdata[['mean_pupil']] <- (data[[pupil1]] + data[[pupil2]])/2
 
 class(newdata) <- c(class(data))
 attr(newdata, 'PupillometryR') <- options
