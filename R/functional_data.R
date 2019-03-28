@@ -208,8 +208,9 @@ run_functional_t_test <- function(data, pupil, alpha = 0.05){
   var2 <- paste('sd(', pupil, ')', sep ='')
 
   data_summary <- data %>%
-    group_by_(time) %>%
-    summarize_(Mean = var, SD = var2)
+    group_by(!!sym(time)) %>%
+    summarize(Mean = mean(!!sym(pupil), na.rm = T),
+              SD = sd(!!sym(pupil), na.rm = T))
 
   data_summary[['SE']] <- data_summary[['SD']] / sqrt(num_part)
 
