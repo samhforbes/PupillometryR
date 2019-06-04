@@ -42,7 +42,7 @@ create_difference_data <- function(data, pupil){
     stop('More than 2 conditions exist, unable to create meaningful differences between more than 2 objects.')
   }
 
-  cat(unique[2], 'minus', unique[1], ' -- relevel condition if this is not the intended outcome', sep = ' ')
+  cat(unique[2], 'minus', unique[1], ' -- relevel condition if this is not the intended outcome ', sep = ' ')
 
   var <- paste('mean2(', pupil, ')', sep ='')
 
@@ -122,7 +122,7 @@ create_functional_data <- function(data, pupil, basis, order){
   other <- options$Other
   time <- options$Time
 
-  
+
   data1 <- dplyr::select(data, !!sym(subject), !!sym(time), !!sym(pupil))
   data2 <- tidyr::spread(data1, key = subject, value = pupil)
   Times <- data2[,1]
