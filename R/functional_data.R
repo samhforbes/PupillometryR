@@ -120,8 +120,11 @@ create_functional_data <- function(data, pupil, basis, order){
   subject <- options$Subject
   trial <- options$Trial
   other <- options$Other
+  time <- options$Time
 
-  data2 <- tidyr::spread(data, key = subject, value = pupil)
+  
+  data1 <- dplyr::select(data, !!sym(subject), !!sym(time), !!sym(pupil))
+  data2 <- tidyr::spread(data1, key = subject, value = pupil)
   Times <- data2[,1]
   data2[1] <- NULL
 
