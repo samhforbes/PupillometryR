@@ -141,7 +141,7 @@ filter_data <- function(data, pupil, filter = c('median', 'hanning', 'lowpass'),
   }
   #median
   .median <- function(x){
-    x[[pupil]] <- stats::runmed(x[[pupil]], degree, endrule = 'keep')
+    x <- stats::runmed(x, degree, endrule = 'keep')
     return(x)
   }
 
