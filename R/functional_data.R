@@ -42,7 +42,7 @@ create_difference_data <- function(data, pupil){
     stop('More than 2 conditions exist, unable to create meaningful differences between more than 2 objects.')
   }
 
-  cat(unique[2], 'minus', unique[1], ' -- relevel condition if this is not the intended outcome ', sep = ' ')
+  message(paste(unique[2], 'minus', unique[1], ' -- relevel condition if this is not the intended outcome '), sep = ' ')
 
   var <- paste('mean2(', pupil, ')', sep ='')
 
@@ -132,7 +132,7 @@ create_functional_data <- function(data, pupil, basis, order){
     do.call(cbind, lapply(x, is.nan))}
 
   if(length(which(is.nan(data2))) > 0){
-    cat('Dataframe contains NaNs; replacing with 0')
+    message('Dataframe contains NaNs; replacing with 0')
   }
 
   data2[is.nan(data2)] <- 0
@@ -222,7 +222,7 @@ run_functional_t_test <- function(data, pupil, alpha = 0.05){
   df <- num_part - 1
 
   critical_value <- qt(1-alpha/2, df)
-  cat('critical value for n =', num_part, 'is', critical_value, sep = ' ')
+  message(paste('critical value for n =', num_part, 'is', critical_value), sep = ' ')
 
   data_summary[['Divergence']] <- ifelse(abs(data_summary[['t']]) >= critical_value, TRUE, FALSE)
 

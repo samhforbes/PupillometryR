@@ -1,7 +1,7 @@
 Package: PupillometryR
 Type: Package
 Title: An R package for pupillometry data
-Version: 0.0.1.1
+Version: 0.0.1.2
 Authors@R: person("Samuel", "Forbes", email = "samuel.h.forbes@gmail.com", role = c("aut", "cre"))
 Description: An R package for pupillometry data, to clean, prepare, 
     and run basic analyses on pupillometry experiments

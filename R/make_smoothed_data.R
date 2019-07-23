@@ -21,7 +21,7 @@
 
 replace_missing_data <- function(data){
 
-  warning('replace_missing_data will only help if you have missing timepoints, and a reliable time column.')
+  message('replace_missing_data will only help if you have missing timepoints, and a reliable time column.')
 
   if('PupillometryR' %in% class(data) == FALSE){
     stop('Dataframe is not of class PupillometryR. Did you forget to run make_pupillometryr_data? Some tidyverse functions associated with dplyr and tidyr can also interfere with this functionality.')
@@ -150,7 +150,7 @@ filter_data <- function(data, pupil, filter = c('median', 'hanning', 'lowpass'),
   rdata <- dplyr::arrange(rdata, UQS(syms(vars)))
 
   if(filter == 'lowpass'){
-    cat('Performing lowpass filter \n')
+    message('Performing lowpass filter \n')
     warning('Lowpass filter is still under development - it can do some strange things at the start and end of trials. Check your data to see that it works before proceeding.')
     rdata2 <- rdata %>%
       group_by(!!sym(subject), !!sym(trial), !!sym(condition), !!sym(other)) %>%
@@ -161,7 +161,7 @@ filter_data <- function(data, pupil, filter = c('median', 'hanning', 'lowpass'),
 
   else{
     if(filter == 'hanning'){
-      cat('Performing hanning filter \n')
+      message('Performing hanning filter \n')
       rdata2 <- rdata %>%
         group_by(!!sym(subject), !!sym(trial), !!sym(condition), !!sym(other)) %>%
         mutate(!!sym(pupil) := .int_data(!!sym(pupil))) %>%
@@ -169,7 +169,7 @@ filter_data <- function(data, pupil, filter = c('median', 'hanning', 'lowpass'),
         ungroup()
     }
     else{
-      cat('Performing median filter \n')
+      message('Performing median filter \n')
       rdata2 <- rdata %>%
         group_by(!!sym(subject), !!sym(trial), !!sym(condition), !!sym(other)) %>%
         mutate(!!sym(pupil) := .int_data(!!sym(pupil))) %>%
@@ -203,7 +203,7 @@ filter_data <- function(data, pupil, filter = c('median', 'hanning', 'lowpass'),
 #' pupil2 = LPupil)
 #'
 #' @export
-#' @return smoothed pupil values
+#' @return a PupillometryR dataframe with smoothed pupil values
 
 #regress one pupil against another
 regress_data <- function(data, pupil1, pupil2) {
@@ -232,6 +232,8 @@ regress_data <- function(data, pupil1, pupil2) {
   #run
   regdata2 <- regdata %>%
     group_by(!!sym(subject), !!sym(trial), !!sym(condition), !!sym(other)) %>%
+    mutate(!!sym(pupil1) := ifelse(is.na(!!sym(pupil1)), !!sym(pupil2), !!sym(pupil1)),
+           !!sym(pupil2) := ifelse(is.na(!!sym(pupil2)), !!sym(pupil1), !!sym(pupil2))) %>%
     mutate(pupil1newkk = .predict_right(!!sym(pupil1), !!sym(pupil2))) %>%
     mutate(pupil2newkk = .predict_right(!!sym(pupil2), !!sym(pupil1))) %>%
     mutate(!!sym(pupil1) := pupil1newkk,
@@ -291,7 +293,7 @@ interpolate_data <- function(data, pupil, type = c('linear', 'cubic')){
   }
   #interpolate
   if(type == 'cubic'){
-    cat('Performing cubic interpolation \n')
+    message('Performing cubic interpolation \n')
     warning('If start and end values are missing, cubic interpolation can return extreme values. Check data before continuing. If in doubt you should opt for linear interpolation.')
 
     intdata2 <- intdata %>%
@@ -300,7 +302,7 @@ interpolate_data <- function(data, pupil, type = c('linear', 'cubic')){
       ungroup()
   }else{
     if(type =='linear'){
-      cat('Performing linear interpolation \n')
+      message('Performing linear interpolation \n')
       intdata2 <- intdata %>%
         group_by(!!sym(subject), !!sym(trial), !!sym(condition), !!sym(other)) %>%
         mutate(!!sym(pupil) := .approx(!!sym(pupil))) %>%

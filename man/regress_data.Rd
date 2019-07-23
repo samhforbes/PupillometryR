@@ -14,7 +14,7 @@ regress_data(data, pupil1, pupil2)
 \item{pupil2}{Column name for second pupil data}
 }
 \value{
-smoothed pupil values
+a PupillometryR dataframe with smoothed pupil values
 }
 \description{
 regress_data runs a simple linear regression of pupil1 against pupil2 and the reverse.
