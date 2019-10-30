@@ -20,6 +20,8 @@
 #' trial = Trial,
 #' time = Time,
 #' condition = Type)
+#' @import dplyr
+#' @import rlang
 #'
 #' @export
 #'

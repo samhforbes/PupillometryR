@@ -27,6 +27,8 @@ mean2 <- function(x){
 #'                                time = Time,
 #'                                condition = Type)
 #' subset_data(Sdata, start = 100, stop = 10000, rezero = T, remove = T)
+#' @import dplyr
+#' @import rlang
 #'
 #' @export
 #'
@@ -86,7 +88,8 @@ subset_data <- function(data, start, stop, rezero = T, remove = T){
 #' window <- create_window_data(data = base_data, pupil = mpupil)
 #' p <- plot(data = window, pupil = mpupil, windows = F, geom = 'boxplot')
 #' p
-#'
+#' @import dplyr
+#' @import rlang
 #' @export
 #'
 #' @return a Pupil_window_data dataframe
@@ -136,7 +139,8 @@ create_window_data <- function(data, pupil){
 #' window <- create_window_data(data = base_data, pupil = mpupil)
 #' p <- plot(data = window, pupil = mpupil, windows = F, geom = 'boxplot')
 #' p
-#'
+#' @import dplyr
+#' @import rlang
 #' @export
 #'
 #' @return a Pupil_window_data dataframe

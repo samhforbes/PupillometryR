@@ -16,7 +16,8 @@
 #'                                condition = Type)
 #' differences <- create_difference_data(data = base_data, pupil = mpupil)
 #' plot(differences, pupil = mpupil, geom = 'line')
-#'
+#' @import dplyr
+#' @import rlang
 #' @export
 #'
 #' @return A Pupil_difference_data data frame
@@ -105,6 +106,8 @@ create_difference_data <- function(data, pupil){
 #'
 #' @seealso fda package
 #'
+#' @import dplyr
+#' @import rlang
 #' @export
 #'
 #' @return A Pupil_difference_data dataframe fitted with b-splines.
@@ -190,6 +193,8 @@ create_functional_data <- function(data, pupil, basis, order){
 #' spline_data <- create_functional_data(data = differences, pupil = mpupil, basis = 10, order = 4)
 #' ft_data <- run_functional_t_test(data = spline_data, pupil = mpupil, alpha = 0.05)
 #'
+#' @import dplyr
+#' @import rlang
 #' @export
 #'
 #' @return A Pupil_test_data dataframe

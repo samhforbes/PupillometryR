@@ -15,6 +15,8 @@
 #' time = Time,
 #' condition = Type)
 #' new_data <- replace_missing_data(data = Sdata)
+#' @import dplyr
+#' @import rlang
 #'
 #' @export
 #' @return A time-stepped data frame
@@ -80,6 +82,8 @@ replace_missing_data <- function(data){
 #' pupil = mpupil,
 #' filter = 'hanning',
 #' degree = 11)
+#' @import dplyr
+#' @import rlang
 #'
 #' @export
 #' @return filtered pupil data
@@ -201,6 +205,8 @@ filter_data <- function(data, pupil, filter = c('median', 'hanning', 'lowpass'),
 #' regressed_data <- regress_data(data = new_data,
 #' pupil1 = RPupil,
 #' pupil2 = LPupil)
+#' @import dplyr
+#' @import rlang
 #'
 #' @export
 #' @return a PupillometryR dataframe with smoothed pupil values
@@ -262,6 +268,8 @@ regress_data <- function(data, pupil1, pupil2) {
 #' int_data <- interpolate_data(data = filtered_data,
 #' pupil = mpupil,
 #' type = 'linear')
+#' @import dplyr
+#' @import rlang
 #'
 #' @export
 #' @return interpolated pupillometry data

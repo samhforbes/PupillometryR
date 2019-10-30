@@ -20,6 +20,8 @@
 #' pupil = LPupil,
 #' timebin_size = 50,
 #' option = 'mean')
+#' @import dplyr
+#' @import rlang
 #'
 #' @export
 #' @return A downsampled dataframe of class PupillometryR
@@ -86,6 +88,8 @@ downsample_time_data <- function(data, pupil, timebin_size, option = c('mean', '
 #' timebin_size = 50,
 #' option = 'mean')
 #' calculate_missing_data(data = new_data, pupil = LPupil)
+#' @import dplyr
+#' @import rlang
 #'
 #' @export
 #' @return A summary table with number of missing samples in each trial
@@ -139,6 +143,8 @@ calculate_missing_data <- function(data, pupil){
 #' timebin_size = 50,
 #' option = 'mean')
 #' calculate_missing_data(data = new_data, pupil = LPupil)
+#' @import dplyr
+#' @import rlang
 #'
 #' @export
 #' @return A cleaned PupillometryR dataframe

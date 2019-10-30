@@ -19,6 +19,8 @@
 #' regressed_data <- regress_data(data = Sdata, pupil1 = RPupil, pupil2 = LPupil)
 #' mean_data <- calculate_mean_pupil_size(data = regressed_data, rpupil = RPupil, lpupil = LPupil)
 #' base_data <- baseline_data(data = int_data, pupil = mpupil, start = 0, stop = 100)
+#' @import dplyr
+#' @import rlang
 #'
 #' @export
 #'

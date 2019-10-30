@@ -19,6 +19,9 @@
 #' p <- plot(Sdata, pupil = LPupil, group = 'subject')
 #' p
 #'
+#' @import ggplot2
+#' @import dplyr
+#' @import rlang
 #' @export
 #'
 #' @return A ggplot object
@@ -110,6 +113,9 @@ plot.PupillometryR <- function(data, pupil, group = c('none', 'condition', 'subj
 #' p <-plot(data = window, pupil = mpupil, windows = F, geom = 'boxplot')
 #' p
 #'
+#' @import dplyr
+#' @import rlang
+#' @import ggplot2
 #' @export
 #'
 #' @return A ggplot object
@@ -184,7 +190,9 @@ plot.Pupil_window_data <- function(data, pupil, windows = c(FALSE, TRUE), geom =
 #' pupil = mpupil)
 #' p <- plot(differences, pupil = mpupil, geom = 'line')
 #' p
-#'
+#' @import dplyr
+#' @import rlang
+#' @import ggplot2
 #' @export
 #'
 #' @return A ggplot object
@@ -230,7 +238,9 @@ plot.Pupil_difference_data <- function(data, pupil, geom = c('point', 'line'), c
 #' pupil = mpupil)
 #' p <- plot(ft_data, show_divergence = T, colour = 'red', fill = 'orange')
 #' p
-#'
+#' @import dplyr
+#' @import rlang
+#' @import ggplot2
 #' @export
 #'
 #' @return A ggplot object
