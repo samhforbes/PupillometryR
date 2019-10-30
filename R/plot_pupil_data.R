@@ -4,7 +4,7 @@
 #' with some additional options for fun with plotting. This allows to see
 #' raw data as points, grouped by either subject or condition.
 #'
-#' @param data A PupillometryR dataframe
+#' @param x A PupillometryR dataframe
 #' @param pupil Column name of pupil data to be plotted
 #' @param group What to group the data by (none, condition, or subject)
 #' @param model Optional argument to plot agains a fitted model
@@ -27,8 +27,9 @@
 #' @return A ggplot object
 
 
-plot.PupillometryR <- function(data, pupil, group = c('none', 'condition', 'subject'), model = NULL, ...){
+plot.PupillometryR <- function(x, pupil, group = c('none', 'condition', 'subject'), model = NULL, ...){
 
+  data <- x
   if('PupillometryR' %in% class(data) == FALSE){
     stop('Dataframe is not of class PupillometryR. Did you forget to run make_pupillometryr_data? Some tidyverse functions associated with dplyr and tidyr can also interfere with this functionality.')
   }
@@ -102,7 +103,7 @@ plot.PupillometryR <- function(data, pupil, group = c('none', 'condition', 'subj
 #' with some additional options for fun with plotting. To see these plots,
 #' you must first use create_window_data.
 #'
-#' @param data A Pupil_window_data dataframe
+#' @param x A Pupil_window_data dataframe
 #' @param pupil Column name of pupil data to be plotted
 #' @param windows Whether you want to include time windows in the plot - logical
 #' @param geom violin plots or boxplots. The newest version adds raincloud plots using Ben Marwick's flat violin plot.
@@ -120,8 +121,9 @@ plot.PupillometryR <- function(data, pupil, group = c('none', 'condition', 'subj
 #'
 #' @return A ggplot object
 
-plot.Pupil_window_data <- function(data, pupil, windows = c(FALSE, TRUE), geom = c('raincloud', 'violin', 'boxplot'), ...){
+plot.Pupil_window_data <- function(x, pupil, windows = c(FALSE, TRUE), geom = c('raincloud', 'violin', 'boxplot'), ...){
 
+  data <- x
   if('Pupil_window_data' %in% class(data) == FALSE){
     stop('Dataframe is not of class Pupil_window_data. Did you forget to run create_window_data? Some tidyverse functions associated with dplyr and tidyr can also interfere with this functionality.')
   }
@@ -179,7 +181,7 @@ plot.Pupil_window_data <- function(data, pupil, windows = c(FALSE, TRUE), geom =
 #' with some additional options for fun with plotting. To see these plots,
 #' you must first use create_difference_data.
 #'
-#' @param data A Pupil_difference_data dataframe
+#' @param x A Pupil_difference_data dataframe
 #' @param pupil Column name of pupil data to be plotted
 #' @param geom string indicating whether made of connected points or a line
 #' @param colour string indicating colour of geom, passed to ggplot2
@@ -197,8 +199,9 @@ plot.Pupil_window_data <- function(data, pupil, windows = c(FALSE, TRUE), geom =
 #'
 #' @return A ggplot object
 
-plot.Pupil_difference_data <- function(data, pupil, geom = c('point', 'line'), colour = 'black', ...){
+plot.Pupil_difference_data <- function(x, pupil, geom = c('point', 'line'), colour = 'black', ...){
 
+  data <- x
   if('Pupil_difference_data' %in% class(data) == FALSE){
     stop('Dataframe is not of class Pupil_difference_data. Did you forget to run create_difference_data? Some tidyverse functions associated with dplyr and tidyr can also interfere with this functionality.')
   }
@@ -227,7 +230,7 @@ plot.Pupil_difference_data <- function(data, pupil, geom = c('point', 'line'), c
 #' with some additional options for fun with plotting. To see these plots,
 #' you must first use one of the run_functional tests.
 #'
-#' @param data A Pupil_test_data dataframe
+#' @param x A Pupil_test_data dataframe
 #' @param show_divergence logical indicating whether divergences are to be highlighted
 #' @param colour string indicating colour of geom_line, passed to ggplot2
 #' @param fill string indicating fill hue of divergence highlights, passed to ggplot2
@@ -245,7 +248,9 @@ plot.Pupil_difference_data <- function(data, pupil, geom = c('point', 'line'), c
 #'
 #' @return A ggplot object
 
-plot.Pupil_test_data <- function(data, show_divergence = TRUE, colour = 'black', fill = 'grey', ...){
+plot.Pupil_test_data <- function(x, show_divergence = TRUE, colour = 'black', fill = 'grey', ...){
+
+  data <- x
   if('Pupil_test_data' %in% class(data) == FALSE){
     stop('Dataframe is not of class Pupil_test_data. Make the functional data before proceeding. Some tidyverse functions associated with dplyr and tidyr can also interfere with this functionality.')
   }
