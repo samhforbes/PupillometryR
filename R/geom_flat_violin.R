@@ -1,12 +1,12 @@
-#'geom_flat_violin_HELPER1
+#' geom_flat_violin_HELPER1
 #'
-#'Borrowed from
-#'\href{https://gist.githubusercontent.com/benmarwick/2a1bb0133ff568cbe28d/raw/fb53bd97121f7f9ce947837ef1a4c65a73bffb3f/geom_flat_violin.R}{Ben Marwick}. Original author David Robinson.
+#' Borrowed from
+#' \href{https://gist.githubusercontent.com/benmarwick/2a1bb0133ff568cbe28d/raw/fb53bd97121f7f9ce947837ef1a4c65a73bffb3f/geom_flat_violin.R}{Ben Marwick}. Original author David Robinson.
 #'
-#'@format NULL
-#'@usage NULL
-#'@name gfv_helper1
-#'@import ggplot2
+#' @format NULL
+#' @usage NULL
+#' @name gfv_helper1
+#' @import ggplot2
 
 "%||%" <- function(a, b) {
   if (!is.null(a))
