@@ -4,5 +4,10 @@ README.html
 README_files
 desktop.ini
 ^README\.html$
+^README\.html
+^README.html
 ^README_files$
+^README_files
 ^desktop\.ini$
+^desktop\.ini
+^desktop.ini
