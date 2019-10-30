@@ -12,7 +12,9 @@
 
 \item{pupil}{Column name of pupil data to be plotted}
 
-\item{group}{What to group the data by}
+\item{group}{What to group the data by (none, condition, or subject)}
+
+\item{model}{Optional argument to plot agains a fitted model}
 }
 \value{
 A ggplot object
