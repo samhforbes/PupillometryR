@@ -85,8 +85,8 @@ subset_data <- function(data, start, stop, rezero = T, remove = T){
 #' @param pupil column name denoting pupil data to be used
 #'
 #' @examples
-#' window <- create_window_data(data = base_data, pupil = mpupil)
-#' p <- plot(data = window, pupil = mpupil, windows = F, geom = 'boxplot')
+#' window <- create_window_data(data = base_data, pupil = mean_pupil)
+#' p <- plot(data = window, pupil = mean_pupil, windows = F, geom = 'boxplot')
 #' p
 #' @import dplyr
 #' @import rlang
@@ -136,8 +136,8 @@ create_window_data <- function(data, pupil){
 #' @param breaks a vector or numbers indicating start times for each window
 #'
 #' @examples
-#' window <- create_window_data(data = base_data, pupil = mpupil)
-#' p <- plot(data = window, pupil = mpupil, windows = F, geom = 'boxplot')
+#' window <- create_window_data(data = base_data, pupil = mean_pupil)
+#' p <- plot(data = window, pupil = mean_pupil, windows = F, geom = 'boxplot')
 #' p
 #' @import dplyr
 #' @import rlang

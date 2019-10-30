@@ -79,7 +79,7 @@ replace_missing_data <- function(data){
 #'
 #' @examples
 #' filtered_data <- filter_data(data = mean_data,
-#' pupil = mpupil,
+#' pupil = mean_pupil,
 #' filter = 'hanning',
 #' degree = 11)
 #' @import dplyr
@@ -268,7 +268,7 @@ regress_data <- function(data, pupil1, pupil2) {
 #'
 #' @examples
 #' int_data <- interpolate_data(data = filtered_data,
-#' pupil = mpupil,
+#' pupil = mean_pupil,
 #' type = 'linear')
 #' @import dplyr
 #' @import rlang
