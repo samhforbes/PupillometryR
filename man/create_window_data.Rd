@@ -23,5 +23,4 @@ By comparison create_time_windows allows dividing it into multiple windows per t
 window <- create_window_data(data = base_data, pupil = mpupil)
 p <- plot(data = window, pupil = mpupil, windows = F, geom = 'boxplot')
 p
-
 }

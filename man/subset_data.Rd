@@ -32,5 +32,4 @@ Sdata <- make_pupillometryr_data(data = pupil_data,
                                time = Time,
                                condition = Type)
 subset_data(Sdata, start = 100, stop = 10000, rezero = T, remove = T)
-
 }

@@ -28,5 +28,4 @@ Sdata <- make_pupillometryr_data(data = pupil_data,
                                condition = Type)
 differences <- create_difference_data(data = base_data, pupil = mpupil)
 plot(differences, pupil = mpupil, geom = 'line')
-
 }

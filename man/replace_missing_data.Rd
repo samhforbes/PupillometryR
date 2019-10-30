@@ -26,5 +26,4 @@ trial = Trial,
 time = Time,
 condition = Type)
 new_data <- replace_missing_data(data = Sdata)
-
 }

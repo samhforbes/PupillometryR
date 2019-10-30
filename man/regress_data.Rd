@@ -25,5 +25,4 @@ The regression runs over each participant and each trial, per time.
 regressed_data <- regress_data(data = new_data,
 pupil1 = RPupil,
 pupil2 = LPupil)
-
 }

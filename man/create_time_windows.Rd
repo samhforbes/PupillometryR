@@ -25,5 +25,4 @@ By comparison create_window_data allows collapsing all into a single time window
 window <- create_window_data(data = base_data, pupil = mpupil)
 p <- plot(data = window, pupil = mpupil, windows = F, geom = 'boxplot')
 p
-
 }

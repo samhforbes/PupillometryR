@@ -207,6 +207,8 @@ filter_data <- function(data, pupil, filter = c('median', 'hanning', 'lowpass'),
 #' pupil2 = LPupil)
 #' @import dplyr
 #' @import rlang
+#' @importFrom stats lm median na.exclude predict qt sd
+#' @importFrom utils tail
 #'
 #' @export
 #' @return a PupillometryR dataframe with smoothed pupil values

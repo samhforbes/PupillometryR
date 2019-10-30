@@ -21,6 +21,8 @@ Imports: data.table,
          mgcv,
          rlang,
          signal,
+         stats,
          tidyr,
+         utils,
          zoo
 RoxygenNote: 6.1.1

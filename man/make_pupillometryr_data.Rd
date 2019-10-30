@@ -36,5 +36,4 @@ subject = ID,
 trial = Trial,
 time = Time,
 condition = Type)
-
 }

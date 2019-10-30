@@ -31,5 +31,4 @@ ft_data <- run_functional_t_test(data = spline_data,
 pupil = mpupil)
 p <- plot(ft_data, show_divergence = T, colour = 'red', fill = 'orange')
 p
-
 }

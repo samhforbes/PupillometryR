@@ -30,5 +30,4 @@ pupil = LPupil,
 timebin_size = 50,
 option = 'mean')
 calculate_missing_data(data = new_data, pupil = LPupil)
-
 }

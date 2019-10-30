@@ -30,5 +30,4 @@ filtered_data <- filter_data(data = mean_data,
 pupil = mpupil,
 filter = 'hanning',
 degree = 11)
-
 }

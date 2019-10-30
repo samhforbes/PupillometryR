@@ -36,5 +36,4 @@ new_data <- downsample_time_data(data = Sdata,
 pupil = LPupil,
 timebin_size = 50,
 option = 'mean')
-
 }

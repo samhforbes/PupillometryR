@@ -31,5 +31,4 @@ differences <- create_difference_data(data = base_data,
 pupil = mpupil)
 p <- plot(differences, pupil = mpupil, geom = 'line')
 p
-
 }

@@ -26,5 +26,4 @@ strongly recommended for the functional analyses planned in this package.
 int_data <- interpolate_data(data = filtered_data,
 pupil = mpupil,
 type = 'linear')
-
 }
