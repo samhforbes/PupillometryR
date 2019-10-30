@@ -1,3 +1,9 @@
+#' Helper function mean2
+#'
+#' Somewhat useful function for ignoring NAs
+#' @param x the object
+#'
+
 mean2 <- function(x){
   mean(x, na.rm = T)
 }
