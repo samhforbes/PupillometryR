@@ -20,7 +20,7 @@ per condition.
 By comparison create_time_windows allows dividing it into multiple windows per time.
 }
 \examples{
-window <- create_window_data(data = base_data, pupil = mpupil)
-p <- plot(data = window, pupil = mpupil, windows = F, geom = 'boxplot')
+window <- create_window_data(data = base_data, pupil = mean_pupil)
+p <- plot(data = window, pupil = mean_pupil, windows = F, geom = 'boxplot')
 p
 }

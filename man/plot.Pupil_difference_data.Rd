@@ -29,6 +29,6 @@ you must first use create_difference_data.
 \examples{
 differences <- create_difference_data(data = base_data,
 pupil = mpupil)
-p <- plot(differences, pupil = mpupil, geom = 'line')
+p <- plot(differences, pupil = mean_pupil, geom = 'line')
 p
 }

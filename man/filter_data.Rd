@@ -27,7 +27,7 @@ butterworth filter and filtfilt from package signal, median makes use of runmed.
 }
 \examples{
 filtered_data <- filter_data(data = mean_data,
-pupil = mpupil,
+pupil = mean_pupil,
 filter = 'hanning',
 degree = 11)
 }
