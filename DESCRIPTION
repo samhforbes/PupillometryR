@@ -3,9 +3,10 @@ Type: Package
 Title: An R Package for Pupillometry Data
 Version: 0.0.1.2
 Authors@R: person("Samuel", "Forbes", email = "samuel.h.forbes@gmail.com", role = c("aut", "cre"))
-Description: An R package to clean, prepare, 
-    and run basic analyses on pupillometry experiments
-License: MIT
+Description: PupillometryR is an R package designed to clean, prepare, 
+    and run basic analyses on pupillometry experiments.
+BugReports: https://github.com/samhforbes/PupillometryR/issues
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Depends: dplyr,
