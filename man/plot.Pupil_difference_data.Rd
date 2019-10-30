@@ -4,11 +4,11 @@
 \alias{plot.Pupil_difference_data}
 \title{Pre-prepared plots of PupillometryR data}
 \usage{
-\method{plot}{Pupil_difference_data}(data, pupil, geom = c("point",
-  "line"), colour = "black", ...)
+\method{plot}{Pupil_difference_data}(x, pupil, geom = c("point", "line"),
+  colour = "black", ...)
 }
 \arguments{
-\item{data}{A Pupil_difference_data dataframe}
+\item{x}{A Pupil_difference_data dataframe}
 
 \item{pupil}{Column name of pupil data to be plotted}
 

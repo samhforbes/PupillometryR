@@ -4,11 +4,11 @@
 \alias{plot.Pupil_window_data}
 \title{Pre-prepared plots of PupillometryR data}
 \usage{
-\method{plot}{Pupil_window_data}(data, pupil, windows = c(FALSE, TRUE),
+\method{plot}{Pupil_window_data}(x, pupil, windows = c(FALSE, TRUE),
   geom = c("raincloud", "violin", "boxplot"), ...)
 }
 \arguments{
-\item{data}{A Pupil_window_data dataframe}
+\item{x}{A Pupil_window_data dataframe}
 
 \item{pupil}{Column name of pupil data to be plotted}
 

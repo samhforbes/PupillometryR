@@ -3,3 +3,6 @@
 README.html
 README_files
 desktop.ini
+^README\.html$
+^README_files$
+^desktop\.ini$

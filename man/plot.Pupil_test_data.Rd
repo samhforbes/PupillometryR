@@ -4,11 +4,11 @@
 \alias{plot.Pupil_test_data}
 \title{Pre-prepared plots of PupillometryR data}
 \usage{
-\method{plot}{Pupil_test_data}(data, show_divergence = TRUE,
+\method{plot}{Pupil_test_data}(x, show_divergence = TRUE,
   colour = "black", fill = "grey", ...)
 }
 \arguments{
-\item{data}{A Pupil_test_data dataframe}
+\item{x}{A Pupil_test_data dataframe}
 
 \item{show_divergence}{logical indicating whether divergences are to be highlighted}
 
