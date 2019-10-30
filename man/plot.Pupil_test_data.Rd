@@ -28,7 +28,7 @@ you must first use one of the run_functional tests.
 }
 \examples{
 ft_data <- run_functional_t_test(data = spline_data,
-pupil = mpupilmean_pupil)
+pupil = mean_pupil)
 p <- plot(ft_data, show_divergence = T, colour = 'red', fill = 'orange')
 p
 }
