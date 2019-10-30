@@ -5,7 +5,7 @@
 \title{Pre-prepared plots of PupillometryR data}
 \usage{
 \method{plot}{PupillometryR}(data, pupil, group = c("none", "condition",
-  "subject"), model = NULL)
+  "subject"), model = NULL, ...)
 }
 \arguments{
 \item{data}{A PupillometryR dataframe}
@@ -15,6 +15,8 @@
 \item{group}{What to group the data by (none, condition, or subject)}
 
 \item{model}{Optional argument to plot agains a fitted model}
+
+\item{...}{Ignored}
 }
 \value{
 A ggplot object

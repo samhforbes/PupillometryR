@@ -5,7 +5,7 @@
 \title{Pre-prepared plots of PupillometryR data}
 \usage{
 \method{plot}{Pupil_test_data}(data, show_divergence = TRUE,
-  colour = "black", fill = "grey")
+  colour = "black", fill = "grey", ...)
 }
 \arguments{
 \item{data}{A Pupil_test_data dataframe}
@@ -15,6 +15,8 @@
 \item{colour}{string indicating colour of geom_line, passed to ggplot2}
 
 \item{fill}{string indicating fill hue of divergence highlights, passed to ggplot2}
+
+\item{...}{Ignored}
 }
 \value{
 A ggplot object

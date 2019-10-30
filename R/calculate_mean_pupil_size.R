@@ -14,7 +14,8 @@
 #'                                condition = Type)
 #' regressed_data <- regress_data(data = Sdata, pupil1 = RPupil, pupil2 = LPupil)
 #' mean_data <- calculate_mean_pupil_size(data = regressed_data, pupil1 = RPupil, pupil2 = LPupil)
-#'
+#' @import dplyr
+#' @import rlang
 #' @export
 #'
 #' @return A PupillometryR dataframe with a mean pupil column

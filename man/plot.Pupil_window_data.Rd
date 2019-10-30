@@ -5,7 +5,7 @@
 \title{Pre-prepared plots of PupillometryR data}
 \usage{
 \method{plot}{Pupil_window_data}(data, pupil, windows = c(FALSE, TRUE),
-  geom = c("raincloud", "violin", "boxplot"))
+  geom = c("raincloud", "violin", "boxplot"), ...)
 }
 \arguments{
 \item{data}{A Pupil_window_data dataframe}
@@ -15,6 +15,8 @@
 \item{windows}{Whether you want to include time windows in the plot - logical}
 
 \item{geom}{violin plots or boxplots. The newest version adds raincloud plots using Ben Marwick's flat violin plot.}
+
+\item{...}{Ignored}
 }
 \value{
 A ggplot object

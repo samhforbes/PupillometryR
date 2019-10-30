@@ -5,7 +5,7 @@
 \title{Pre-prepared plots of PupillometryR data}
 \usage{
 \method{plot}{Pupil_difference_data}(data, pupil, geom = c("point",
-  "line"), colour = "black")
+  "line"), colour = "black", ...)
 }
 \arguments{
 \item{data}{A Pupil_difference_data dataframe}
@@ -15,6 +15,8 @@
 \item{geom}{string indicating whether made of connected points or a line}
 
 \item{colour}{string indicating colour of geom, passed to ggplot2}
+
+\item{...}{Ignored}
 }
 \value{
 A ggplot object
