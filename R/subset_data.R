@@ -179,7 +179,7 @@ create_time_windows <- function(data, pupil, breaks){
   if(length(breaks) < 1){
     stop('No breaks specified. Do you mean to use create_window_data() instead?')
   }else{
-    Window <- cut(data[[time]], breaks, labels = F)
+    Window <- cut(data[[time]], breaks, labels = F, include.lowest = T)
     data <- cbind(data, Window)
     data[['Window']] <- as.character(data[['Window']])
     var <- paste('mean2(', pupil, ')', sep ='')
