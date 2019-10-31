@@ -228,18 +228,18 @@ proportion of *data* that we can accept missing in one trial before
 removing it from analysis. The second is what proportion of *trials* we
 can accept as missing before removing a participant for being
 unreliable. In this example, we will remove trials that have more than
-25% of data missing, and we will remove participants that have more than
+75% of data missing, and we will remove participants that have more than
 75% of trials removed.
 
 ``` r
 mean_data2 <- clean_missing_data(mean_data,
                                  pupil = mean_pupil,
-                                 trial_threshold = .25,
+                                 trial_threshold = .75,
                                  subject_trial_threshold = .75)
 ```
 
-    ## Removing trials with a proportion missing > 0.25 
-    ##  ...removed 7 trials
+    ## Removing trials with a proportion missing > 0.75 
+    ##  ...removed 0 trials
 
     ## Removing subjects with a proportion of missing trials > 0.75 
     ##  ...removed 0 subjects
@@ -264,7 +264,7 @@ filtered_data <- filter_data(data = mean_data2,
 plot(filtered_data, pupil = mean_pupil, group = 'subject')
 ```
 
-    ## Warning: Removed 864 rows containing non-finite values (stat_summary).
+    ## Warning: Removed 1376 rows containing non-finite values (stat_summary).
 
 ![](README_files/figure-markdown_github/unnamed-chunk-13-1.svg)
 
@@ -337,7 +337,7 @@ head(window)
     ## 1  1 Easy -0.227838342
     ## 2  1 Hard -0.069627994
     ## 3  2 Easy -0.100820080
-    ## 4  2 Hard -0.053269676
+    ## 4  2 Hard  0.001625416
     ## 5  3 Easy -0.092679658
     ## 6  3 Hard  0.000489152
 
@@ -351,13 +351,13 @@ t.test(mean_pupil ~ Type, paired = T, data = window)
     ##  Paired t-test
     ## 
     ## data:  mean_pupil by Type
-    ## t = -3.505, df = 7, p-value = 0.009926
+    ## t = -3.8043, df = 7, p-value = 0.006677
     ## alternative hypothesis: true difference in means is not equal to 0
     ## 95 percent confidence interval:
-    ##  -0.22940329 -0.04456834
+    ##  -0.20721815 -0.04835966
     ## sample estimates:
     ## mean of the differences 
-    ##              -0.1369858
+    ##              -0.1277889
 
 Alternatively, we may wish to look at the data in chunks. Here we group
 the data in to 2000ms timebins for analysis (and we will opt for the
@@ -395,10 +395,10 @@ car::Anova(lm(mean_pupil ~ Window * Type, data = timeslots))
     ## 
     ## Response: mean_pupil
     ##              Sum Sq Df F value    Pr(>F)    
-    ## Window      1.03099  4 10.2587 1.353e-06 ***
-    ## Type        0.37755  1 15.0269 0.0002363 ***
-    ## Window:Type 0.08559  4  0.8517 0.4973919    
-    ## Residuals   1.75873 70                      
+    ## Window      1.06207  4 13.1506 4.848e-08 ***
+    ## Type        0.32858  1 16.2740 0.0001379 ***
+    ## Window:Type 0.10028  4  1.2417 0.3013144    
+    ## Residuals   1.41334 70                      
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
@@ -464,19 +464,19 @@ summary(m1)
     ## 
     ## Parametric coefficients:
     ##              Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept) -0.114045   0.001993  -57.22   <2e-16 ***
+    ## (Intercept) -0.117178   0.001984  -59.05   <2e-16 ***
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
     ## Approximate significance of smooth terms:
     ##                 edf Ref.df     F p-value    
-    ## s(Time)       7.048  8.111 447.2  <2e-16 ***
-    ## s(Time):Typen 6.773  7.929 145.6  <2e-16 ***
+    ## s(Time)       7.197  8.226 434.7  <2e-16 ***
+    ## s(Time):Typen 7.331  8.483 167.2  <2e-16 ***
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## R-sq.(adj) =  0.367   Deviance explained = 36.8%
-    ## fREML = -2363.5  Scale est. = 0.03272   n = 8241
+    ## R-sq.(adj) =  0.341   Deviance explained = 34.2%
+    ## fREML = -2050.2  Scale est. = 0.037995  n = 9648
 
 We can use our default plotting function to see how it looks compared to
 the raw data, just by specifying the model= argument.
@@ -585,21 +585,21 @@ summary(m2)
     ## 
     ## Parametric coefficients:
     ##             Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept) -0.16997    0.01325  -12.83   <2e-16 ***
-    ## Typen        0.00000    0.00000      NA       NA    
+    ## (Intercept) -0.16315    0.01448 -11.268   <2e-16 ***
+    ## Typen        0.03605    0.08891   0.406    0.685    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
     ## Approximate significance of smooth terms:
-    ##                  edf  Ref.df       F p-value    
-    ## s(Time):Typen   3.83   4.168   1.355   0.248    
-    ## s(Time,Event) 359.73 367.000 364.173  <2e-16 ***
+    ##                   edf  Ref.df       F p-value    
+    ## s(Time):Typen   6.361   6.624   2.367  0.0165 *  
+    ## s(Time,Event) 418.828 431.000 357.310  <2e-16 ***
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Rank: 380/381
-    ## R-sq.(adj) =  0.959   Deviance explained = 96.1%
-    ## fREML = -19119  Scale est. = 0.00070539  n = 8241
+    ## Rank: 443/444
+    ## R-sq.(adj) =   0.96   Deviance explained = 96.2%
+    ## fREML = -21837  Scale est. = 0.0007909  n = 9648
 
 ``` r
 qqnorm(resid(m2))
