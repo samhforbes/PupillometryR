@@ -14,6 +14,9 @@
 #'                                trial = Trial,
 #'                                time = Time,
 #'                                condition = Type)
+#' mean_data <- calculate_mean_pupil_size(data = Sdata,
+#' pupil1 = RPupil, pupil2 = LPupil)
+#' base_data <- baseline_data(data = mean_data, pupil = mean_pupil, start = 0, stop = 100)
 #' differences <- create_difference_data(data = base_data, pupil = mean_pupil)
 #' plot(differences, pupil = mean_pupil, geom = 'line')
 #' @import dplyr
@@ -188,7 +191,7 @@ create_functional_data <- function(data, pupil, basis, order){
 #'                                condition = Type)
 #' regressed_data <- regress_data(data = Sdata, pupil1 = RPupil, pupil2 = LPupil)
 #' mean_data <- calculate_mean_pupil_size(data = regressed_data, pupil1 = RPupil, pupil2 = LPupil)
-#' base_data <- baseline_data(data = int_data, pupil = mean_pupil, start = 0, stop = 100)
+#' base_data <- baseline_data(data = mean_data, pupil = mean_pupil, start = 0, stop = 100)
 #' differences <- create_difference_data(data = base_data, pupil = mean_pupil)
 #' spline_data <- create_functional_data(data = differences, pupil = mean_pupil, basis = 10, order = 4)
 #' ft_data <- run_functional_t_test(data = spline_data, pupil = mean_pupil, alpha = 0.05)

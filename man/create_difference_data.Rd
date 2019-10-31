@@ -26,6 +26,9 @@ Sdata <- make_pupillometryr_data(data = pupil_data,
                                trial = Trial,
                                time = Time,
                                condition = Type)
+mean_data <- calculate_mean_pupil_size(data = Sdata,
+pupil1 = RPupil, pupil2 = LPupil)
+base_data <- baseline_data(data = mean_data, pupil = mean_pupil, start = 0, stop = 100)
 differences <- create_difference_data(data = base_data, pupil = mean_pupil)
 plot(differences, pupil = mean_pupil, geom = 'line')
 }
