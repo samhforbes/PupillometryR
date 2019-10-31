@@ -23,6 +23,17 @@ Depending on the analysis planed, this may not be a necessary option, but it is
 strongly recommended for the functional analyses planned in this package.
 }
 \examples{
+Sdata <- make_pupillometryr_data(data = pupil_data,
+subject = ID,
+trial = Trial,
+time = Time,
+condition = Type)
+mean_data <- calculate_mean_pupil_size(data = Sdata,
+pupil1 = RPupil, pupil2 = LPupil)
+filtered_data <- filter_data(data = mean_data,
+pupil = mean_pupil,
+filter = 'hanning',
+degree = 11)
 int_data <- interpolate_data(data = filtered_data,
 pupil = mean_pupil,
 type = 'linear')

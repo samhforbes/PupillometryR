@@ -26,6 +26,13 @@ This filters on one pupil, it can be re-run on a second pupil if needed. Lowpass
 butterworth filter and filtfilt from package signal, median makes use of runmed.
 }
 \examples{
+Sdata <- make_pupillometryr_data(data = pupil_data,
+subject = ID,
+trial = Trial,
+time = Time,
+condition = Type)
+mean_data <- calculate_mean_pupil_size(data = Sdata,
+pupil1 = RPupil, pupil2 = LPupil)
 filtered_data <- filter_data(data = mean_data,
 pupil = mean_pupil,
 filter = 'hanning',

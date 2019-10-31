@@ -78,6 +78,13 @@ replace_missing_data <- function(data){
 #' @param degree filter degree
 #'
 #' @examples
+#' Sdata <- make_pupillometryr_data(data = pupil_data,
+#' subject = ID,
+#' trial = Trial,
+#' time = Time,
+#' condition = Type)
+#' mean_data <- calculate_mean_pupil_size(data = Sdata,
+#' pupil1 = RPupil, pupil2 = LPupil)
 #' filtered_data <- filter_data(data = mean_data,
 #' pupil = mean_pupil,
 #' filter = 'hanning',
@@ -202,9 +209,17 @@ filter_data <- function(data, pupil, filter = c('median', 'hanning', 'lowpass'),
 #' @param pupil2 Column name for second pupil data
 #'
 #' @examples
+#' Sdata <- make_pupillometryr_data(data = pupil_data,
+#' subject = ID,
+#' trial = Trial,
+#' time = Time,
+#' condition = Type)
 #' regressed_data <- regress_data(data = new_data,
 #' pupil1 = RPupil,
 #' pupil2 = LPupil)
+#' mean_data <- calculate_mean_pupil_size(data = regressed_data,
+#' pupil1 = RPupil, pupil2 = LPupil)
+#'
 #' @import dplyr
 #' @import rlang
 #' @importFrom stats lm median na.exclude predict qt sd
@@ -267,6 +282,17 @@ regress_data <- function(data, pupil1, pupil2) {
 #' @param type string indicating linear or cubic interpolation to be performed.
 #'
 #' @examples
+#' Sdata <- make_pupillometryr_data(data = pupil_data,
+#' subject = ID,
+#' trial = Trial,
+#' time = Time,
+#' condition = Type)
+#' mean_data <- calculate_mean_pupil_size(data = Sdata,
+#' pupil1 = RPupil, pupil2 = LPupil)
+#' filtered_data <- filter_data(data = mean_data,
+#' pupil = mean_pupil,
+#' filter = 'hanning',
+#' degree = 11)
 #' int_data <- interpolate_data(data = filtered_data,
 #' pupil = mean_pupil,
 #' type = 'linear')
