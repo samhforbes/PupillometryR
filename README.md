@@ -1,17 +1,14 @@
-PupillometryR: A package for analysing pupil experiments
-================
-Samuel H. Forbes
-
 ### Update July 2019 PupillometryR 0.0.1.2
 
-  - New functions: - calculate\_missing\_data() to analyse amount of
+-   New functions: - calculate\_missing\_data() to analyse amount of
     trackloss - clean\_missing\_data() to clean by threshold -
     downsample\_time\_data() to reduce autocorrelation by placing data
     into timebins and downsampling
-  - Messaging functionality improved
-  - updated readme
+-   Messaging functionality improved
+-   updated readme
 
-## Introduction
+Introduction
+------------
 
 PupillometryR is a package to pre-process and then analyze simple pupil
 experiments in R. The best way to download it is to open up R in
@@ -62,7 +59,8 @@ reading first, written by Sylvain Sirois,
 It’s worth making sure that your setup and experiment do facilitate the
 use of pupillometry - it may not be suited for all kinds of experiment.
 
-## Getting started
+Getting started
+---------------
 
 We will first run through an example analysis with the data provided in
 the package, which, again, comes from Sylvain Sirois’ tutorial on [his
@@ -114,8 +112,7 @@ Sdata <- make_pupillometryr_data(data = pupil_data,
 
 In the current data, it is not a concern, but there may be a situation
 where certain timebins are missing from your data. This can be fixed
-here, and we will look at the raw
-    data:
+here, and we will look at the raw data:
 
 ``` r
 new_data <- replace_missing_data(data = Sdata)
@@ -141,8 +138,7 @@ has some built-in plotting functions to allow you to look at certain
 data types. You simply need to specify a pupil column to display, and
 how you would like the data displayed in groups. The plots are ggplot
 items, so can be edited with themes, and arguments such as ylab(). Below
-we display it first by condition, then by
-    subject:
+we display it first by condition, then by subject:
 
 ``` r
 plot(new_data, pupil = LPupil, group = 'condition')
@@ -150,7 +146,7 @@ plot(new_data, pupil = LPupil, group = 'condition')
 
     ## Warning: Removed 3639 rows containing non-finite values (stat_summary).
 
-![](README_files/figure-gfm/unnamed-chunk-7-1.svg)<!-- -->
+![](README_files/figure-markdown_github/unnamed-chunk-7-1.svg)
 
 ``` r
 plot(new_data, pupil = LPupil, group = 'subject') 
@@ -158,9 +154,10 @@ plot(new_data, pupil = LPupil, group = 'subject')
 
     ## Warning: Removed 3639 rows containing non-finite values (stat_summary).
 
-![](README_files/figure-gfm/unnamed-chunk-7-2.svg)<!-- -->
+![](README_files/figure-markdown_github/unnamed-chunk-7-2.svg)
 
-## Smoothing and cleanup
+Smoothing and cleanup
+---------------------
 
 PupillometryR offers a few smoothing options to make processing the data
 a little easier. We’ll do the full set here. A great reference for these
@@ -187,7 +184,7 @@ plot(mean_data, pupil = mean_pupil, group = 'subject')
 
     ## Warning: Removed 3591 rows containing non-finite values (stat_summary).
 
-![](README_files/figure-gfm/unnamed-chunk-9-1.svg)<!-- -->
+![](README_files/figure-markdown_github/unnamed-chunk-9-1.svg)
 
 Now that we have a single pupil measure to work with, we can manipulate
 the data a little more easily. First thing we can do is to downsample
@@ -269,7 +266,7 @@ plot(filtered_data, pupil = mean_pupil, group = 'subject')
 
     ## Warning: Removed 864 rows containing non-finite values (stat_summary).
 
-![](README_files/figure-gfm/unnamed-chunk-13-1.svg)<!-- -->
+![](README_files/figure-markdown_github/unnamed-chunk-13-1.svg)
 
 The next step is to interpolate across blinks. Filtering before the
 interpolation generally allows more sensible interpolation, but the way
@@ -291,7 +288,7 @@ int_data <- interpolate_data(data = filtered_data,
 plot(int_data, pupil = mean_pupil, group = 'subject')
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-14-1.svg)<!-- -->
+![](README_files/figure-markdown_github/unnamed-chunk-14-1.svg)
 
 Baselining the data is a powerful way of making sure we control for
 between-participant variance of average pupil size. If we are looking at
@@ -311,9 +308,10 @@ base_data <- baseline_data(data = int_data,
 plot(base_data, pupil = mean_pupil, group = 'subject')
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-15-1.svg)<!-- -->
+![](README_files/figure-markdown_github/unnamed-chunk-15-1.svg)
 
-## Window analyses
+Window analyses
+---------------
 
 PupillometryR gives us a couple of options for window analysis. One is
 overall averages, the other is to break the data up into discrete time
@@ -329,7 +327,7 @@ window <- create_window_data(data = base_data,
 plot(window, pupil = mean_pupil, windows = F, geom = 'boxplot')
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-16-1.svg)<!-- -->
+![](README_files/figure-markdown_github/unnamed-chunk-16-1.svg)
 
 ``` r
 head(window)
@@ -373,7 +371,7 @@ timeslots <- create_time_windows(data = base_data,
 plot(timeslots, pupil = mean_pupil, windows = T, geom = 'raincloud')
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-18-1.svg)<!-- -->
+![](README_files/figure-markdown_github/unnamed-chunk-18-1.svg)
 
 ``` r
 head(timeslots)
@@ -404,7 +402,8 @@ car::Anova(lm(mean_pupil ~ Window * Type, data = timeslots))
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-## Modelling with Generalised Additive Models
+Modelling with Generalised Additive Models
+------------------------------------------
 
 Here we interfact with the mgcv package, an exceptionally powerful
 package for GAM data, by Simon Wood. I strongly encourage reading the
@@ -486,7 +485,7 @@ the raw data, just by specifying the model= argument.
 plot(base_data, pupil = mean_pupil, group = 'condition', model = m1)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-22-1.svg)<!-- -->
+![](README_files/figure-markdown_github/unnamed-chunk-22-1.svg)
 
 Of course there is the fact that we expect there to by some variation by
 trial, and that we should expect there to be differences for each
@@ -514,13 +513,13 @@ library(itsadug)
 qqnorm(resid(m1))
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-23-1.svg)<!-- -->
+![](README_files/figure-markdown_github/unnamed-chunk-23-1.svg)
 
 ``` r
 acf_resid(m1)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-23-2.svg)<!-- -->
+![](README_files/figure-markdown_github/unnamed-chunk-23-2.svg)
 
 While the qqnorm looks to be almost passable, the autocorrelation in the
 second plot is very high. This is an important consideration in
@@ -551,7 +550,7 @@ model_data <- droplevels(model_data[order(model_data$ID,
 
 We now need to model this. We are setting an AR parameter, and allowing
 events to vary by time. You will see our deviance accounted for is now
-up around 96% - much better\! The qqnorm is still far from perfect, and
+up around 96% - much better! The qqnorm is still far from perfect, and
 the commented-out model below m2 would do a bit better at this (again
 from van Rij et al) by using a scaled t distribution - but would take
 ages to run.
@@ -606,19 +605,19 @@ summary(m2)
 qqnorm(resid(m2))
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-25-1.svg)<!-- -->
+![](README_files/figure-markdown_github/unnamed-chunk-25-1.svg)
 
 ``` r
 acf_resid(m2)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-25-2.svg)<!-- -->
+![](README_files/figure-markdown_github/unnamed-chunk-25-2.svg)
 
 ``` r
 plot(base_data, pupil = mean_pupil, group = 'condition', model = m2)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-25-3.svg)<!-- -->
+![](README_files/figure-markdown_github/unnamed-chunk-25-3.svg)
 
 The summary from our second model indicates that there may be marginal
 evidence for this effect of condition. But how and when do they
@@ -629,7 +628,8 @@ this using GAM methods with the itsadug package, which I will [link
 to](https://gist.github.com/tjmahr/0d2b41ea1525205a99b19770fc916a90)
 rather than take credit for)
 
-## Estimating divergences with functional data analysis
+Estimating divergences with functional data analysis
+----------------------------------------------------
 
 The above analyses may well suffice for what we have planned. However,
 sometimes it’s useful for analysis to examine change over time,
@@ -657,7 +657,7 @@ differences <- create_difference_data(data = base_data,
 plot(differences, pupil = mean_pupil, geom = 'line')
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-26-1.svg)<!-- -->
+![](README_files/figure-markdown_github/unnamed-chunk-26-1.svg)
 
 We can now convert this to a functional data structure, made up of
 curves. To do this for this data we are going to make it up of cubics
@@ -676,7 +676,7 @@ spline_data <- create_functional_data(data = differences,
 plot(spline_data, pupil = mean_pupil, geom = 'line', colour = 'blue')
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-27-1.svg)<!-- -->
+![](README_files/figure-markdown_github/unnamed-chunk-27-1.svg)
 
 That looks like it’s done a pretty good job capturing the data. The
 advantage of this kind of analysis is that we can treat each curve as a
@@ -696,7 +696,7 @@ ft_data <- run_functional_t_test(data = spline_data,
 plot(ft_data, show_divergence = T, colour = 'red', fill = 'orange')
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-28-1.svg)<!-- -->
+![](README_files/figure-markdown_github/unnamed-chunk-28-1.svg)
 
 If show\_divergence is set to TRUE, the plot will highlight where the
 two conditions diverge at the alpha you set.
@@ -707,27 +707,30 @@ so this hasn’t necessarily gone away. I am working on adding more
 powerful FDA techniques into this package to deal with these issues, so
 please watch this space.
 
-## Acknowledgements
+Acknowledgements
+----------------
 
 This package has had suggestions, encouragement, and help from a number
 of people, but I wish to especially highlight Sylvain Sirois and Mihaela
 Duta, whose input has been instrumental. I’d also like to thank Jacolien
 van Rij for her input with the GAMMs modelling portion of this tutorial.
 
-## References
+References
+----------
 
 \[1\] Jackson, I., & Sirois, S. (2009). Infant cognition: Going full
 factorial with pupil dilation. *Developmental Science*, 12(4), 670-679.
-<http://doi.org/10.1111/j.1467-7687.2008.00805.x>
+<a href="http://doi.org/10.1111/j.1467-7687.2008.00805.x" class="uri">http://doi.org/10.1111/j.1467-7687.2008.00805.x</a>
 
 \[2\] Allen, M., Poggiali, D., Whitaker, K., Marshall, T. R., & Kievit,
 R. (2018). Raincloud plots: a multi-platform tool for robust data
 visualization. *PeerJ Preprints*, 6.
-<http://doi.org/10.1044/1092-4388(2010/09-0205)>
+<a href="http://doi.org/10.1044/1092-4388(2010/09-0205)" class="uri">http://doi.org/10.1044/1092-4388(2010/09-0205)</a>
 
 \[3\] Ramsay, J.O., & Silverman, B.W. (1997). *Functional data
 analysis*. New York: Springer-Verlag.
 
 \[4\] van Rij, J., Hendriks, P., van Rijn, H., Baayen, R. H., & Wood, S.
 N. (2019). Analyzing the time course of pupillometric data. Trends in
-Hearing, 23, 233121651983248. <https://doi.org/10.1177/2331216519832483>
+Hearing, 23, 233121651983248.
+<a href="https://doi.org/10.1177/2331216519832483" class="uri">https://doi.org/10.1177/2331216519832483</a>
