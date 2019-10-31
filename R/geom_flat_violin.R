@@ -1,7 +1,8 @@
 #' geom_flat_violin_HELPER1
 #'
 #' Borrowed from
-#' \href{https://gist.githubusercontent.com/benmarwick/2a1bb0133ff568cbe28d/raw/fb53bd97121f7f9ce947837ef1a4c65a73bffb3f/geom_flat_violin.R}{Ben Marwick}. Original author David Robinson.
+#' https://gist.githubusercontent.com/benmarwick/2a1bb0133ff568cbe28d/raw/fb53bd97121f7f9ce947837ef1a4c65a73bffb3f/geom_flat_violin.R.
+#' Original author David Robinson.
 #'
 #' @format NULL
 #' @usage NULL
@@ -66,7 +67,8 @@ geom_flat_violin <-
 #'geom_flat_violin_HELPER2
 #'
 #'Borrowed from
-#'\href{https://gist.githubusercontent.com/benmarwick/2a1bb0133ff568cbe28d/raw/fb53bd97121f7f9ce947837ef1a4c65a73bffb3f/geom_flat_violin.R}{Ben Marwick}. Original author David Robinson.
+#'\href{https://gist.githubusercontent.com/benmarwick/2a1bb0133ff568cbe28d/raw/fb53bd97121f7f9ce947837ef1a4c65a73bffb3f/geom_flat_violin.R}{Ben Marwick}.
+#' Original author David Robinson.
 #'
 #'@format NULL
 #'@usage NULL
