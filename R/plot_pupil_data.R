@@ -111,7 +111,7 @@ plot.PupillometryR <- function(x, pupil, group = c('none', 'condition', 'subject
 #'
 #' @examples
 #' window <- create_window_data(data = base_data,pupil = mean_pupil)
-#' p <-plot(data = window, pupil = mean_pupil, windows = F, geom = 'boxplot')
+#' p <-plot(window, pupil = mean_pupil, windows = F, geom = 'boxplot')
 #' p
 #'
 #' @import dplyr
