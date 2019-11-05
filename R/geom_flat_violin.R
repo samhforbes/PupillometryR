@@ -34,7 +34,7 @@
 #' @param trim A value
 #' @param scale A value
 #' @param ... A value
-#' @examples:
+#' @examples
 #' ggplot(diamonds, aes(cut, carat)) +
 #'   geom_flat_violin() +
 #'   coord_flip()

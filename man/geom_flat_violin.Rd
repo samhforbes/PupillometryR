@@ -40,7 +40,6 @@ The original seems to be: sourced from: https://gist.github.com/dgrtwo/eb7750e74
 Author is David Robinson.
 }
 \examples{
-:
 ggplot(diamonds, aes(cut, carat)) +
   geom_flat_violin() +
   coord_flip()
