@@ -95,7 +95,7 @@ subset_data <- function(data, start, stop, rezero = T, remove = T){
 #' pupil1 = RPupil, pupil2 = LPupil)
 #' base_data <- baseline_data(data = mean_data, pupil = mean_pupil, start = 0, stop = 100)
 #' window <- create_window_data(data = base_data, pupil = mean_pupil)
-#' p <- plot(data = window, pupil = mean_pupil, windows = F, geom = 'boxplot')
+#' p <- plot(window, pupil = mean_pupil, windows = F, geom = 'boxplot')
 #' p
 #' @import dplyr
 #' @import rlang

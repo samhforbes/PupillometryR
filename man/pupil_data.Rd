@@ -13,15 +13,13 @@
   \item{Time}{Elapsed time within trial}
   \item{Type}{Hard or easy trial?} ... }}
 \source{
-(https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&owa_no_fiche=3&owa_bottin=
-https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&owa_no_fiche=3&owa_bottin=)
+(https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&owa_no_fiche=3&owa_bottin=)
 }
 \usage{
 pupil_data
 }
 \description{
 Data from a simple study measuring pupil dilation as participants answer hard or easy maths problems.
-Original data sourced and reformatted from Sylvain Sirois' Pupillometry tutorial available at https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&owa_no_fiche=3&owa_bottin=
-https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&owa_no_fiche=3&owa_bottin=)
+Original data sourced and reformatted from Sylvain Sirois' Pupillometry tutorial available at https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&owa_no_fiche=3&owa_bottin=)
 }
 \keyword{datasets}
