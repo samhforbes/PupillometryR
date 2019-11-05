@@ -27,8 +27,17 @@ with some additional options for fun with plotting. To see these plots,
 you must first use create_difference_data.
 }
 \examples{
+Sdata <- make_pupillometryr_data(data = pupil_data,
+                               subject = ID,
+                               trial = Trial,
+                               time = Time,
+                               condition = Type)
+regressed_data <- regress_data(data = Sdata, pupil1 = RPupil, pupil2 = LPupil)
+mean_data <- calculate_mean_pupil_size(data = regressed_data,
+pupil1 = RPupil, pupil2 = LPupil)
+base_data <- baseline_data(data = mean_data, pupil = mean_pupil, start = 0, stop = 100)
 differences <- create_difference_data(data = base_data,
-pupil = mpupil)
+pupil = mean_pupil)
 p <- plot(differences, pupil = mean_pupil, geom = 'line')
 p
 }
