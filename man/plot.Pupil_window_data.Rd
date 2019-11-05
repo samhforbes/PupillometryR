@@ -28,7 +28,7 @@ you must first use create_window_data.
 }
 \examples{
 window <- create_window_data(data = base_data,pupil = mean_pupil)
-p <-plot(window, pupil = mean_pupil, windows = F, geom = 'boxplot')
+p <-plot(window, pupil = mean_pupil, windows = FALSE, geom = 'boxplot')
 p
 
 }

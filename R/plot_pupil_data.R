@@ -111,7 +111,7 @@ plot.PupillometryR <- function(x, pupil, group = c('none', 'condition', 'subject
 #'
 #' @examples
 #' window <- create_window_data(data = base_data,pupil = mean_pupil)
-#' p <-plot(window, pupil = mean_pupil, windows = F, geom = 'boxplot')
+#' p <-plot(window, pupil = mean_pupil, windows = FALSE, geom = 'boxplot')
 #' p
 #'
 #' @import dplyr
@@ -239,7 +239,7 @@ plot.Pupil_difference_data <- function(x, pupil, geom = c('point', 'line'), colo
 #' @examples
 #' ft_data <- run_functional_t_test(data = spline_data,
 #' pupil = mean_pupil)
-#' p <- plot(ft_data, show_divergence = T, colour = 'red', fill = 'orange')
+#' p <- plot(ft_data, show_divergence = TRUE, colour = 'red', fill = 'orange')
 #' p
 #' @import dplyr
 #' @import rlang
