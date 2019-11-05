@@ -110,6 +110,15 @@ plot.PupillometryR <- function(x, pupil, group = c('none', 'condition', 'subject
 #' @param ... Ignored
 #'
 #' @examples
+#' Sdata <- make_pupillometryr_data(data = pupil_data,
+#'                                subject = ID,
+#'                                trial = Trial,
+#'                                time = Time,
+#'                                condition = Type)
+#' regressed_data <- regress_data(data = Sdata, pupil1 = RPupil, pupil2 = LPupil)
+#' mean_data <- calculate_mean_pupil_size(data = regressed_data,
+#' pupil1 = RPupil, pupil2 = LPupil)
+#' base_data <- baseline_data(data = mean_data, pupil = mean_pupil, start = 0, stop = 100)
 #' window <- create_window_data(data = base_data,pupil = mean_pupil)
 #' p <-plot(window, pupil = mean_pupil, windows = FALSE, geom = 'boxplot')
 #' p
