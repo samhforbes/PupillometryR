@@ -1,3 +1,28 @@
+# Copyright (c) 2018 David Robinson, Micah Allen, Davide Poggiali, Kirstie
+# Whitaker, Tom Rhys Marshall and Rogier Kievit.
+#
+# The R code in this file (referred to as the Software) is licensed under the
+# MIT license.
+#
+# LICENSE:
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 #' geom_flat_violin_HELPER1
 #'
 #' Borrowed from
@@ -66,12 +91,12 @@ geom_flat_violin <-
 
 #'geom_flat_violin_HELPER2
 #'
-#'Borrowed from
-#'\href{https://gist.githubusercontent.com/benmarwick/2a1bb0133ff568cbe28d/raw/fb53bd97121f7f9ce947837ef1a4c65a73bffb3f/geom_flat_violin.R}{Ben Marwick}.
+#' Borrowed from
+#' \href{https://gist.githubusercontent.com/benmarwick/2a1bb0133ff568cbe28d/raw/fb53bd97121f7f9ce947837ef1a4c65a73bffb3f/geom_flat_violin.R}{Ben Marwick}.
 #' Original author David Robinson.
 #'
-#'@format NULL
-#'@usage NULL
+#' @format NULL
+#' @usage NULL
 GeomFlatViolin <-
   ggplot2::ggproto(
     "GeomFlatViolin",
