@@ -1,4 +1,4 @@
-### Update July 2019 PupillometryR 0.0.1.2
+### Update July 2019 PupillometryR 0.0.1
 
 -   New functions: - calculate\_missing\_data() to analyse amount of
     trackloss - clean\_missing\_data() to clean by threshold -
