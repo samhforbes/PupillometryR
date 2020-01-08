@@ -637,7 +637,7 @@ especially how and when two conditions diverge, and we can do that with
 Functional Data Analysis (FDA). This part of the package makes usage of
 the fda package. The complete guide really has been written in 1997 by
 Ramsay and Silverman, and there is a very helpful website on FDA
-[here](https://www.psych.mcgill.ca/misc/fda/resources.html). This
+[here](http://www.psych.mcgill.ca/misc/fda/resources.html). This
 package is currently only setup to use this analysis for two-condition
 experiments, but I hope to add options for functional ANOVA in the
 future.

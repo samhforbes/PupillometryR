@@ -16,7 +16,11 @@
 #' trial = Trial,
 #' time = Time,
 #' condition = Type)
-#' p <- plot(Sdata, pupil = LPupil, group = 'subject')
+#' Sdata2 <- downsample_time_data(data = Sdata,
+#' pupil = LPupil,
+#' timebin_size = 100,
+#' option = 'median')
+#' p <- plot(Sdata2, pupil = LPupil, group = 'subject')
 #' p
 #'
 #' @import ggplot2
