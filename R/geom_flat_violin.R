@@ -50,7 +50,10 @@
 #' The original seems to be: sourced from: https://gist.github.com/dgrtwo/eb7750e74997891d7c20,
 #' Author is David Robinson.
 #' A key internal function for the raincloud plots used as a plotting option in this package.
-#' For information on raincloud plots see: Allen, M., Poggiali, D., Whitaker, K., Marshall, T. R., & Kievit, R. A. (2019). Raincloud plots: a multi-platform tool for robust data visualization. Wellcome open research, 4, 63. doi:10.12688/wellcomeopenres.15191.1
+#' For information on raincloud plots see: Allen, M., Poggiali, D., Whitaker, K.,
+#' Marshall, T. R., & Kievit, R. A. (2019). Raincloud plots: a multi-platform
+#' tool for robust data visualization. Wellcome open research,
+#' 4, 63. doi:10.12688/wellcomeopenres.15191.1
 #' @param mapping A value
 #' @param data A value
 #' @param position A value
