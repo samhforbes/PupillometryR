@@ -2,7 +2,9 @@ Package: PupillometryR
 Type: Package
 Title: A Unified Pipeline for Pupillometry Data
 Version: 0.0.1
-Authors@R: person("Samuel", "Forbes", email = "samuel.h.forbes@gmail.com", role = c("aut", "cre"))
+Authors@R: 
+        c(person("Samuel", "Forbes", email = "samuel.h.forbes@gmail.com", role = c("aut", "cre")),
+        person("David", "Robinson", email = "admiral.david@gmail.com", role = "ctb"))
 Description: Provides a unified pipeline to clean, prepare, plot,
     and run basic analyses on pupillometry experiments.
 BugReports: https://github.com/samhforbes/PupillometryR/issues
