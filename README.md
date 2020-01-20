@@ -722,10 +722,10 @@ References
 factorial with pupil dilation. *Developmental Science*, 12(4), 670-679.
 <a href="http://doi.org/10.1111/j.1467-7687.2008.00805.x" class="uri">http://doi.org/10.1111/j.1467-7687.2008.00805.x</a>
 
-\[2\] Allen, M., Poggiali, D., Whitaker, K., Marshall, T. R., & Kievit,
-R. (2018). Raincloud plots: a multi-platform tool for robust data
-visualization. *PeerJ Preprints*, 6.
-<a href="http://doi.org/10.1044/1092-4388(2010/09-0205)" class="uri">http://doi.org/10.1044/1092-4388(2010/09-0205)</a>
+\[2\] Allen, M., Poggiali, D., Whitaker, K., Marshall, T. R., & 
+Kievit, R. A. (2019). Raincloud plots: a multi-platform tool for 
+robust data visualization. *Wellcome Open Research*, 4, 63. 
+doi:10.12688/wellcomeopenres.15191.1
 
 \[3\] Ramsay, J.O., & Silverman, B.W. (1997). *Functional data
 analysis*. New York: Springer-Verlag.
