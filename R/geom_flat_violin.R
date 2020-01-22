@@ -26,7 +26,7 @@
 #'
 #' Borrowed from
 #' https://gist.githubusercontent.com/benmarwick/2a1bb0133ff568cbe28d/raw/fb53bd97121f7f9ce947837ef1a4c65a73bffb3f/geom_flat_violin.R.
-#' Original author David Robinson.
+#' Original author David Robinson, from https://gist.github.com/dgrtwo/eb7750e74997891d7c20
 #'
 #' @format NULL
 #' @usage NULL
