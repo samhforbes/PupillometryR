@@ -4,7 +4,8 @@
 \alias{subset_data}
 \title{Subset data to provide start and finish time windows}
 \usage{
-subset_data(data, start, stop, rezero = T, remove = T)
+subset_data(data, start = NULL, stop = NULL, rezero = T,
+  remove = T)
 }
 \arguments{
 \item{data}{a PupillometryR dataframe}
