@@ -297,6 +297,11 @@ plot.Pupil_test_data <- function(x, show_divergence = TRUE, colour = 'black', fi
   critical <- options$Critical
   divergence = options$Divergence
 
+  if(show_divergence == T & !(TRUE %in% data[[divergence]])){
+    show_divergence <- FALSE
+    message('No divergence to show')
+  }
+
   if(show_divergence == F){
     p <- ggplot2::ggplot(data = data,
                          ggplot2::aes_string(x = time, y = t))
