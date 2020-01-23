@@ -34,7 +34,7 @@ mean2 <- function(x){
 #'
 #' @return a subsetted PupillometryR dataframe
 
-subset_data <- function(data, start, stop, rezero = T, remove = T){
+subset_data <- function(data, start = NULL, stop = NULL, rezero = T, remove = T){
 
   if('PupillometryR' %in% class(data) == FALSE){
     stop('Dataframe is not of class PupillometryR. Did you forget to run make_pupillometryr_data? Some tidyverse functions associated with dplyr and tidyr can also interfere with this functionality.')
@@ -46,17 +46,18 @@ subset_data <- function(data, start, stop, rezero = T, remove = T){
   time <- options$Time
   condition <- options$Condition
   other <- options$Other
-  start <- as.numeric(start)
-  stop <- as.numeric(stop)
 
   data2 <- data
 
   if(is.null(start)){
-    start = min(data[[time]])
+    start <- min(data[[time]])
   }
   if(is.null(stop)){
-    stop = max(data[[time]])
+    stop <- max(data[[time]])
   }
+
+  start <- as.numeric(start)
+  stop <- as.numeric(stop)
 
   if(start < min(data[[time]])){
     stop("Cannot rezero to less than the minimum value in time column")
