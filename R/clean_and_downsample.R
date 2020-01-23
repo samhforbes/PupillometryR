@@ -189,7 +189,7 @@ clean_missing_data <- function(data, pupil, trial_threshold = 1, subject_trial_t
     message(paste('Removing trials with a proportion missing >', trial_threshold,
                   '\n ...removed', bad_num, 'trials \n'))
 
-    data_out <- left_join(data_trial2, data, by = c('ID', 'Trial'))
+    data_out <- left_join(data_trial2, data, by = c(subject, trial))
     data_out$SubjProp <- 1
 
     }else{ # both put in
@@ -232,8 +232,8 @@ clean_missing_data <- function(data, pupil, trial_threshold = 1, subject_trial_t
                    subject_trial_threshold,
                    '\n ...removed', part_num, 'subjects \n'))
 
-     data_out2 <- left_join(data_trial2, data, by = c('ID', 'Trial'))
-     data_out <- left_join(data_part2, data_out2, by = 'ID')
+     data_out2 <- left_join(data_trial2, data, by = c(subject, trial))
+     data_out <- left_join(data_part2, data_out2, by = subject)
 
   }
   data_out <- data_out %>%
