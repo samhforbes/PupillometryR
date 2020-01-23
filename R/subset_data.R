@@ -51,11 +51,18 @@ subset_data <- function(data, start, stop, rezero = T, remove = T){
 
   data2 <- data
 
+  if(is.null(start)){
+    start = min(data[[time]])
+  }
+  if(is.null(stop)){
+    stop = max(data[[time]])
+  }
+
   if(start < min(data[[time]])){
     stop("Cannot rezero to less than the minimum value in time column")
   }
   if(stop > max(data[[time]])){
-    stop("Cannot rezero to great than the maximum value in time column")
+    stop("Cannot rezero to greater than the maximum value in time column")
   }
 
   if(remove == T){
