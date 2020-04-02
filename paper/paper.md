@@ -32,10 +32,11 @@ Thus PupillometryR aims to assist experimenters by providing a clear pipeline wh
 
 # Implementation
 
+![An example of a raincloud plot of pupil data in PupillometryR.](Raincloud.svg)
+
 `PupillometryR` extends a suggested pipeline for implementation of pupillometric studies [@Jackson2009], making heavy use of the `signal` package [@signal2014] for pre-processing of the pupil data. The in-built plotting functions, designed for ease of use, rely on `ggplot2` [@Wickham2016] for the data visualisation, and include raincloud plots [@Allen2019] as an in-built data visualisation option. For analysis several options are given, including the use of Generalised Additive Models which uses the `mgcv` package [@Wood2017], and Functional Data Analysis, which uses functions from the `fda` package [@Ramsay1997].
 
-![An example of a raincloud plot in PupillometryR.\label{fig:1}](Raincloud.svg)
-![An example of a functional t-test in PupillometryR.\label{fig:2}](FDA.svg)
+![An example of a functional t-test in PupillometryR.](FDA.svg)
 
 Some comprehensive pupillometry pipelines exist already in MATLAB [@Hershman2019; @SiroisPupillometryWalkthrough], and in R [@Geller2019], and while each of these have their own merits, none offer the start-to-finish comprehensive pipeline in an open-source language compatible with most brands of eye-tracker, which includes in-built plotting functions, and flexibility of analysis style (time windows, FDA, GAMs) offered in `PupillometryR`. In addition, `PupillometryR` is available on CRAN, making it easy to download for R users, and subject to regular CRAN checks.
 
