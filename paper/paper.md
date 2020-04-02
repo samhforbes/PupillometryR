@@ -11,10 +11,10 @@ authors:
 affiliations:
  - name: School of Psychology, University of East Anglia
    index: 1
-date: 9 March 2020 #update this
-bibliography: Mendeley.bib
-
+date: 1 April 2020 #update this
+bibliography: paper.bib
 ---
+
 # Summary
 
 The study of pupil dilation, or pupillometry, has undergone a considerable revival in recent years.
