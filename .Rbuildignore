@@ -11,3 +11,12 @@ desktop.ini
 ^desktop\.ini$
 ^desktop\.ini
 ^desktop.ini
+paper/FDA\.pdf
+paper/FDA\.svg
+paper/paper\.bib
+paper/paper\.md
+paper/Raincloud\.pdf
+paper/Raincloud\.svg
+paper
+^paper
+^paper$
