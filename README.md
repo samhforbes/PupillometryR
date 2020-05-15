@@ -1,11 +1,6 @@
-### Update July 2019 PupillometryR 0.0.1
+### Update May 2020 PupillometryR 0.0.2
 
--   New functions: - calculate\_missing\_data() to analyse amount of
-    trackloss - clean\_missing\_data() to clean by threshold -
-    downsample\_time\_data() to reduce autocorrelation by placing data
-    into timebins and downsampling
--   Messaging functionality improved
--   updated readme
+-   Minor patch to avoid breaks with new version of dplyr
 
 Introduction
 ------------
