@@ -18,11 +18,11 @@ bibliography: paper.bib
 # Summary
 
 The study of pupil dilation, or pupillometry, has undergone a considerable revival in recent years.
-Early research noted substantive changes in pupil dilation due to mental effort [@Hess1964; @Kahneman1969; @Kahneman1973]; however, this method has seen a surge in usage following a rise in the popularity of automatic eye-tracking technology coupled with the search for more robust methods in psychological science [@vanderWel2018; @Winn2018]. Pupillometry, measured using automated eye-tracking technology, thus provides a methodology that is cheaper than most neuroimaging techniques, but more powerful than many behavioural measures, such as overall looking time measurements common to eye-tracking experiments.
+Early research noted substantive changes in pupil dilation due to mental effort [@Hess1964; @Kahneman1969; @Kahneman1973]; and this method has seen a surge in usage following a rise in the popularity of automatic eye-tracking technology coupled with the search for more robust methods in psychological science [@vanderWel2018; @Winn2018]. Pupillometry, measured using automated eye-tracking technology, thus provides a methodology that is cheaper than most neuroimaging techniques, but more powerful than many behavioural measures, such as overall looking time measurements common to eye-tracking experiments.
 
 Despite these considerable advantages when compared to other paradigms, the details of the actual methods and pipelines involved with pupillometry have been a topic for much debate [@Mathot2018; @vanRij2019].
 These methodological differences are mostly attributable to two causes.
-The first, is that the *nature* of pupillometric studies require careful design and procedure.
+The first, is that the nature of pupillometric studies require careful design and procedure.
 Pupil dilation is highly sensitive to not just luminance, but also other properties of the experiment, including gaze position due to stimuli locations [@Gagl2011], as well as stimuli-specific considerations such as brightness or location on the screen, and participant-specific considerations, such as the stress levels and memory load.
 In this way, the very nature of any pupillometric study demands careful planning on design, and thoughtful consideration about the details of the methods.
 The second such cause of the variable methods in pupillometric studies stems from the analytical decisions made in the processing of the data.
