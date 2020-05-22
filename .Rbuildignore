@@ -11,6 +11,7 @@ desktop.ini
 ^desktop\.ini$
 ^desktop\.ini
 ^desktop.ini
+^\.travis\.yml$
 paper/FDA\.pdf
 paper/FDA\.svg
 paper/paper\.bib
