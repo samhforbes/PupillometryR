@@ -62,7 +62,7 @@ plot.PupillometryR <- function(x, pupil, group = c('none', 'condition', 'subject
   }
 
   #Add plot layers
-    q <- p + ggplot2::stat_summary(geom = 'point', fun.y = 'mean', size = 1, inherit.aes = T) +
+    q <- p + ggplot2::stat_summary(geom = 'point', fun = 'mean', size = 1, inherit.aes = T) +
       ggplot2::ylab('Pupil Size') +
       ggplot2::xlab('Time') +
       ggplot2::theme(legend.position = c(0.85, 0.85))
@@ -91,7 +91,7 @@ plot.PupillometryR <- function(x, pupil, group = c('none', 'condition', 'subject
 
     #Add plot layers
     q <- p + ggplot2::stat_summary(geom = 'pointrange', fun.data = 'mean_se', size = 1, inherit.aes = T, alpha = 0.1) +
-      ggplot2::stat_summary(inherit.aes = T, ggplot2::aes(y = fit), geom = 'line', fun.y = 'mean', size = 2) +
+      ggplot2::stat_summary(inherit.aes = T, ggplot2::aes(y = fit), geom = 'line', fun = 'mean', size = 2) +
       ggplot2::ylab('Pupil Size') +
       ggplot2::xlab('Time') +
       ggplot2::theme(legend.position = c(0.85, 0.85))
@@ -238,10 +238,10 @@ plot.Pupil_difference_data <- function(x, pupil, geom = c('point', 'line'), colo
                        ggplot2::aes_string(x = time, y = pupil))
 
   if(geom == 'line'){
-    q <- p + ggplot2::stat_summary(geom = 'line', fun.y = 'mean', size = 1, color = colour)
+    q <- p + ggplot2::stat_summary(geom = 'line', fun = 'mean', size = 1, color = colour)
   }
   else{
-    q <- p + ggplot2::stat_summary(geom = 'point', fun.y = 'mean', size = 1, color = colour)
+    q <- p + ggplot2::stat_summary(geom = 'point', fun = 'mean', size = 1, color = colour)
   }
   q
 }
@@ -305,7 +305,7 @@ plot.Pupil_test_data <- function(x, show_divergence = TRUE, colour = 'black', fi
   if(show_divergence == F){
     p <- ggplot2::ggplot(data = data,
                          ggplot2::aes_string(x = time, y = t))
-    q <- p + ggplot2::stat_summary(geom = 'line', fun.y = 'mean', size = 1, color = colour)
+    q <- p + ggplot2::stat_summary(geom = 'line', fun = 'mean', size = 1, color = colour)
   }else{
 
     #set up divergences
@@ -323,7 +323,7 @@ plot.Pupil_test_data <- function(x, show_divergence = TRUE, colour = 'black', fi
 
       p <- ggplot2::ggplot(data = data2,
                            ggplot2::aes_string(x = time, y = t))
-      q <- p + ggplot2::stat_summary(geom = 'line', fun.y = 'mean', size = 1, colour = colour) +
+      q <- p + ggplot2::stat_summary(geom = 'line', fun = 'mean', size = 1, colour = colour) +
         ggplot2::geom_rect(data = rects, inherit.aes = F,
                            ggplot2::aes(xmin = start, xmax = end,
                                         ymin = -100*max, ymax = 100*max,
