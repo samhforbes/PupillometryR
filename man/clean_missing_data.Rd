@@ -4,8 +4,12 @@
 \alias{clean_missing_data}
 \title{Clean missing data above an acceptable threshold}
 \usage{
-clean_missing_data(data, pupil, trial_threshold = 1,
-  subject_trial_threshold = 1)
+clean_missing_data(
+  data,
+  pupil,
+  trial_threshold = 1,
+  subject_trial_threshold = 1
+)
 }
 \arguments{
 \item{data}{your data of class PupillometryR}

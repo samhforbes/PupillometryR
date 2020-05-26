@@ -4,8 +4,7 @@
 \alias{plot.PupillometryR}
 \title{Pre-prepared plots of PupillometryR data}
 \usage{
-\method{plot}{PupillometryR}(x, pupil, group = c("none", "condition",
-  "subject"), model = NULL, ...)
+\method{plot}{PupillometryR}(x, pupil, group = c("none", "condition", "subject"), model = NULL, ...)
 }
 \arguments{
 \item{x}{A PupillometryR dataframe}

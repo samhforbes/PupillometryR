@@ -4,8 +4,12 @@
 \alias{filter_data}
 \title{Run a filter on the data to smooth it out.}
 \usage{
-filter_data(data, pupil, filter = c("median", "hanning", "lowpass"),
-  degree = 11)
+filter_data(
+  data,
+  pupil,
+  filter = c("median", "hanning", "lowpass"),
+  degree = 11
+)
 }
 \arguments{
 \item{data}{a PupillometryR dataframe}

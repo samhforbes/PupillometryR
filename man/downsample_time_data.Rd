@@ -4,8 +4,7 @@
 \alias{downsample_time_data}
 \title{Downsample frequency to reduce number of samples and data size}
 \usage{
-downsample_time_data(data, pupil, timebin_size, option = c("mean",
-  "median"))
+downsample_time_data(data, pupil, timebin_size, option = c("mean", "median"))
 }
 \arguments{
 \item{data}{your data of class PupillometryR}

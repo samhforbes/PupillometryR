@@ -4,8 +4,7 @@
 \alias{plot.Pupil_test_data}
 \title{Pre-prepared plots of PupillometryR data}
 \usage{
-\method{plot}{Pupil_test_data}(x, show_divergence = TRUE,
-  colour = "black", fill = "grey", ...)
+\method{plot}{Pupil_test_data}(x, show_divergence = TRUE, colour = "black", fill = "grey", ...)
 }
 \arguments{
 \item{x}{A Pupil_test_data dataframe}
