@@ -233,11 +233,9 @@ We can use our default plotting function to see how it looks compared to the raw
 plot(base_data, pupil = mean_pupil, group = 'condition', model = m1)
 ```
 
-Of course there is the fact that we expect there to by some variation by trial, and that we should expect there to be differences for each participant. Our model also only accounts for a small amount of the variance. This model, therefore is no good. The way to check this is to assess model fit with the qqnorm, and to check the autocorrelation. We can do this with the itsadug package:
+Of course there is the fact that we expect there to by some variation by trial, and that we should expect there to be differences for each participant. Our model also only accounts for a small amount of the variance. This model, therefore is no good. The way to check this is to assess model fit with the qqnorm, and to check the autocorrelation. We can do this with the help of the itsadug package:
 
 ```{r}
-library(itsadug)
-
 qqnorm(resid(m1))
 
 acf_resid(m1)

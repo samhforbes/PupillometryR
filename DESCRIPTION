@@ -16,6 +16,7 @@ Depends: dplyr,
          rlang
 Imports: data.table,
          fda,
+         itsadug,
          lazyeval,
          mgcv,
          signal,
