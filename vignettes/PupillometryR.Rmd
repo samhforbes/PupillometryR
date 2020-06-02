@@ -193,10 +193,10 @@ plot(timeslots, pupil = mean_pupil, windows = T, geom = 'raincloud')
 head(timeslots)
 ```
 
-And again, we could analyse this with an anova:
+And again, we could analyse this with a linear model or an anova:
 
 ```{r}
-car::Anova(lm(mean_pupil ~ Window * Type, data = timeslots))
+lm(mean_pupil ~ Window * Type, data = timeslots)
 ```
 
 ## Modelling with Generalised Additive Models
