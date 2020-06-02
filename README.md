@@ -1,6 +1,3 @@
-### Update May 2020 PupillometryR 0.0.2
-
--   Minor patch to avoid breaks with new version of dplyr
 
 Introduction
 ------------
@@ -25,15 +22,15 @@ library(PupillometryR)
 
     ## Loading required package: dplyr
 
-    ## 
+    ##
     ## Attaching package: 'dplyr'
 
     ## The following objects are masked from 'package:stats':
-    ## 
+    ##
     ##     filter, lag
 
     ## The following objects are masked from 'package:base':
-    ## 
+    ##
     ##     intersect, setdiff, setequal, union
 
     ## Loading required package: ggplot2
@@ -144,7 +141,7 @@ plot(new_data, pupil = LPupil, group = 'condition')
 ![](README_files/figure-markdown_github/unnamed-chunk-7-1.svg)
 
 ``` r
-plot(new_data, pupil = LPupil, group = 'subject') 
+plot(new_data, pupil = LPupil, group = 'subject')
 ```
 
     ## Warning: Removed 3639 rows containing non-finite values (stat_summary).
@@ -170,8 +167,8 @@ Now that we have done that, we want the mean of the two pupil sizes, so
 let’s see how that looks:
 
 ``` r
-mean_data <- calculate_mean_pupil_size(data = regressed_data, 
-                                       pupil1 = RPupil, 
+mean_data <- calculate_mean_pupil_size(data = regressed_data,
+                                       pupil1 = RPupil,
                                        pupil2 = LPupil)
 
 plot(mean_data, pupil = mean_pupil, group = 'subject')
@@ -201,7 +198,7 @@ Now we need to clean up our data - let’s first assess how much missing
 data there is:
 
 ``` r
-missing <- calculate_missing_data(mean_data, 
+missing <- calculate_missing_data(mean_data,
                                   mean_pupil)
 head(missing)
 ```
@@ -209,11 +206,11 @@ head(missing)
     ## # A tibble: 6 x 3
     ##   ID    Trial Missing
     ##   <chr> <fct>   <dbl>
-    ## 1 1     Easy1  0.104 
-    ## 2 1     Hard1  0.144 
+    ## 1 1     Easy1  0.104
+    ## 2 1     Hard1  0.144
     ## 3 1     Easy2  0.0846
-    ## 4 1     Hard2  0.104 
-    ## 5 1     Easy3  0.149 
+    ## 4 1     Hard2  0.104
+    ## 5 1     Easy3  0.149
     ## 6 1     Hard3  0.139
 
 We can see if we view the whole file that participant 6 has a fair
@@ -233,10 +230,10 @@ mean_data2 <- clean_missing_data(mean_data,
                                  subject_trial_threshold = .75)
 ```
 
-    ## Removing trials with a proportion missing > 0.75 
+    ## Removing trials with a proportion missing > 0.75
     ##  ...removed 0 trials
 
-    ## Removing subjects with a proportion of missing trials > 0.75 
+    ## Removing subjects with a proportion of missing trials > 0.75
     ##  ...removed 0 subjects
 
 Now we come to filtering the data. PupillometryR offers 3 filter types:
@@ -342,16 +339,16 @@ We could then simply analyse this with a t-test if we wished.
 t.test(mean_pupil ~ Type, paired = T, data = window)
 ```
 
-    ## 
+    ##
     ##  Paired t-test
-    ## 
+    ##
     ## data:  mean_pupil by Type
     ## t = -3.8043, df = 7, p-value = 0.006677
     ## alternative hypothesis: true difference in means is not equal to 0
     ## 95 percent confidence interval:
     ##  -0.20721815 -0.04835966
     ## sample estimates:
-    ## mean of the differences 
+    ## mean of the differences
     ##              -0.1277889
 
 Alternatively, we may wish to look at the data in chunks. Here we group
@@ -387,7 +384,7 @@ car::Anova(lm(mean_pupil ~ Window * Type, data = timeslots))
 ```
 
     ## Anova Table (Type II tests)
-    ## 
+    ##
     ## Response: mean_pupil
     ##              Sum Sq Df F value    Pr(>F)    
     ## Window      1.06207  4 13.1506 4.848e-08 ***
@@ -419,11 +416,11 @@ library(mgcv)
 
     ## Loading required package: nlme
 
-    ## 
+    ##
     ## Attaching package: 'nlme'
 
     ## The following object is masked from 'package:dplyr':
-    ## 
+    ##
     ##     collapse
 
     ## This is mgcv 1.8-28. For overview type 'help("mgcv-package")'.
@@ -450,26 +447,26 @@ m1 <- bam(mean_pupil ~ s(Time) +
 summary(m1)
 ```
 
-    ## 
-    ## Family: gaussian 
-    ## Link function: identity 
-    ## 
+    ##
+    ## Family: gaussian
+    ## Link function: identity
+    ##
     ## Formula:
     ## mean_pupil ~ s(Time) + s(Time, by = Typen)
-    ## 
+    ##
     ## Parametric coefficients:
     ##              Estimate Std. Error t value Pr(>|t|)    
     ## (Intercept) -0.117178   0.001984  -59.05   <2e-16 ***
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-    ## 
+    ##
     ## Approximate significance of smooth terms:
     ##                 edf Ref.df     F p-value    
     ## s(Time)       7.197  8.226 434.7  <2e-16 ***
     ## s(Time):Typen 7.331  8.483 167.2  <2e-16 ***
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-    ## 
+    ##
     ## R-sq.(adj) =  0.341   Deviance explained = 34.2%
     ## fREML = -2050.2  Scale est. = 0.037995  n = 9648
 
@@ -495,11 +492,11 @@ library(itsadug)
 
     ## Loading required package: plotfunctions
 
-    ## 
+    ##
     ## Attaching package: 'plotfunctions'
 
     ## The following object is masked from 'package:ggplot2':
-    ## 
+    ##
     ##     alpha
 
     ## Loaded package itsadug 2.3 (see 'help("itsadug")' ).
@@ -559,7 +556,7 @@ m2 <- bam(mean_pupil ~ Typen +
           discrete = T,
           AR.start = model_data$start.event, rho = .6)
 
-# m2 <- bam(mean_pupil ~ 
+# m2 <- bam(mean_pupil ~
           #   s(Time,  by = Typen) +
           #   s(Time, Event, bs = 'fs', m = 1),
           # data = base_data,
@@ -570,28 +567,28 @@ m2 <- bam(mean_pupil ~ Typen +
 summary(m2)
 ```
 
-    ## 
-    ## Family: gaussian 
-    ## Link function: identity 
-    ## 
+    ##
+    ## Family: gaussian
+    ## Link function: identity
+    ##
     ## Formula:
-    ## mean_pupil ~ Typen + s(Time, by = Typen) + s(Time, Event, bs = "fs", 
+    ## mean_pupil ~ Typen + s(Time, by = Typen) + s(Time, Event, bs = "fs",
     ##     m = 1)
-    ## 
+    ##
     ## Parametric coefficients:
     ##             Estimate Std. Error t value Pr(>|t|)    
     ## (Intercept) -0.16315    0.01448 -11.268   <2e-16 ***
     ## Typen        0.03605    0.08891   0.406    0.685    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-    ## 
+    ##
     ## Approximate significance of smooth terms:
     ##                   edf  Ref.df       F p-value    
     ## s(Time):Typen   6.361   6.624   2.367  0.0165 *  
     ## s(Time,Event) 418.828 431.000 357.310  <2e-16 ***
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-    ## 
+    ##
     ## Rank: 443/444
     ## R-sq.(adj) =   0.96   Deviance explained = 96.2%
     ## fREML = -21837  Scale est. = 0.0007909  n = 9648
@@ -717,9 +714,9 @@ References
 factorial with pupil dilation. *Developmental Science*, 12(4), 670-679.
 <a href="http://doi.org/10.1111/j.1467-7687.2008.00805.x" class="uri">http://doi.org/10.1111/j.1467-7687.2008.00805.x</a>
 
-\[2\] Allen, M., Poggiali, D., Whitaker, K., Marshall, T. R., & 
-Kievit, R. A. (2019). Raincloud plots: a multi-platform tool for 
-robust data visualization. *Wellcome Open Research*, 4, 63. 
+\[2\] Allen, M., Poggiali, D., Whitaker, K., Marshall, T. R., &
+Kievit, R. A. (2019). Raincloud plots: a multi-platform tool for
+robust data visualization. *Wellcome Open Research*, 4, 63.
 doi:10.12688/wellcomeopenres.15191.1
 
 \[3\] Ramsay, J.O., & Silverman, B.W. (1997). *Functional data
