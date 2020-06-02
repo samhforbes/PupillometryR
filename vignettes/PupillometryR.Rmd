@@ -238,7 +238,7 @@ Of course there is the fact that we expect there to by some variation by trial, 
 ```{r}
 qqnorm(resid(m1))
 
-acf_resid(m1)
+itsadug::acf_resid(m1)
 ```
 
 While the qqnorm looks to be almost passable, the autocorrelation in the second plot is very high. This is an important consideration in time-series data, and due consideration needs to be given to this. For a full discussion of how this issue affects time course data, and specifically pupil data, I highly recommend [Jacolien van Rij et al's paper here](https://journals.sagepub.com/doi/10.1177/2331216519832483). 
@@ -278,7 +278,7 @@ m2 <- bam(mean_pupil ~ Typen +
 
 summary(m2)
 qqnorm(resid(m2))
-acf_resid(m2)
+itsadug::acf_resid(m2)
 plot(base_data, pupil = mean_pupil, group = 'condition', model = m2)
 ```
 
