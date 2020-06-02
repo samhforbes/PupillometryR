@@ -249,7 +249,7 @@ To reduce autocorrelation there are many methods we can try, as you will see fro
 base_data$Event <- interaction(base_data$ID, base_data$Trial, drop = T)
 
 model_data <- base_data
-model_data <- start_event(model_data,
+model_data <- itsadug::start_event(model_data,
                           column = 'Time', event = 'Event')
 
 model_data <- droplevels(model_data[order(model_data$ID,
