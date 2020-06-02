@@ -1,0 +1,343 @@
+---
+title: "PupillometryR"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{PupillometryR}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(PupillometryR)
+```
+
+This package is designed to make dealing with pupil data (perhaps more traditionally done in MATLAB) easier to wrangle in R. It makes heavy use of a few packages which should be acknowledged here, especially the (excellent) packages fda and signal.
+
+As well as the above packages, it is very important to note that the type of analysis shown here has been available in MATLAB for a while, and there is an excellent tutorial on it, which I thoroughly recommend reading first, written by Sylvain Sirois, [here:](https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&owa_no_fiche=3&owa_bottin=https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&owa_no_fiche=3&owa_bottin=).
+
+It's worth making sure that your setup and experiment do facilitate the use of pupillometry - it may not be suited for all kinds of experiment.
+
+## Getting started
+
+We will first run through an example analysis with the data provided in the package, which, again, comes from Sylvain Sirois' tutorial on [his webpage](https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&owa_no_fiche=3&owa_bottin=https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&owa_no_fiche=3&owa_bottin=).
+
+The first thing I would recommend doing is having a close look at the pupil data. Eyetrackers have a couple of different ways of dealing with this, so it's important to know a few things:
+
+1. What unit of measurement is being used
+2. What value is given to missing data or blinks (typically ., -1, or *NA*)
+3. What framerate were you recording at, and is this consistent.
+
+The data here is an eyetracking experiment with hard and easy trials, performed on 9 participants. Participant 8 needs to be removed (more details on Sylvain's tutorial).
+
+```{r}
+data("pupil_data")
+
+#Check that IDs are not numeric
+pupil_data$ID <- as.character(pupil_data$ID)
+#remove participant number 8, who had problematic data
+pupil_data <- subset(pupil_data, ID != 8)
+#blinks were registered as -1, so replace with NAs
+pupil_data$LPupil[pupil_data$LPupil == -1] <- NA
+pupil_data$RPupil[pupil_data$RPupil == -1] <- NA
+
+```
+
+The plotting is also a theme of this tutorial, so I will set a nice theme that makes the plots look pretty:
+
+```{r}
+library(ggplot2)
+theme_set(theme_classic(base_size = 12))
+```
+
+First up, we need to put the data into pupillometryR format for further analysis
+
+```{r}
+Sdata <- make_pupillometryr_data(data = pupil_data,
+                                 subject = ID,
+                                 trial = Trial,
+                                 time = Time,
+                                 condition = Type)
+```
+
+In the current data, it is not a concern, but there may be a situation where certain timebins are missing from your data. This can be fixed here, and we will look at the raw data:
+
+```{r}
+new_data <- replace_missing_data(data = Sdata)
+
+head(new_data)
+```
+
+Equally, if your data is not cut to the time windows that you are interested in, the subset_data function allows trimming. PupillometryR has some built-in plotting functions to allow you to look at certain data types. You simply need to specify a pupil column to display, and how you would like the data displayed in groups. The plots are ggplot items, so can be edited with themes, and arguments such as ylab(). Below we display it first by condition, then by subject:
+
+```{r}
+plot(new_data, pupil = LPupil, group = 'condition')
+
+plot(new_data, pupil = LPupil, group = 'subject') 
+```
+
+## Smoothing and cleanup
+
+PupillometryR offers a few smoothing options to make processing the data a little easier. We'll do the full set here.  A great reference for these is Sylvain's tutorial, and also Jackson and Sirois, 2009, Dev. Sci. First off, we can regress one pupil against the other to get some measure of smoothing.
+
+```{r}
+regressed_data <- regress_data(data = new_data,
+                               pupil1 = RPupil,
+                               pupil2 = LPupil)
+
+```
+
+Now that we have done that, we want the mean of the two pupil sizes, so let's see how that looks:
+
+```{r}
+mean_data <- calculate_mean_pupil_size(data = regressed_data, 
+                                       pupil1 = RPupil, 
+                                       pupil2 = LPupil)
+
+plot(mean_data, pupil = mean_pupil, group = 'subject')
+```
+
+Now that we have a single pupil measure to work with, we can manipulate the data a little more easily. First thing we can do is to downsample the data. This is useful when we have large scale data, or when we have sampled at a really high rate, and we need to reduce it so we are measuring meaningful change. Here we have taken the median, but he mean could also be taken. We just need to specify the timebin size, in ms:
+
+```{r}
+mean_data <- downsample_time_data(data = mean_data,
+                              pupil = mean_pupil,
+                              timebin_size = 50,
+                              option = 'median')
+```
+
+Now we need to clean up our data - let's first assess how much missing data there is:
+
+```{r}
+missing <- calculate_missing_data(mean_data, 
+                                  mean_pupil)
+head(missing)
+```
+
+We can see if we view the whole file that participant 6 has a fair amount of trials with a high missing data proportion. Now we need to clean this up. We have two parameters to do this - first is the proportion of *data* that we can accept missing in one trial before removing it from analysis. The second is what proportion of *trials* we can accept as missing before removing a participant for being unreliable. In this example, we will remove trials that have more than 75% of data missing, and we will remove participants that have more than 75% of trials removed.
+
+```{r message = T}
+mean_data2 <- clean_missing_data(mean_data,
+                                 pupil = mean_pupil,
+                                 trial_threshold = .75,
+                                 subject_trial_threshold = .75)
+```
+
+Now we come to filtering the data. PupillometryR offers 3 filter types: A hanning window, a low-pass butterworth filter, and a median filter. The low-pass filter can be a little unstable at the beginning and end of each trial, so it's worth looking at your data to see if it's appropriate. Here we will use the median filter. The degree gives the size of the rolling window.
+
+```{r}
+filtered_data <- filter_data(data = mean_data2,
+                             pupil = mean_pupil,
+                             filter = 'median',
+                             degree = 11)
+
+plot(filtered_data, pupil = mean_pupil, group = 'subject')
+```
+
+The next step is to interpolate across blinks. Filtering before the interpolation generally allows more sensible interpolation, but the way this is done varies a bit on the data, and you will see examples without this. We can interpolate in this package either linear or cubic, but again, it's best to always check your data afterwards to make sure it looks the way you might expect. Here we opt for the linear interpolation:
+
+```{r}
+int_data <- interpolate_data(data = filtered_data,
+                             pupil = mean_pupil,
+                             type = 'linear')
+
+plot(int_data, pupil = mean_pupil, group = 'subject')
+```
+
+Baselining the data is a powerful way of making sure we control for between-participant variance of average pupil size. If we are looking at analyses that are largely within-subject, as we do here, this may not be such an issue, but we will do this anyway. This function allows us to baseline to the mean pupil size within a time window. Here we are just taking the first 100ms of the trial. If your baseline period is just outside of your analysis window (which it often will be), you can use subset_data() to remove that after baselining.
+
+```{r}
+base_data <- baseline_data(data = int_data,
+                           pupil = mean_pupil,
+                           start = 0,
+                           stop = 100)
+
+plot(base_data, pupil = mean_pupil, group = 'subject')
+```
+
+## Window analyses
+
+PupillometryR gives us a couple of options for window analysis. One is overall averages, the other is to break the data up into discrete time windows, and to analyse them. First we will opt for the overall averages.
+We can plot these with any of boxplots, violin plots, or, since the new edition, Micah Allen-esque raincloud plots (Allen et al., 2018).
+
+```{r}
+window <- create_window_data(data = base_data,
+                             pupil = mean_pupil)
+
+plot(window, pupil = mean_pupil, windows = F, geom = 'boxplot')
+
+head(window)
+```
+
+We could then simply analyse this with a t-test if we wished.
+
+```{r}
+t.test(mean_pupil ~ Type, paired = T, data = window)
+```
+
+Alternatively, we may wish to look at the data in chunks. Here we group the data in to 2000ms timebins for analysis (and we will opt for the raincloud plot in this instance):
+
+```{r}
+timeslots <- create_time_windows(data = base_data,
+                                 pupil = mean_pupil,
+                                 breaks = c(0, 2000, 4000, 6000, 8000, 10000))
+
+plot(timeslots, pupil = mean_pupil, windows = T, geom = 'raincloud')
+
+head(timeslots)
+```
+
+And again, we could analyse this with an anova:
+
+```{r}
+car::Anova(lm(mean_pupil ~ Window * Type, data = timeslots))
+```
+
+## Modelling with Generalised Additive Models
+
+Here we interfact with the mgcv package, an exceptionally powerful package for GAM data, by Simon Wood. I strongly encourage reading the vignette and checking out some of the great online tutorials (of which there are plenty; I quite like Michael Clark's one [here](https://m-clark.github.io/generalized-additive-models/case_for_gam.html)) before proceeding with these. 
+
+We have to do a little bit of setting up of our variables (scaling and centering) before we continue. I need to make some variables numeric (the ones with an n on the end), and I am using the way trials are labelled to make this a numeric variable (this would probably be different for your data).
+
+```{r}
+library(mgcv)
+
+base_data$IDn <- as.numeric(base_data$ID)
+base_data$Typen <- ifelse(base_data$Type == 'Easy', .5, -.5)
+base_data$Trialn <- as.numeric(substr(base_data$Trial, 5, 5))
+base_data$Trialn <- ifelse(base_data$Typen == .5, base_data$Trialn, base_data$Trialn + 3)
+base_data$ID <- as.factor(base_data$ID)
+base_data$Trial <- as.factor(base_data$Trial)
+```
+
+Right, let's proceed with setting up a simple model. It's recommended for the amount of data points we might have for PupillometryR, bams might be a better option, but both gam() and bam() will work.
+
+```{r}
+m1 <- bam(mean_pupil ~ s(Time) +
+            s(Time,  by = Typen),
+          data = base_data,
+          family = gaussian)
+
+summary(m1)
+```
+
+We can use our default plotting function to see how it looks compared to the raw data, just by specifying the model= argument.
+
+```{r}
+plot(base_data, pupil = mean_pupil, group = 'condition', model = m1)
+```
+
+Of course there is the fact that we expect there to by some variation by trial, and that we should expect there to be differences for each participant. Our model also only accounts for a small amount of the variance. This model, therefore is no good. The way to check this is to assess model fit with the qqnorm, and to check the autocorrelation. We can do this with the itsadug package:
+
+```{r}
+library(itsadug)
+
+qqnorm(resid(m1))
+
+acf_resid(m1)
+```
+
+While the qqnorm looks to be almost passable, the autocorrelation in the second plot is very high. This is an important consideration in time-series data, and due consideration needs to be given to this. For a full discussion of how this issue affects time course data, and specifically pupil data, I highly recommend [Jacolien van Rij et al's paper here](https://journals.sagepub.com/doi/10.1177/2331216519832483). 
+
+To reduce autocorrelation there are many methods we can try, as you will see from the above paper. I will stop short of repeating each of the steps taken in the excellent paper above, and jump straight away to a much more appropriate model for this data. First I will code in events (participant per trial). I will also create a second data frame to do this (model_data), so that the data we are working with doesn't lose its properties, and we can keep using the plotting functions.
+
+```{r}
+base_data$Event <- interaction(base_data$ID, base_data$Trial, drop = T)
+
+model_data <- base_data
+model_data <- start_event(model_data,
+                          column = 'Time', event = 'Event')
+
+model_data <- droplevels(model_data[order(model_data$ID,
+                                          model_data$Trial,
+                                          model_data$Time),])
+```
+
+We now need to model this. We are setting an AR parameter, and allowing events to vary by time. You will see our deviance accounted for is now up around 96% - much better! The qqnorm is still far from perfect, and the commented-out model below m2 would do a bit better at this (again from van Rij et al) by using a scaled t distribution - but would take ages to run. 
+
+```{r}
+m2 <- bam(mean_pupil ~ Typen +
+            s(Time,  by = Typen) +
+            s(Time, Event, bs = 'fs', m = 1),
+          data = base_data,
+          family = gaussian,
+          discrete = T,
+          AR.start = model_data$start.event, rho = .6)
+
+# m2 <- bam(mean_pupil ~ 
+          #   s(Time,  by = Typen) +
+          #   s(Time, Event, bs = 'fs', m = 1),
+          # data = base_data,
+          # family = scat,
+          # discrete = T,
+          # AR.start = model_data$start.event, rho = .6)
+
+summary(m2)
+qqnorm(resid(m2))
+acf_resid(m2)
+plot(base_data, pupil = mean_pupil, group = 'condition', model = m2)
+```
+
+The summary from our second model indicates that there may be marginal evidence for this effect of condition. But how and when do they diverge???
+
+(In fact, TJ Mahr was good enough to point out this elegant solution for this using GAM methods with the itsadug package, which I will [link to](https://gist.github.com/tjmahr/0d2b41ea1525205a99b19770fc916a90) rather than take credit for)
+
+## Estimating divergences with functional data analysis
+
+The above analyses may well suffice for what we have planned. However, sometimes it's useful for analysis to examine change over time, especially how and when two conditions diverge, and we can do that with Functional Data Analysis (FDA). This part of the package makes usage of the fda package. The complete guide really has been written in 1997 by Ramsay and Silverman, and there is a very helpful website on FDA [here](https://www.psych.mcgill.ca/misc/fda/resources.html). This package is currently only setup to use this analysis for two-condition experiments, but I hope to add options for functional ANOVA in the future.
+
+To do this, first we want get the difference between the two conditions for each participant. By default this package wil take condition 2 - condition 1, so reorder the factors if required.
+
+```{r}
+differences <- create_difference_data(data = base_data,
+                                      pupil = mean_pupil)
+
+plot(differences, pupil = mean_pupil, geom = 'line')
+```
+
+We can now convert this to a functional data structure, made up of curves. To do this for this data we are going to make it up of cubics (order = 4) with 10 knots (basis = 10). The appropriate numbers here will depend on your dataset, and I strongly advise consulting Ramsay and Silverman's book, and the FDA website, as well as Sylvain's paper mentioned above. This interfaces with the fda package.
+
+```{r}
+spline_data <- create_functional_data(data = differences,
+                                      pupil = mean_pupil,
+                                      basis = 10,
+                                      order = 4)
+
+
+plot(spline_data, pupil = mean_pupil, geom = 'line', colour = 'blue')
+```
+
+That looks like it's done a pretty good job capturing the data. The advantage of this kind of analysis is that we can treat each curve as a function, and run a single functional t-test to work out during which window there are divergences. This package allows us to do that directly, and to observe the results.
+
+```{r}
+ft_data <- run_functional_t_test(data = spline_data,
+                                 pupil = mean_pupil,
+                                 alpha = 0.05)
+
+
+plot(ft_data, show_divergence = T, colour = 'red', fill = 'orange')
+```
+
+If show_divergence is set to TRUE, the plot will highlight where the two conditions diverge at the alpha you set.
+
+*NB* Remember the above discussion on autocorrelation in the GAMMs portion of this walkthrough? We are still dealing with time-series data, so this hasn't necessarily gone away. I am working on adding more powerful FDA techniques into this package to deal with these issues, so please watch this space.
+
+## Acknowledgements
+
+This package has had suggestions, encouragement, and help from a number of people, but I wish to especially highlight Sylvain Sirois and Mihaela Duta, whose input has been instrumental. I'd also like to thank Jacolien van Rij for her input with the GAMMs modelling portion of this tutorial.
+
+## References
+
+[1] Jackson, I., & Sirois, S. (2009). Infant cognition: Going full factorial with pupil dilation. *Developmental Science*, 12(4), 670-679. http://doi.org/10.1111/j.1467-7687.2008.00805.x
+
+[2] Allen, M., Poggiali, D., Whitaker, K., Marshall, T. R., & Kievit, R. (2018). Raincloud plots: a multi-platform tool for robust data visualization. *PeerJ Preprints*, 6. http://doi.org/10.1044/1092-4388(2010/09-0205)
+
+[3] Ramsay, J.O., & Silverman, B.W. (1997). *Functional data analysis*. New York: Springer-Verlag.
+
+[4] van Rij, J., Hendriks, P., van Rijn, H., Baayen, R. H., & Wood, S. N. (2019). Analyzing the time course of pupillometric data. Trends in Hearing, 23, 233121651983248. https://doi.org/10.1177/2331216519832483
