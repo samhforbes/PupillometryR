@@ -36,6 +36,10 @@ This package (and the example dataset) was designed in part, based on
 Sylvain Sirois’ MATLAB tutorial, [which can be found
 here](https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&owa_no_fiche=3&owa_bottin=https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&owa_no_fiche=3&owa_bottin=).
 
+The intention is an integrated pipeline for pupillometric experiments,
+from data cleaning, pre-processing, various analysis techniques, and
+visualising results.
+
 To use all the functionality and plots that follow from the
 PupillometryR pipeline, please start with *make\_pupillometryr\_data*,
 e.g.:
