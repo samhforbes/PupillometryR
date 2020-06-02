@@ -22,3 +22,6 @@ paper
 ^paper
 ^paper$
 ^LICENSE\.md$
+^README\.Rmd$
+^doc$
+^Meta$

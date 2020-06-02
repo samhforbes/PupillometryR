@@ -1,0 +1,98 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# PupillometryR
+
+<!-- badges: start -->
+[![CRAN status](https://www.r-pkg.org/badges/version/PupillometryR)](https://CRAN.R-project.org/package=PupillometryR)
+[![Travis build status](https://travis-ci.org/samhforbes/PupillometryR.svg?branch=master)](https://travis-ci.org/samhforbes/PupillometryR)
+<!-- badges: end -->
+
+The goal of PupillometryR is to to pre-process and then analyze simple pupil
+experiments in R.
+
+## Installation
+
+You can install the released version of PupillometryR from [CRAN](https://CRAN.R-project.org) with:
+
+``` r
+install.packages("PupillometryR")
+```
+
+And the development version from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("samhforbes/PupillometryR")
+```
+## Setup
+
+This package (and the example dataset) was designed in part, based on Sylvain Sirois' MATLAB tutorial, [which can be found here](https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&owa_no_fiche=3&owa_bottin=https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&owa_no_fiche=3&owa_bottin=).
+
+To use all the functionality and plots that follow from the PupillometryR pipeline, please start with *make_pupillometryr_data*, e.g.:
+
+```{r example}
+library(PupillometryR)
+
+data("pupil_data")
+
+#Check that IDs are not numeric
+pupil_data$ID <- as.character(pupil_data$ID)
+#remove participant number 8, who had problematic data
+pupil_data <- subset(pupil_data, ID != 8)
+#blinks were registered as -1, so replace with NAs
+pupil_data$LPupil[pupil_data$LPupil == -1] <- NA
+pupil_data$RPupil[pupil_data$RPupil == -1] <- NA
+
+Sdata <- make_pupillometryr_data(data = pupil_data,
+                                 subject = ID,
+                                 trial = Trial,
+                                 time = Time,
+                                 condition = Type)
+```
+
+All further functions associated with the package follow from there. 
+For example:
+
+```{r}
+plot(Sdata, pupil = LPupil)
+
+```
+
+To follow a detailed walkthrough, run:
+
+```{r eval = F}
+vignette('PupillometryR')
+```
+
+## Getting help
+
+Please use the issues tab (https://github.com/samhforbes/PupillometryR/issues) to file any bugs or suggestions.
+For general pupillometry information, I recommend [Sylvain's website](https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&owa_no_fiche=3&owa_bottin=https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&owa_no_fiche=3&owa_bottin=), for reading about using GAMs in pupillometry [this paper by van Rij et al. is excellent](https://journals.sagepub.com/doi/10.1177/2331216519832483), for general GAMs knowledge I recommend [this tutorial by Michael Clark](https://m-clark.github.io/generalized-additive-models/case_for_gam.html) as well as the mgcv documentation, and for general FDA information [this website is helpful](https://www.psych.mcgill.ca/misc/fda/resources.html), along with the Ramsey and Silverman book. Additionally, check out the raincloud plots paper by Allen et al., which is used for some of the in-built plotting in this package [here](http://doi.org/10.1044/1092-4388(2010/09-0205)).
+
+## Acknowledgements
+
+This package has had suggestions, encouragement, and help from a number of people, but I wish to especially highlight Sylvain Sirois and Mihaela Duta, whose input has been instrumental. I'd also like to thank Jacolien van Rij for her input with the GAMMs modelling portion of this tutorial.
+
+## References
+
+[1] Jackson, I., & Sirois, S. (2009). Infant cognition: Going full factorial with pupil dilation. *Developmental Science*, 12(4), 670-679. http://doi.org/10.1111/j.1467-7687.2008.00805.x
+
+[2] Allen, M., Poggiali, D., Whitaker, K., Marshall, T. R., & Kievit, R. (2018). Raincloud plots: a multi-platform tool for robust data visualization. *Wellcome Open Research*, 4, 63.
+doi:10.12688/wellcomeopenres.15191.1
+
+[3] Ramsay, J.O., & Silverman, B.W. (1997). *Functional data analysis*. New York: Springer-Verlag.
+
+[4] van Rij, J., Hendriks, P., van Rijn, H., Baayen, R. H., & Wood, S. N. (2019). Analyzing the time course of pupillometric data. Trends in Hearing, 23, 233121651983248. https://doi.org/10.1177/2331216519832483
