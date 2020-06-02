@@ -75,11 +75,7 @@ All further functions associated with the package follow from there. For
 example:
 
 ``` r
-plot(Sdata, pupil = LPupil)
-#> Warning in if (group == "condition") {: the condition has length > 1 and only
-#> the first element will be used
-#> Warning in if (group == "subject") {: the condition has length > 1 and only the
-#> first element will be used
+plot(Sdata, pupil = LPupil, group = 'condition')
 #> Warning: Removed 3639 rows containing non-finite values (stat_summary).
 ```
 

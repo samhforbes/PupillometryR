@@ -67,8 +67,7 @@ All further functions associated with the package follow from there.
 For example:
 
 ```{r}
-plot(Sdata, pupil = LPupil)
-
+plot(Sdata, pupil = LPupil, group = 'condition')
 ```
 
 To follow a detailed walkthrough, run:
