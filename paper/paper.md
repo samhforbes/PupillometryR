@@ -22,13 +22,13 @@ Early research noted substantive changes in pupil dilation due to mental effort 
 
 Despite these considerable advantages when compared to other paradigms, the details of the actual methods and pipelines involved with pupillometry have been a topic for much debate [@Mathot2018; @vanRij2019].
 These methodological differences are mostly attributable to two causes.
-The first, is that the nature of pupillometric studies require careful design and procedure.
+The first is that the nature of pupillometric studies require careful design and procedure.
 Pupil dilation is highly sensitive to not just luminance, but also other properties of the experiment, including gaze position due to stimuli locations [@Gagl2011], as well as stimuli-specific considerations such as brightness or location on the screen, and participant-specific considerations, such as the stress levels and memory load.
 In this way, the very nature of any pupillometric study demands careful planning on design, and thoughtful consideration about the details of the methods.
 The second such cause of the variable methods in pupillometric studies stems from the analytical decisions made in the processing of the data.
 Due to many researchers following either closed, in-house analytical pipelines, or open-source pipelines that require costly software, or particular equipment at some point in the analysis, there has been a lack of consensus on the analytical decisions to be made in processing.
 These decisions include how to filter and clean the data [@Jackson2009], decisions to be made on baselining the data [@Mathot2018], and whether to take time-course or aggregate pupil size forward as a variable [@vanRij2019].
-Thus PupillometryR aims to assist experimenters by providing a clear pipeline which is both free and open-source, an available for usage with most common brands of eye-tracker.
+Thus PupillometryR aims to assist experimenters by providing a clear pipeline which is both free and open-source, and available for usage with most common brands of eye-tracker.
 
 # Implementation
 
