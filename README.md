@@ -98,25 +98,25 @@ Please use the issues tab
 or suggestions. For general pupillometry information, I recommend
 [Sylvain’s
 website](https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&owa_no_fiche=3&owa_bottin=https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&owa_no_fiche=3&owa_bottin=),
-for reading about using GAMs in pupillometry [this paper by van Rij et
-al. is
+[as well as Jackson and Sirois
+(2009)](http://doi.org/10.1111/j.1467-7687.2008.00805.x). For reading
+about using GAMs in pupillometry [this paper by van Rij et al. is
 excellent](https://journals.sagepub.com/doi/10.1177/2331216519832483),
 for general GAMs knowledge I recommend [this tutorial by Michael
 Clark](https://m-clark.github.io/generalized-additive-models/case_for_gam.html)
 as well as the mgcv documentation, and for general FDA information [this
-website is
-helpful](https://www.psych.mcgill.ca/misc/fda/resources.html), along
-with the Ramsey and Silverman book. Additionally, check out the
-raincloud plots paper by Allen et al., which is used for some of the
-in-built plotting in this package
-[here](http://doi.org/10.1044/1092-4388\(2010/09-0205\)).
+website is helpful](http://www.psych.mcgill.ca/misc/fda/resources.html),
+along with the Ramsay and Silverman book (1997). Additionally, check out
+the [raincloud plots paper by Allen et
+al.](https://wellcomeopenresearch.org/articles/4-63#:~:text=In%20essence%2C%20raincloud%20plots%20combine,error%2C%20such%20as%20a%20boxplot.),
+which is used for some of the in-built plotting in this package.
 
 ## Acknowledgements
 
 This package has had suggestions, encouragement, and help from a number
 of people, but I wish to especially highlight Sylvain Sirois and Mihaela
 Duta, whose input has been instrumental. I’d also like to thank Jacolien
-van Rij for her input with the GAMMs modelling portion of this tutorial.
+van Rij for her input with the GAMs modelling portion of this tutorial.
 
 ## References
 
@@ -126,7 +126,7 @@ factorial with pupil dilation. *Developmental Science*, 12(4), 670-679.
 
 \[2\] Allen, M., Poggiali, D., Whitaker, K., Marshall, T. R., & Kievit,
 R. (2018). Raincloud plots: a multi-platform tool for robust data
-visualization. *Wellcome Open Research*, 4, 63.
+visualization. *Wellcome Open Research*, 4, 1-41.
 <doi:10.12688/wellcomeopenres.15191.1>
 
 \[3\] Ramsay, J.O., & Silverman, B.W. (1997). *Functional data
