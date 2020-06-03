@@ -116,7 +116,9 @@ which is used for some of the in-built plotting in this package.
 This package has had suggestions, encouragement, and help from a number
 of people, but I wish to especially highlight Sylvain Sirois and Mihaela
 Duta, whose input has been instrumental. I’d also like to thank Jacolien
-van Rij for her input with the GAMs modelling portion of this tutorial.
+van Rij for her input with the GAMs modelling portion of this tutorial,
+and TJ Mahr for contributing to extending the use of GAMs in the
+vignette.
 
 ## References
 
