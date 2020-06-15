@@ -25,5 +25,4 @@ paper
 ^README\.Rmd$
 ^doc$
 ^Meta$
-^_pkgdown\.yml$
 ^pkgdown$
