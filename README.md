@@ -9,6 +9,7 @@
 status](https://www.r-pkg.org/badges/version/PupillometryR)](https://CRAN.R-project.org/package=PupillometryR)
 [![Travis build
 status](https://travis-ci.org/samhforbes/PupillometryR.svg?branch=master)](https://travis-ci.org/samhforbes/PupillometryR)
+[![DOI](https://joss.theoj.org/papers/10.21105/joss.02285/status.svg)](https://doi.org/10.21105/joss.02285)
 <!-- badges: end -->
 
 The goal of PupillometryR is to to pre-process and then analyze simple
@@ -91,6 +92,8 @@ To follow a detailed walkthrough, run:
 vignette('PupillometryR')
 ```
 
+or head to [samforbes.me/PupillometryR](samforbes.me/PupillometryR)
+
 ## Getting help
 
 Please use the issues tab
@@ -110,6 +113,13 @@ along with the Ramsay and Silverman book (1997). Additionally, check out
 the [raincloud plots paper by Allen et
 al.](https://wellcomeopenresearch.org/articles/4-63#:~:text=In%20essence%2C%20raincloud%20plots%20combine,error%2C%20such%20as%20a%20boxplot.),
 which is used for some of the in-built plotting in this package.
+
+## Citation
+
+Please cite the JOSS paper for this package if you use it: Forbes, S.
+(2020). PupillometryR: An R package for preparing and analysing
+pupillometry data. Journal of Open Source Software, 5(50), 2285.
+<https://doi.org/10.21105/joss.02285>
 
 ## Acknowledgements
 

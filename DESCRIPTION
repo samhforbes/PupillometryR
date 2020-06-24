@@ -1,7 +1,7 @@
 Package: PupillometryR
 Type: Package
 Title: A Unified Pipeline for Pupillometry Data
-Version: 0.0.3
+Version: 0.0.3.9000
 Authors@R: 
         c(person("Samuel", "Forbes", email = "samuel.h.forbes@gmail.com", role = c("aut", "cre")),
         person("David", "Robinson", email = "admiral.david@gmail.com", role = "ctb"))

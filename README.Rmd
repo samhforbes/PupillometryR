@@ -18,6 +18,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 [![CRAN status](https://www.r-pkg.org/badges/version/PupillometryR)](https://CRAN.R-project.org/package=PupillometryR)
 [![Travis build status](https://travis-ci.org/samhforbes/PupillometryR.svg?branch=master)](https://travis-ci.org/samhforbes/PupillometryR)
+[![DOI](https://joss.theoj.org/papers/10.21105/joss.02285/status.svg)](https://doi.org/10.21105/joss.02285)
 <!-- badges: end -->
 
 The goal of PupillometryR is to to pre-process and then analyze simple pupil
@@ -78,10 +79,17 @@ To follow a detailed walkthrough, run:
 vignette('PupillometryR')
 ```
 
+or head to [samforbes.me/PupillometryR](samforbes.me/PupillometryR)
+
 ## Getting help
 
 Please use the issues tab (https://github.com/samhforbes/PupillometryR/issues) to file any bugs or suggestions.
 For general pupillometry information, I recommend [Sylvain's website](https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&owa_no_fiche=3&owa_bottin=https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&owa_no_fiche=3&owa_bottin=), [as well as Jackson and Sirois (2009)](http://doi.org/10.1111/j.1467-7687.2008.00805.x). For reading about using GAMs in pupillometry [this paper by van Rij et al. is excellent](https://journals.sagepub.com/doi/10.1177/2331216519832483), for general GAMs knowledge I recommend [this tutorial by Michael Clark](https://m-clark.github.io/generalized-additive-models/case_for_gam.html) as well as the mgcv documentation, and for general FDA information [this website is helpful](http://www.psych.mcgill.ca/misc/fda/resources.html), along with the Ramsay and Silverman book (1997). Additionally, check out the [raincloud plots paper by Allen et al.](https://wellcomeopenresearch.org/articles/4-63#:~:text=In%20essence%2C%20raincloud%20plots%20combine,error%2C%20such%20as%20a%20boxplot.), which is used for some of the in-built plotting in this package.
+
+## Citation
+
+Please cite the JOSS paper for this package if you use it:
+Forbes, S. (2020). PupillometryR: An R package for preparing and analysing pupillometry data. Journal of Open Source Software, 5(50), 2285. https://doi.org/10.21105/joss.02285
 
 ## Acknowledgements
 

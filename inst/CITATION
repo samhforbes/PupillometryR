@@ -1,0 +1,16 @@
+citHeader("To cite PupillometryR in publications use:")
+
+citEntry(
+  entry    = "Article",
+  title    = "PupillometryR: An R package for preparing and analysing pupillometry data",
+  author   = "Samuel H. Forbes",
+  journal  = "Journal of Open Source Software",
+  year     = "2020",
+  volume   = "5",
+  number   = "50",
+  pages    = "2285",
+  doi      = "10.21105/joss.02285",
+  textVersion = paste(
+"Forbes, S. H. (2020). PupillometryR: An R package for preparing and analysing pupillometry data. Journal of Open Source Software, 5(50), 2285. https://doi.org/10.21105/joss.02285"
+  )
+)
