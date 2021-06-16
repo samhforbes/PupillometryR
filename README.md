@@ -92,7 +92,7 @@ To follow a detailed walkthrough, run:
 vignette('PupillometryR')
 ```
 
-or head to [samforbes.me/PupillometryR](samforbes.me/PupillometryR)
+or head to [samforbes.me/PupillometryR](http://samforbes.me/PupillometryR)
 
 ## Getting help
 
