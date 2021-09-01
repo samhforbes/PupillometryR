@@ -40,7 +40,8 @@ create_difference_data <- function(data, pupil){
   condition <- options$Condition
   other <- options$Other
 
-  unique <- as.vector(unique(data[[condition]]))
+  #unique <- as.vector(unique(data[[condition]]))
+  unique <- levels(data[[condition]])
 
   if(length(unique) > 2){
     stop('More than 2 conditions exist, unable to create meaningful differences between more than 2 objects.')
@@ -48,29 +49,40 @@ create_difference_data <- function(data, pupil){
 
   message(paste(unique[2], 'minus', unique[1], ' -- relevel condition if this is not the intended outcome '), sep = ' ')
 
-  var <- paste('mean2(', pupil, ')', sep ='')
+  # var <- paste('mean2(', pupil, ')', sep ='')
+  #
+  # criteria <- lazyeval::interp(~column == value, .values = list(column = as.name(condition), value = unique[1]))
+  #
+  # data1 <- data %>%
+  #   filter_(criteria) %>%
+  #   group_by_(subject, time) %>%
+  #   summarize_(Pupil = var) %>%
+  #   ungroup()
+  #
+  # criteria <- lazyeval::interp(~column == value, .values = list(column = as.name(condition), value = unique[2]))
+  # data2 <- data %>%
+  #   filter_(criteria) %>%
+  #   group_by_(subject, time) %>%
+  #   summarize_(Pupil = var) %>%
+  #   ungroup()
+  #
+  # data2[['Pupil']] <- data2[['Pupil']] - data1[['Pupil']]
 
-  criteria <- lazyeval::interp(~column == value, .values = list(column = as.name(condition), value = unique[1]))
+  lev2 <- unique[2]
+  lev1 <- unique[1]
 
-  data1 <- data %>%
-    filter_(criteria) %>%
-    group_by_(subject, time) %>%
-    summarize_(Pupil = var) %>%
-    ungroup()
-
-  criteria <- lazyeval::interp(~column == value, .values = list(column = as.name(condition), value = unique[2]))
   data2 <- data %>%
-    filter_(criteria) %>%
-    group_by_(subject, time) %>%
-    summarize_(Pupil = var) %>%
+    group_by(!!sym(subject), !!sym(time), !!sym(condition)) %>%
+    summarise(!!sym(pupil) := mean(!!sym(pupil), na.rm = T)) %>%
+    tidyr::pivot_wider(names_from = !!sym(condition), values_from = !!sym(pupil)) %>%
+    mutate(!!sym(pupil) := !!sym(lev2) - !!sym(lev1)) %>%
+    select(-!!sym(lev2), -!!sym(lev1)) %>%
     ungroup()
 
-  data2[['Pupil']] <- data2[['Pupil']] - data1[['Pupil']]
-
-  colnames(data2)[colnames(data2) == 'Pupil'] <- pupil
+ # colnames(data2)[colnames(data2) == 'Pupil'] <- pupil
 
   vars = c(subject,time)
-  data2 <- dplyr::arrange(data2, UQS(syms(vars)))
+  data2 <- dplyr::arrange(data2, !!!syms(vars))
 
   #class
   class(data2) <- c('Pupil_difference_data', class(data))
