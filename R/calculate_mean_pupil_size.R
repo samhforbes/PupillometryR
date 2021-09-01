@@ -35,13 +35,19 @@ time <- options$Time
 condition <- options$Condition
 other <- options$Other
 
-ind <- which(is.na(pupil2))
-pupil2[ind] <- pupil1[ind]
-ind <- which(is.na(pupil1))
-pupil1[ind] <- pupil2[ind]
+# ind <- which(is.na(data[[pupil1]]))
+# data[[pupil2]][ind] <- data[[pupil1]][ind]
+# ind <- which(is.na(data[[pupil2]]))
+# data[[pupil1]][ind] <- data[[pupil2]][ind]
+#
+# newdata <- data
+# newdata[['mean_pupil']] <- (data[[pupil1]] + data[[pupil2]])/2
 
-newdata <- data
-newdata[['mean_pupil']] <- (data[[pupil1]] + data[[pupil2]])/2
+newdata <- data %>%
+  rowwise() %>%
+  mutate(mean_pupil = mean(c(!!sym(pupil1), !!sym(pupil2)), na.rm = T)) %>%
+  ungroup()
+
 
 class(newdata) <- c(class(data))
 attr(newdata, 'PupillometryR') <- options
