@@ -41,7 +41,7 @@ create_difference_data <- function(data, pupil){
   other <- options$Other
 
   #unique <- as.vector(unique(data[[condition]]))
-  unique <- levels(data[[condition]])
+  unique <- levels(as.factor(data[[condition]]))
 
   if(length(unique) > 2){
     stop('More than 2 conditions exist, unable to create meaningful differences between more than 2 objects.')

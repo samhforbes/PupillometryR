@@ -52,8 +52,8 @@ baseline_data <- function(data, pupil, start, stop){
   values <- paste('mean(',pupil,')', sep = '')
 
   baseline3 <- baseline2 %>%
-    group_by_(subject, trial) %>%
-    summarise_(Base = values) %>%
+    group_by(!!sym(subject), !!sym(trial)) %>%
+    summarise(Base = mean(!!sym(pupil), na.rm = T)) %>%
     ungroup()
 
 
@@ -63,7 +63,7 @@ baseline_data <- function(data, pupil, start, stop){
   baselined[['Base']] <- NULL
 
   vars = c(subject, trial, time)
-  baselined <- dplyr::arrange(baselined, UQS(syms(vars)))
+  baselined <- dplyr::arrange(baselined, !!!syms(vars))
 
   class(baselined) <- c(class(data))
   attr(baselined, 'PupillometryR') <- options
