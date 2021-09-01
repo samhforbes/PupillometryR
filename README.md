@@ -8,8 +8,9 @@
 [![CRAN
 status](https://www.r-pkg.org/badges/version/PupillometryR)](https://CRAN.R-project.org/package=PupillometryR)
 [![Travis build
-status](https://travis-ci.org/samhforbes/PupillometryR.svg?branch=master)](https://travis-ci.org/samhforbes/PupillometryR)
+status](https://travis-ci.com/samhforbes/PupillometryR.svg?branch=master)](https://travis-ci.com/samhforbes/PupillometryR)
 [![DOI](https://joss.theoj.org/papers/10.21105/joss.02285/status.svg)](https://doi.org/10.21105/joss.02285)
+
 <!-- badges: end -->
 
 The goal of PupillometryR is to to pre-process and then analyze simple
@@ -92,7 +93,7 @@ To follow a detailed walkthrough, run:
 vignette('PupillometryR')
 ```
 
-or head to [samforbes.me/PupillometryR](http://samforbes.me/PupillometryR)
+or head to [samforbes.me/PupillometryR](samforbes.me/PupillometryR)
 
 ## Getting help
 
