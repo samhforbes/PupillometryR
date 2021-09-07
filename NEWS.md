@@ -1,5 +1,10 @@
 # News
 
+## Update Sept 2021 PupillometryR 0.0.4
+
+* Updated to remove warnings from new version of dplyr
+* More robust to missing data in a single eye
+
 ## Update June 2020 PupillometryR 0.0.3
 
 * Documentation moved to vignettes
