@@ -36,6 +36,8 @@ The first thing I would recommend doing is having a close look at the pupil data
 
 The data here is an eyetracking experiment with hard and easy trials, performed on 9 participants. Participant 8 needs to be removed (more details on Sylvain's tutorial).
 
+It's important here to make sure that the missing data get set to *NA* and not to a numeric value (such as -1) or deleted.
+
 ```{r}
 data("pupil_data")
 
@@ -288,7 +290,7 @@ The summary from our second model indicates that there may be marginal evidence 
 
 ## Estimating divergences with functional data analysis
 
-The above analyses may well suffice for what we have planned. However, sometimes it's useful for analysis to examine change over time, especially how and when two conditions diverge, and we can do that with Functional Data Analysis (FDA). This part of the package makes usage of the fda package. The complete guide really has been written in 1997 by Ramsay and Silverman, and there is a very helpful website on FDA [here](http://www.psych.mcgill.ca/misc/fda/resources.html). This package is currently only setup to use this analysis for two-condition experiments, but I hope to add options for functional ANOVA in the future.
+The above analyses may well suffice for what we have planned. However, sometimes it's useful for analysis to examine change over time, especially how and when two conditions diverge, and we can do that with Functional Data Analysis (FDA). This part of the package makes usage of the fda package. The complete guide really has been written in 1997 by Ramsay and Silverman, and there is a very helpful website on FDA [here](https://www.psych.mcgill.ca/misc/fda/resources.html). This package is currently only setup to use this analysis for two-condition experiments, but I hope to add options for functional ANOVA in the future.
 
 To do this, first we want get the difference between the two conditions for each participant. By default this package wil take condition 2 - condition 1, so reorder the factors if required.
 
@@ -332,10 +334,10 @@ This package has had suggestions, encouragement, and help from a number of peopl
 
 ## References
 
-[1] Jackson, I., & Sirois, S. (2009). Infant cognition: Going full factorial with pupil dilation. *Developmental Science*, 12(4), 670-679. http://doi.org/10.1111/j.1467-7687.2008.00805.x
+[1] Jackson, I., & Sirois, S. (2009). Infant cognition: Going full factorial with pupil dilation. *Developmental Science*, 12(4), 670-679. https://doi.org/10.1111/j.1467-7687.2008.00805.x
 
 [2] Allen, M., Poggiali, D., Whitaker, K., Marshall, T. R., & Kievit, R. (2019). Raincloud plots: a multi-platform tool for robust data visualization. *Wellcome Open Research*, 4, 1-41.
-http://doi.org/10.12688/wellcomeopenres.15191.1
+https://doi.org/10.12688/wellcomeopenres.15191.1
 
 [3] Ramsay, J.O., & Silverman, B.W. (1997). *Functional data analysis*. New York: Springer-Verlag.
 

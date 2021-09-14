@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 [![CRAN status](https://www.r-pkg.org/badges/version/PupillometryR)](https://CRAN.R-project.org/package=PupillometryR)
-[![Travis build status](https://travis-ci.com/samhforbes/PupillometryR.svg?branch=master)](https://travis-ci.com/samhforbes/PupillometryR)
+[![Travis build status](https://www.travis-ci.com/samhforbes/PupillometryR.svg?branch=master)](https://www.travis-ci.com/samhforbes/PupillometryR)
 [![DOI](https://joss.theoj.org/papers/10.21105/joss.02285/status.svg)](https://doi.org/10.21105/joss.02285)
 
 <!-- badges: end -->
