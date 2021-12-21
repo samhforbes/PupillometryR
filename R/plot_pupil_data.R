@@ -47,6 +47,8 @@ plot.PupillometryR <- function(x, pupil, group = c('none', 'condition', 'subject
   if(!is.null(model)){fit <- model$fitted.values}
 
   if(is.null(model)){
+    if(is.null(group) | length(group) > 1) group = 'none'
+
   if(group == 'condition'){
     p <- data %>% ggplot2::ggplot(
                          ggplot2::aes_string(x = time, y = pupil, colour = condition, shape = condition))
@@ -63,6 +65,8 @@ plot.PupillometryR <- function(x, pupil, group = c('none', 'condition', 'subject
   }
 
   #Add plot layers
+    if(is.null(geom) | length(geom) > 1) geom = 'point'
+
     if(geom == 'pointrange'){
       q <- p + ggplot2::stat_summary(geom = 'pointrange', fun.data = 'mean_se', size = 1, inherit.aes = T, alpha = 0.1) +
         ggplot2::ylab('Pupil Size') +
