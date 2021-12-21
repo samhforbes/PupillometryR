@@ -7,6 +7,7 @@
 #' @param x A PupillometryR dataframe
 #' @param pupil Column name of pupil data to be plotted
 #' @param group What to group the data by (none, condition, or subject)
+#' @param geom Geom to pass to ggplot. Either point, line, or pointrange.
 #' @param model Optional argument to plot agains a fitted model
 #' @param ... Ignored
 #'
@@ -31,7 +32,7 @@
 #' @return A ggplot object
 
 
-plot.PupillometryR <- function(x, pupil, group = c('none', 'condition', 'subject'), model = NULL, ...){
+plot.PupillometryR <- function(x, pupil, group = c('none', 'condition', 'subject'), geom = c('point', 'line', 'pointrange'), model = NULL, ...){
 
   data <- x
   if('PupillometryR' %in% class(data) == FALSE){
@@ -62,10 +63,25 @@ plot.PupillometryR <- function(x, pupil, group = c('none', 'condition', 'subject
   }
 
   #Add plot layers
-    q <- p + ggplot2::stat_summary(geom = 'point', fun = 'mean', size = 1, inherit.aes = T) +
-      ggplot2::ylab('Pupil Size') +
-      ggplot2::xlab('Time') +
-      ggplot2::theme(legend.position = c(0.85, 0.85))
+    if(geom == 'pointrange'){
+      q <- p + ggplot2::stat_summary(geom = 'pointrange', fun.data = 'mean_se', size = 1, inherit.aes = T, alpha = 0.1) +
+        ggplot2::ylab('Pupil Size') +
+        ggplot2::xlab('Time') +
+        ggplot2::theme(legend.position = c(0.85, 0.85))
+    }else{
+      if(geom == 'line'){
+        q <- p + ggplot2::stat_summary(geom = 'line', fun = 'mean', size = 1, inherit.aes = T) +
+          ggplot2::ylab('Pupil Size') +
+          ggplot2::xlab('Time') +
+          ggplot2::theme(legend.position = c(0.85, 0.85))
+      }else{
+
+          q <- p + ggplot2::stat_summary(geom = 'point', fun = 'mean', size = 1, inherit.aes = T) +
+            ggplot2::ylab('Pupil Size') +
+            ggplot2::xlab('Time') +
+            ggplot2::theme(legend.position = c(0.85, 0.85))
+    }}
+
 
   q
   }else{

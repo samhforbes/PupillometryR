@@ -4,7 +4,14 @@
 \alias{plot.PupillometryR}
 \title{Pre-prepared plots of PupillometryR data}
 \usage{
-\method{plot}{PupillometryR}(x, pupil, group = c("none", "condition", "subject"), model = NULL, ...)
+\method{plot}{PupillometryR}(
+  x,
+  pupil,
+  group = c("none", "condition", "subject"),
+  geom = c("point", "line", "pointrange"),
+  model = NULL,
+  ...
+)
 }
 \arguments{
 \item{x}{A PupillometryR dataframe}
@@ -12,6 +19,8 @@
 \item{pupil}{Column name of pupil data to be plotted}
 
 \item{group}{What to group the data by (none, condition, or subject)}
+
+\item{geom}{Geom to pass to ggplot. Either point, line, or pointrange.}
 
 \item{model}{Optional argument to plot agains a fitted model}
 
