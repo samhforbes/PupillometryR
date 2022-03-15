@@ -59,7 +59,6 @@ library(PupillometryR)
 #>     intersect, setdiff, setequal, union
 #> Loading required package: ggplot2
 #> Loading required package: rlang
-
 data("pupil_data")
 
 #Check that IDs are not numeric
@@ -94,7 +93,7 @@ vignette('PupillometryR')
 ```
 
 or head to
-[samforbes.me/PupillometryR](http://samforbes.me/PupillometryR/)
+[samforbes.me/PupillometryR](http://samforbes.me/PupillometryR/).
 
 ## Getting help
 
