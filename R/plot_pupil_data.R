@@ -68,7 +68,7 @@ plot.PupillometryR <- function(x, pupil, group = c('none', 'condition', 'subject
     if(is.null(geom) | length(geom) > 1) geom = 'point'
 
     if(geom == 'pointrange'){
-      q <- p + ggplot2::stat_summary(geom = 'pointrange', fun.data = 'mean_se', size = 1, inherit.aes = T, alpha = 0.1) +
+      q <- p + ggplot2::stat_summary(geom = 'pointrange', fun.data = 'mean_se', size = 0.5, inherit.aes = T, alpha = 0.1) +
         ggplot2::ylab('Pupil Size') +
         ggplot2::xlab('Time') +
         ggplot2::theme(legend.position = c(0.85, 0.85))
