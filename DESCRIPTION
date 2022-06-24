@@ -21,6 +21,7 @@ Imports: data.table,
          mgcv,
          signal,
          stats,
+         stringr,
          tidyr,
          utils,
          zoo

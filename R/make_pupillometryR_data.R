@@ -22,6 +22,7 @@
 #' condition = Type)
 #' @import dplyr
 #' @import rlang
+#' @import stringr
 #'
 #' @export
 #'
@@ -36,13 +37,17 @@ make_pupillometryr_data <- function(data, subject, trial, time, condition, other
   condition <- deparse(substitute(condition))
   other <- deparse(substitute(other))
 
+  other2 <- unlist(strsplit(other, ','))
+  other3 <- str_remove_all(other2, '[ ,)(\t\n]')
+  other4 <- str_remove(other3, '[c]')
+
   class(data) <- c('PupillometryR', class(data))
 
   attr(data, 'PupillometryR') <- list(Subject = subject,
                                             Trial = trial,
                                             Time = time,
                                             Condition = condition,
-                                            Other = other)
+                                            Other = other4)
 
   return(data)
 }

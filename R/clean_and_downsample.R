@@ -46,8 +46,9 @@ downsample_time_data <- function(data, pupil, timebin_size, option = c('mean', '
 
   if(option == 'median'){
     message('Calculating median pupil size in each timebin \n')
+    groupy <- c(subject, trial, condition, other)
   data2 <- data %>%
-    group_by(!!sym(subject), !!sym(trial), !!sym(condition), !!sym(other),
+    group_by(!!!syms(groupy),
              Timebin) %>%
     summarise(!!sym(pupil) := median(!!sym(pupil))) %>%
     ungroup() %>%
@@ -55,8 +56,9 @@ downsample_time_data <- function(data, pupil, timebin_size, option = c('mean', '
 
   }else{
     message('Calculating mean pupil size in each timebin \n')
+    groupy <- c(subject, trial, condition, other)
     data2 <- data %>%
-      group_by(!!sym(subject), !!sym(trial), !!sym(condition), !!sym(other),
+      group_by(!!!syms(groupy),
                Timebin) %>%
       summarise(!!sym(pupil) := mean(!!sym(pupil))) %>%
       ungroup() %>%

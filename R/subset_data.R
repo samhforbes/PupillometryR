@@ -128,7 +128,7 @@ create_window_data <- function(data, pupil){
   var <- paste('mean2(', pupil, ')', sep ='')
 
   window <- group_by(data,
-                      !!sym(subject), !!sym(condition)) %>%
+                      !!sym(subject), !!sym(condition), !!!syms(other)) %>%
     summarize(Pupil = mean(!!sym(pupil), na.rm = T)) %>%
     ungroup()
 
@@ -197,7 +197,7 @@ create_time_windows <- function(data, pupil, breaks){
     groups <- c(subject, condition, other)
 
     aggdata <- group_by(data,
-                        !!sym(subject), !!sym(condition), Window) %>%
+                        !!!syms(groups), Window) %>%
       summarize(Pupil = mean(!!sym(pupil), na.rm = T)) %>%
       ungroup()
 

@@ -163,8 +163,11 @@ filter_data <- function(data, pupil, filter = c('median', 'hanning', 'lowpass'),
   if(filter == 'lowpass'){
     message('Performing lowpass filter \n')
     warning('Lowpass filter is still under development - it can do some strange things at the start and end of trials. Check your data to see that it works before proceeding.')
+    groupy <- c(subject, trial, condition, other)
+
     rdata2 <- rdata %>%
-      group_by(!!sym(subject), !!sym(trial), !!sym(condition), !!sym(other)) %>%
+     # group_by(!!sym(subject), !!sym(trial), !!sym(condition), !!sym(other)) %>%
+      group_by(!!!syms(groupy)) %>%
       mutate(!!sym(pupil) := .int_data(!!sym(pupil))) %>%
       mutate(!!sym(pupil) := .lowpass(!!sym(pupil))) %>%
       ungroup()
@@ -173,16 +176,18 @@ filter_data <- function(data, pupil, filter = c('median', 'hanning', 'lowpass'),
   else{
     if(filter == 'hanning'){
       message('Performing hanning filter \n')
+      groupy <- c(subject, trial, condition, other)
       rdata2 <- rdata %>%
-        group_by(!!sym(subject), !!sym(trial), !!sym(condition), !!sym(other)) %>%
+        group_by(!!!syms(groupy)) %>%
         mutate(!!sym(pupil) := .int_data(!!sym(pupil))) %>%
         mutate(!!sym(pupil) := .hanning(!!sym(pupil))) %>%
         ungroup()
     }
     else{
       message('Performing median filter \n')
+      groupy <- c(subject, trial, condition, other)
       rdata2 <- rdata %>%
-        group_by(!!sym(subject), !!sym(trial), !!sym(condition), !!sym(other)) %>%
+        group_by(!!!syms(groupy)) %>%
         mutate(!!sym(pupil) := .int_data(!!sym(pupil))) %>%
         mutate(!!sym(pupil) := .median(!!sym(pupil))) %>%
         ungroup()
@@ -253,8 +258,11 @@ regress_data <- function(data, pupil1, pupil2) {
     return(pupilz)
   }
   #run
+  groupy <- c(subject, trial, condition, other)
+
   regdata2 <- regdata %>%
-    group_by(!!sym(subject), !!sym(trial), !!sym(condition), !!sym(other)) %>%
+    # group_by(!!sym(subject), !!sym(trial), !!sym(condition), !!sym(other)) %>%
+    group_by(!!!syms(groupy)) %>%
     mutate(!!sym(pupil1) := ifelse(is.na(!!sym(pupil1)), !!sym(pupil2), !!sym(pupil1)),
            !!sym(pupil2) := ifelse(is.na(!!sym(pupil2)), !!sym(pupil1), !!sym(pupil2))) %>%
     mutate(pupil1newkk = .predict_right(!!sym(pupil1), !!sym(pupil2))) %>%
@@ -331,16 +339,17 @@ interpolate_data <- function(data, pupil, type = c('linear', 'cubic')){
   if(type == 'cubic'){
     message('Performing cubic interpolation \n')
     warning('If start and end values are missing, cubic interpolation can return extreme values. Check data before continuing. If in doubt you should opt for linear interpolation.')
-
+    groupy <- c(subject, trial, condition, other)
     intdata2 <- intdata %>%
-      group_by(!!sym(subject), !!sym(trial), !!sym(condition), !!sym(other)) %>%
+      group_by(!!!syms(groupy)) %>%
       mutate(!!sym(pupil) := .spline(!!sym(pupil))) %>%
       ungroup()
   }else{
     if(type =='linear'){
       message('Performing linear interpolation \n')
+      groupy <- c(subject, trial, condition, other)
       intdata2 <- intdata %>%
-        group_by(!!sym(subject), !!sym(trial), !!sym(condition), !!sym(other)) %>%
+        group_by(!!!syms(groupy)) %>%
         mutate(!!sym(pupil) := .approx(!!sym(pupil))) %>%
         ungroup()
     }

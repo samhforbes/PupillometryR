@@ -51,6 +51,8 @@ baseline_data <- function(data, pupil, start, stop){
 
   values <- paste('mean(',pupil,')', sep = '')
 
+  message('Baselining for each subject and trial. If this is not the intended behaviour you may wish to do this manually.')
+
   baseline3 <- baseline2 %>%
     group_by(!!sym(subject), !!sym(trial)) %>%
     summarise(Base = mean(!!sym(pupil), na.rm = T)) %>%
