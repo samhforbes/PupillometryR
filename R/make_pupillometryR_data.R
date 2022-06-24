@@ -38,8 +38,8 @@ make_pupillometryr_data <- function(data, subject, trial, time, condition, other
   other <- deparse(substitute(other))
 
   other2 <- unlist(strsplit(other, ','))
-  other3 <- str_remove_all(other2, '[ ,)(\t\n]')
-  other4 <- str_remove(other3, '[c]')
+  other3 <- stringr::str_remove_all(other2, '[ ,)(\t\n]')
+  other4 <- stringr::str_remove(other3, '[c]')
 
   class(data) <- c('PupillometryR', class(data))
 
