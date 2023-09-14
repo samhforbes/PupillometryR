@@ -180,7 +180,7 @@ head(window)
 We could then simply analyse this with a t-test if we wished.
 
 ```{r}
-t.test(mean_pupil ~ Type, paired = T, data = window)
+with(window, t.test(mean_pupil[Type == 'Easy'], mean_pupil[Type == 'Hard'], paired = T))
 ```
 
 Alternatively, we may wish to look at the data in chunks. Here we group the data in to 2000ms timebins for analysis (and we will opt for the raincloud plot in this instance):
@@ -248,6 +248,7 @@ While the qqnorm looks to be almost passable, the autocorrelation in the second 
 To reduce autocorrelation there are many methods we can try, as you will see from the above paper. I will stop short of repeating each of the steps taken in the excellent paper above, and jump straight away to a much more appropriate model for this data. First I will code in events (participant per trial). I will also create a second data frame to do this (model_data), so that the data we are working with doesn't lose its properties, and we can keep using the plotting functions.
 
 ```{r}
+library(itsadug)
 base_data$Event <- interaction(base_data$ID, base_data$Trial, drop = T)
 
 model_data <- base_data
