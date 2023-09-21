@@ -20,6 +20,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -32,18 +34,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">PupillometryR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.5</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="articles/PupillometryR.html">Get started</a>
 </li>
@@ -56,8 +52,8 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/samhforbes/PupillometryR/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/samhforbes/PupillometryR/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -73,127 +69,149 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="pupillometryr" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#pupillometryr" class="anchor"></a>PupillometryR</h1></div>
+<div class="section level1">
+<div class="page-header"><h1 id="pupillometryr">PupillometryR<a class="anchor" aria-label="anchor" href="#pupillometryr"></a>
+</h1></div>
 <!-- badges: start -->
 
+<!-- badges: end -->
 <p>The goal of PupillometryR is to to pre-process and then analyze simple pupil experiments in R.</p>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
-<p>You can install the released version of PupillometryR from <a href="https://CRAN.R-project.org">CRAN</a> with:</p>
-<div class="sourceCode" id="cb1"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"PupillometryR"</span>)</pre></div>
-<p>And the development version from <a href="https://github.com/">GitHub</a> with:</p>
-<div class="sourceCode" id="cb2"><pre class="r"><span class="co"># install.packages("devtools")</span>
-<span class="kw pkg">devtools</span><span class="kw ns">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"samhforbes/PupillometryR"</span>)</pre></div>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p>You can install the released version of PupillometryR from <a href="https://CRAN.R-project.org" class="external-link">CRAN</a> with:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"PupillometryR"</span><span class="op">)</span></span></code></pre></div>
+<p>And the development version from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"samhforbes/PupillometryR"</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="setup" class="section level2">
-<h2 class="hasAnchor">
-<a href="#setup" class="anchor"></a>Setup</h2>
-<p>This package (and the example dataset) was designed in part, based on Sylvain Sirois’ MATLAB tutorial, <a href="https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&amp;owa_no_fiche=3&amp;owa_bottin=https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&amp;owa_no_fiche=3&amp;owa_bottin=">which can be found here</a>.</p>
+<div class="section level2">
+<h2 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
+</h2>
+<p>This package (and the example dataset) was designed in part, based on Sylvain Sirois’ MATLAB tutorial, <a href="https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&amp;owa_no_fiche=3&amp;owa_bottin=https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&amp;owa_no_fiche=3&amp;owa_bottin=" class="external-link">which can be found here</a>.</p>
 <p>The intention is an integrated pipeline for pupillometric experiments, from data cleaning, pre-processing, various analysis techniques, and visualising results.</p>
 <p>To use all the functionality and plots that follow from the PupillometryR pipeline, please start with <em>make_pupillometryr_data</em>, e.g.:</p>
-<div class="sourceCode" id="cb3"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">PupillometryR</span>)
-<span class="co">#&gt; Loading required package: dplyr</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Attaching package: 'dplyr'</span>
-<span class="co">#&gt; The following objects are masked from 'package:stats':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     filter, lag</span>
-<span class="co">#&gt; The following objects are masked from 'package:base':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     intersect, setdiff, setequal, union</span>
-<span class="co">#&gt; Loading required package: ggplot2</span>
-<span class="co">#&gt; Loading required package: rlang</span>
-
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"pupil_data"</span>)
-
-<span class="co">#Check that IDs are not numeric</span>
-<span class="no">pupil_data</span>$<span class="no">ID</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span>(<span class="no">pupil_data</span>$<span class="no">ID</span>)
-<span class="co">#remove participant number 8, who had problematic data</span>
-<span class="no">pupil_data</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span>(<span class="no">pupil_data</span>, <span class="no">ID</span> <span class="kw">!=</span> <span class="fl">8</span>)
-<span class="co">#blinks were registered as -1, so replace with NAs</span>
-<span class="no">pupil_data</span>$<span class="no">LPupil</span>[<span class="no">pupil_data</span>$<span class="no">LPupil</span> <span class="kw">==</span> -<span class="fl">1</span>] <span class="kw">&lt;-</span> <span class="fl">NA</span>
-<span class="no">pupil_data</span>$<span class="no">RPupil</span>[<span class="no">pupil_data</span>$<span class="no">RPupil</span> <span class="kw">==</span> -<span class="fl">1</span>] <span class="kw">&lt;-</span> <span class="fl">NA</span>
-
-<span class="no">Sdata</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/make_pupillometryr_data.html">make_pupillometryr_data</a></span>(<span class="kw">data</span> <span class="kw">=</span> <span class="no">pupil_data</span>,
-                                 <span class="kw">subject</span> <span class="kw">=</span> <span class="no">ID</span>,
-                                 <span class="kw">trial</span> <span class="kw">=</span> <span class="no">Trial</span>,
-                                 <span class="kw">time</span> <span class="kw">=</span> <span class="no">Time</span>,
-                                 <span class="kw">condition</span> <span class="kw">=</span> <span class="no">Type</span>)</pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">PupillometryR</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Loading required package: dplyr</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'dplyr'</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:stats':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     filter, lag</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span>
+<span><span class="co">#&gt; Loading required package: ggplot2</span></span>
+<span><span class="co">#&gt; Loading required package: rlang</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"pupil_data"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#Check that IDs are not numeric</span></span>
+<span><span class="va">pupil_data</span><span class="op">$</span><span class="va">ID</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">pupil_data</span><span class="op">$</span><span class="va">ID</span><span class="op">)</span></span>
+<span><span class="co">#remove participant number 8, who had problematic data</span></span>
+<span><span class="va">pupil_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">pupil_data</span>, <span class="va">ID</span> <span class="op">!=</span> <span class="fl">8</span><span class="op">)</span></span>
+<span><span class="co">#blinks were registered as -1, so replace with NAs</span></span>
+<span><span class="va">pupil_data</span><span class="op">$</span><span class="va">LPupil</span><span class="op">[</span><span class="va">pupil_data</span><span class="op">$</span><span class="va">LPupil</span> <span class="op">==</span> <span class="op">-</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></span>
+<span><span class="va">pupil_data</span><span class="op">$</span><span class="va">RPupil</span><span class="op">[</span><span class="va">pupil_data</span><span class="op">$</span><span class="va">RPupil</span> <span class="op">==</span> <span class="op">-</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></span>
+<span></span>
+<span><span class="va">Sdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/make_pupillometryr_data.html">make_pupillometryr_data</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">pupil_data</span>,</span>
+<span>                                 subject <span class="op">=</span> <span class="va">ID</span>,</span>
+<span>                                 trial <span class="op">=</span> <span class="va">Trial</span>,</span>
+<span>                                 time <span class="op">=</span> <span class="va">Time</span>,</span>
+<span>                                 condition <span class="op">=</span> <span class="va">Type</span><span class="op">)</span></span></code></pre></div>
 <p>All further functions associated with the package follow from there. For example:</p>
-<div class="sourceCode" id="cb4"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">Sdata</span>, <span class="kw">pupil</span> <span class="kw">=</span> <span class="no">LPupil</span>, <span class="kw">group</span> <span class="kw">=</span> <span class="st">'condition'</span>)
-<span class="co">#&gt; Warning: Removed 3639 rows containing non-finite values (stat_summary).</span></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">Sdata</span>, pupil <span class="op">=</span> <span class="va">LPupil</span>, group <span class="op">=</span> <span class="st">'condition'</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Removed 3639 rows containing non-finite values (stat_summary).</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-2-1.png" width="100%"></p>
 <p>To follow a detailed walkthrough, run:</p>
-<div class="sourceCode" id="cb5"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html">vignette</a></span>(<span class="st">'PupillometryR'</span>)</pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html" class="external-link">vignette</a></span><span class="op">(</span><span class="st">'PupillometryR'</span><span class="op">)</span></span></code></pre></div>
+<p>or head to <a href="http://samforbes.me/PupillometryR/" class="external-link">samforbes.me/PupillometryR</a>.</p>
 </div>
-<div id="getting-help" class="section level2">
-<h2 class="hasAnchor">
-<a href="#getting-help" class="anchor"></a>Getting help</h2>
-<p>Please use the issues tab (<a href="https://github.com/samhforbes/PupillometryR/issues" class="uri">https://github.com/samhforbes/PupillometryR/issues</a>) to file any bugs or suggestions. For general pupillometry information, I recommend <a href="https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&amp;owa_no_fiche=3&amp;owa_bottin=https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&amp;owa_no_fiche=3&amp;owa_bottin=">Sylvain’s website</a>, <a href="http://doi.org/10.1111/j.1467-7687.2008.00805.x">as well as Jackson and Sirois (2009)</a>. For reading about using GAMs in pupillometry <a href="https://journals.sagepub.com/doi/10.1177/2331216519832483">this paper by van Rij et al. is excellent</a>, for general GAMs knowledge I recommend <a href="https://m-clark.github.io/generalized-additive-models/case_for_gam.html">this tutorial by Michael Clark</a> as well as the mgcv documentation, and for general FDA information <a href="http://www.psych.mcgill.ca/misc/fda/resources.html">this website is helpful</a>, along with the Ramsay and Silverman book (1997). Additionally, check out the <a href="https://wellcomeopenresearch.org/articles/4-63#:~:text=In%20essence%2C%20raincloud%20plots%20combine,error%2C%20such%20as%20a%20boxplot.">raincloud plots paper by Allen et al.</a>, which is used for some of the in-built plotting in this package.</p>
+<div class="section level2">
+<h2 id="getting-help">Getting help<a class="anchor" aria-label="anchor" href="#getting-help"></a>
+</h2>
+<p>Please use the issues tab (<a href="https://github.com/samhforbes/PupillometryR/issues" class="external-link uri">https://github.com/samhforbes/PupillometryR/issues</a>) to file any bugs or suggestions. For general pupillometry information, I recommend <a href="https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&amp;owa_no_fiche=3&amp;owa_bottin=https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&amp;owa_no_fiche=3&amp;owa_bottin=" class="external-link">Sylvain’s website</a>, <a href="https://doi.org/10.1111/j.1467-7687.2008.00805.x" class="external-link">as well as Jackson and Sirois (2009)</a>. For reading about using GAMs in pupillometry <a href="https://journals.sagepub.com/doi/10.1177/2331216519832483" class="external-link">this paper by van Rij et al. is excellent</a>, for general GAMs knowledge I recommend <a href="https://m-clark.github.io/generalized-additive-models/case_for_gam.html" class="external-link">this tutorial by Michael Clark</a> as well as the mgcv documentation, and for general FDA information <a href="https://www.psych.mcgill.ca/misc/fda/resources.html" class="external-link">this website is helpful</a>, along with the Ramsay and Silverman book (1997). Additionally, check out the <a href="https://wellcomeopenresearch.org/articles/4-63#:~:text=In%20essence%2C%20raincloud%20plots%20combine,error%2C%20such%20as%20a%20boxplot." class="external-link">raincloud plots paper by Allen et al.</a>, which is used for some of the in-built plotting in this package.</p>
 </div>
-<div id="acknowledgements" class="section level2">
-<h2 class="hasAnchor">
-<a href="#acknowledgements" class="anchor"></a>Acknowledgements</h2>
+<div class="section level2">
+<h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
+</h2>
+<p>Please cite the JOSS paper for this package if you use it: Forbes, S. (2020). PupillometryR: An R package for preparing and analysing pupillometry data. Journal of Open Source Software, 5(50), 2285. <a href="https://doi.org/10.21105/joss.02285" class="external-link uri">https://doi.org/10.21105/joss.02285</a></p>
+</div>
+<div class="section level2">
+<h2 id="acknowledgements">Acknowledgements<a class="anchor" aria-label="anchor" href="#acknowledgements"></a>
+</h2>
 <p>This package has had suggestions, encouragement, and help from a number of people, but I wish to especially highlight Sylvain Sirois and Mihaela Duta, whose input has been instrumental. I’d also like to thank Jacolien van Rij for her input with the GAMs modelling portion of this tutorial, and TJ Mahr for contributing to extending the use of GAMs in the vignette.</p>
 </div>
-<div id="references" class="section level2">
-<h2 class="hasAnchor">
-<a href="#references" class="anchor"></a>References</h2>
-<p><br><span class="math display">1</span><br> Jackson, I., &amp; Sirois, S. (2009). Infant cognition: Going full factorial with pupil dilation. <em>Developmental Science</em>, 12(4), 670-679. <a href="http://doi.org/10.1111/j.1467-7687.2008.00805.x" class="uri">http://doi.org/10.1111/j.1467-7687.2008.00805.x</a></p>
-<p><br><span class="math display">2</span><br> Allen, M., Poggiali, D., Whitaker, K., Marshall, T. R., &amp; Kievit, R. (2019). Raincloud plots: a multi-platform tool for robust data visualization. <em>Wellcome Open Research</em>, 4, 1-41. <a href="http://doi.org/10.12688/wellcomeopenres.15191.1" class="uri">http://doi.org/10.12688/wellcomeopenres.15191.1</a></p>
-<p><br><span class="math display">3</span><br> Ramsay, J.O., &amp; Silverman, B.W. (1997). <em>Functional data analysis</em>. New York: Springer-Verlag.</p>
-<p><br><span class="math display">4</span><br> van Rij, J., Hendriks, P., van Rijn, H., Baayen, R. H., &amp; Wood, S. N. (2019). Analyzing the time course of pupillometric data. <em>Trends in Hearing</em>, 23, 233121651983248. <a href="https://doi.org/10.1177/2331216519832483" class="uri">https://doi.org/10.1177/2331216519832483</a></p>
+<div class="section level2">
+<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
+<p>[1] Jackson, I., &amp; Sirois, S. (2009). Infant cognition: Going full factorial with pupil dilation. <em>Developmental Science</em>, 12(4), 670-679. <a href="https://doi.org/10.1111/j.1467-7687.2008.00805.x" class="external-link uri">https://doi.org/10.1111/j.1467-7687.2008.00805.x</a></p>
+<p>[2] Allen, M., Poggiali, D., Whitaker, K., Marshall, T. R., &amp; Kievit, R. (2019). Raincloud plots: a multi-platform tool for robust data visualization. <em>Wellcome Open Research</em>, 4, 1-41. <a href="https://doi.org/10.12688/wellcomeopenres.15191.1" class="external-link uri">https://doi.org/10.12688/wellcomeopenres.15191.1</a></p>
+<p>[3] Ramsay, J.O., &amp; Silverman, B.W. (1997). <em>Functional data analysis</em>. New York: Springer-Verlag.</p>
+<p>[4] van Rij, J., Hendriks, P., van Rijn, H., Baayen, R. H., &amp; Wood, S. N. (2019). Analyzing the time course of pupillometric data. <em>Trends in Hearing</em>, 23, 233121651983248. <a href="https://doi.org/10.1177/2331216519832483" class="external-link uri">https://doi.org/10.1177/2331216519832483</a></p>
 </div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=PupillometryR">https://​cloud.r-project.org/​package=PupillometryR</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/samhforbes/PupillometryR/">https://​github.com/​samhforbes/​PupillometryR/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/samhforbes/PupillometryR/issues">https://​github.com/​samhforbes/​PupillometryR/​issues</a>
-</li>
-</ul>
-</div>
-<div class="license">
-<h2>License</h2>
-<ul class="list-unstyled">
-<li><a href="LICENSE.html">Full license</a></li>
-<li><small><a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
-</ul>
-</div>
-<div class="developers">
-<h2>Developers</h2>
-<ul class="list-unstyled">
-<li>Samuel Forbes <br><small class="roles"> Author, maintainer </small>  </li>
-<li><a href="authors.html">All authors...</a></li>
+<li><a href="https://cloud.r-project.org/package=PupillometryR" class="external-link">View on CRAN</a></li>
+<li><a href="https://github.com/samhforbes/PupillometryR/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/samhforbes/PupillometryR/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="license">
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li><a href="https://CRAN.R-project.org/package=PupillometryR"><img src="https://www.r-pkg.org/badges/version/PupillometryR" alt="CRAN status"></a></li>
-<li><a href="https://travis-ci.org/samhforbes/PupillometryR"><img src="https://travis-ci.org/samhforbes/PupillometryR.svg?branch=master" alt="Travis build status"></a></li>
+<li><a href="LICENSE.html">Full license</a></li>
+<li><small><a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing PupillometryR</a></li>
+</ul>
 </div>
+
+<div class="developers">
+<h2 data-toc-skip>Developers</h2>
+<ul class="list-unstyled">
+<li>Samuel Forbes <br><small class="roles"> Author, maintainer </small>  </li>
+<li><a href="authors.html">More about authors...</a></li>
+</ul>
+</div>
+
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://CRAN.R-project.org/package=PupillometryR" class="external-link"><img src="https://www.r-pkg.org/badges/version/PupillometryR" alt="CRAN status"></a></li>
+<li><a href="https://app.travis-ci.com/samhforbes/PupillometryR" class="external-link"><img src="https://app.travis-ci.com/samhforbes/PupillometryR.svg?branch=master" alt="Travis build status"></a></li>
+<li><a href="https://doi.org/10.21105/joss.02285" class="external-link"><img src="https://joss.theoj.org/papers/10.21105/joss.02285/status.svg" alt="DOI"></a></li>
+</ul>
+</div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Samuel Forbes.</p>
+  <p></p>
+<p>Developed by Samuel Forbes.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -201,6 +219,8 @@
 
   
 
+
+  
 
   </body>
 </html>

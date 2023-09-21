@@ -11,7 +11,8 @@ BugReports: https://github.com/samhforbes/PupillometryR/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-Depends: dplyr,
+Depends: R (>= 3.5.0),
+         dplyr,
          ggplot2,
          rlang
 Imports: fda,
@@ -23,7 +24,7 @@ Imports: fda,
          tidyr,
          utils,
          zoo
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3
 Suggests: 
     knitr,
     rmarkdown

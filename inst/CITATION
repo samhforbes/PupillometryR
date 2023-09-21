@@ -1,7 +1,7 @@
 citHeader("To cite PupillometryR in publications use:")
 
-citEntry(
-  entry    = "Article",
+bibentry(
+  bibtype    = "Article",
   title    = "PupillometryR: An R package for preparing and analysing pupillometry data",
   author   = "Samuel H. Forbes",
   journal  = "Journal of Open Source Software",

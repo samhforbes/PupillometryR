@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PupillometryR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.5</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../articles/PupillometryR.html">Get started</a>
 </li>
@@ -55,8 +51,8 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/samhforbes/PupillometryR/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/samhforbes/PupillometryR/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -76,374 +72,563 @@
       <h1 data-toc-skip>PupillometryR</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/samhforbes/PupillometryR/blob/master/vignettes/PupillometryR.Rmd"><code>vignettes/PupillometryR.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/samhforbes/PupillometryR/blob/HEAD/vignettes/PupillometryR.Rmd" class="external-link"><code>vignettes/PupillometryR.Rmd</code></a></small>
       <div class="hidden name"><code>PupillometryR.Rmd</code></div>
 
     </div>
 
     
     
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">PupillometryR</span>)
-<span class="co">#&gt; Loading required package: dplyr</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Attaching package: 'dplyr'</span>
-<span class="co">#&gt; The following objects are masked from 'package:stats':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     filter, lag</span>
-<span class="co">#&gt; The following objects are masked from 'package:base':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     intersect, setdiff, setequal, union</span>
-<span class="co">#&gt; Loading required package: ggplot2</span>
-<span class="co">#&gt; Loading required package: rlang</span></pre></body></html></div>
-<p>This package is designed to make dealing with pupil data (perhaps more traditionally done in MATLAB) easier to wrangle in R. It makes heavy use of a few packages which should be acknowledged here, especially the (excellent) packages fda and signal.</p>
-<p>As well as the above packages, it is very important to note that the type of analysis shown here has been available in MATLAB for a while, and there is an excellent tutorial on it, which I thoroughly recommend reading first, written by Sylvain Sirois, <a href="https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&amp;owa_no_fiche=3&amp;owa_bottin=https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&amp;owa_no_fiche=3&amp;owa_bottin=">here:</a>.</p>
-<p>It’s worth making sure that your setup and experiment do facilitate the use of pupillometry - it may not be suited for all kinds of experiment.</p>
-<div id="getting-started" class="section level2">
-<h2 class="hasAnchor">
-<a href="#getting-started" class="anchor"></a>Getting started</h2>
-<p>We will first run through an example analysis with the data provided in the package, which, again, comes from Sylvain Sirois’ tutorial on <a href="https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&amp;owa_no_fiche=3&amp;owa_bottin=https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&amp;owa_no_fiche=3&amp;owa_bottin=">his webpage</a>.</p>
-<p>The first thing I would recommend doing is having a close look at the pupil data. Eyetrackers have a couple of different ways of dealing with this, so it’s important to know a few things:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">PupillometryR</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Loading required package: dplyr</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'dplyr'</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:stats':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     filter, lag</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span>
+<span><span class="co">#&gt; Loading required package: ggplot2</span></span>
+<span><span class="co">#&gt; Loading required package: rlang</span></span></code></pre></div>
+<p>This package is designed to make dealing with pupil data (perhaps
+more traditionally done in MATLAB) easier to wrangle in R. It makes
+heavy use of a few packages which should be acknowledged here,
+especially the (excellent) packages fda and signal.</p>
+<p>As well as the above packages, it is very important to note that the
+type of analysis shown here has been available in MATLAB for a while,
+and there is an excellent tutorial on it, which I thoroughly recommend
+reading first, written by Sylvain Sirois, <a href="https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&amp;owa_no_fiche=3&amp;owa_bottin=https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&amp;owa_no_fiche=3&amp;owa_bottin=" class="external-link">here:</a>.</p>
+<p>It’s worth making sure that your setup and experiment do facilitate
+the use of pupillometry - it may not be suited for all kinds of
+experiment.</p>
+<div class="section level2">
+<h2 id="getting-started">Getting started<a class="anchor" aria-label="anchor" href="#getting-started"></a>
+</h2>
+<p>We will first run through an example analysis with the data provided
+in the package, which, again, comes from Sylvain Sirois’ tutorial on <a href="https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&amp;owa_no_fiche=3&amp;owa_bottin=https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&amp;owa_no_fiche=3&amp;owa_bottin=" class="external-link">his
+webpage</a>.</p>
+<p>The first thing I would recommend doing is having a close look at the
+pupil data. Eyetrackers have a couple of different ways of dealing with
+this, so it’s important to know a few things:</p>
 <ol style="list-style-type: decimal">
 <li>What unit of measurement is being used</li>
-<li>What value is given to missing data or blinks (typically ., -1, or <em>NA</em>)</li>
+<li>What value is given to missing data or blinks (typically ., -1, or
+<em>NA</em>)</li>
 <li>What framerate were you recording at, and is this consistent.</li>
 </ol>
-<p>The data here is an eyetracking experiment with hard and easy trials, performed on 9 participants. Participant 8 needs to be removed (more details on Sylvain’s tutorial).</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"pupil_data"</span>)
-
-<span class="co">#Check that IDs are not numeric</span>
-<span class="no">pupil_data</span>$<span class="no">ID</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span>(<span class="no">pupil_data</span>$<span class="no">ID</span>)
-<span class="co">#remove participant number 8, who had problematic data</span>
-<span class="no">pupil_data</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span>(<span class="no">pupil_data</span>, <span class="no">ID</span> <span class="kw">!=</span> <span class="fl">8</span>)
-<span class="co">#blinks were registered as -1, so replace with NAs</span>
-<span class="no">pupil_data</span>$<span class="no">LPupil</span>[<span class="no">pupil_data</span>$<span class="no">LPupil</span> <span class="kw">==</span> -<span class="fl">1</span>] <span class="kw">&lt;-</span> <span class="fl">NA</span>
-<span class="no">pupil_data</span>$<span class="no">RPupil</span>[<span class="no">pupil_data</span>$<span class="no">RPupil</span> <span class="kw">==</span> -<span class="fl">1</span>] <span class="kw">&lt;-</span> <span class="fl">NA</span></pre></body></html></div>
-<p>The plotting is also a theme of this tutorial, so I will set a nice theme that makes the plots look pretty:</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ggplot2</span>)
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme_get.html">theme_set</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_classic</a></span>(<span class="kw">base_size</span> <span class="kw">=</span> <span class="fl">12</span>))</pre></body></html></div>
-<p>First up, we need to put the data into pupillometryR format for further analysis</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="no">Sdata</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/make_pupillometryr_data.html">make_pupillometryr_data</a></span>(<span class="kw">data</span> <span class="kw">=</span> <span class="no">pupil_data</span>,
-                                 <span class="kw">subject</span> <span class="kw">=</span> <span class="no">ID</span>,
-                                 <span class="kw">trial</span> <span class="kw">=</span> <span class="no">Trial</span>,
-                                 <span class="kw">time</span> <span class="kw">=</span> <span class="no">Time</span>,
-                                 <span class="kw">condition</span> <span class="kw">=</span> <span class="no">Type</span>)</pre></body></html></div>
-<p>In the current data, it is not a concern, but there may be a situation where certain timebins are missing from your data. This can be fixed here, and we will look at the raw data:</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">new_data</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/replace_missing_data.html">replace_missing_data</a></span>(<span class="kw">data</span> <span class="kw">=</span> <span class="no">Sdata</span>)
-<span class="co">#&gt; replace_missing_data will only help if you have missing timepoints, and a reliable time column.</span>
-
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">new_data</span>)
-<span class="co">#&gt;   ID Trial      Time   RPupil   LPupil Timebin Type</span>
-<span class="co">#&gt; 1  1 Easy1  16.66667 3.233615 2.935160       1 Easy</span>
-<span class="co">#&gt; 2  1 Easy1  33.33333 3.216972 2.919698       2 Easy</span>
-<span class="co">#&gt; 3  1 Easy1  50.00000 3.205405 2.924402       3 Easy</span>
-<span class="co">#&gt; 4  1 Easy1  66.66667 3.217505 2.935777       4 Easy</span>
-<span class="co">#&gt; 5  1 Easy1  83.33333 3.214905 2.928921       5 Easy</span>
-<span class="co">#&gt; 6  1 Easy1 100.00000 3.211777 2.922048       6 Easy</span></pre></body></html></div>
-<p>Equally, if your data is not cut to the time windows that you are interested in, the subset_data function allows trimming. PupillometryR has some built-in plotting functions to allow you to look at certain data types. You simply need to specify a pupil column to display, and how you would like the data displayed in groups. The plots are ggplot items, so can be edited with themes, and arguments such as ylab(). Below we display it first by condition, then by subject:</p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">new_data</span>, <span class="kw">pupil</span> <span class="kw">=</span> <span class="no">LPupil</span>, <span class="kw">group</span> <span class="kw">=</span> <span class="st">'condition'</span>)
-<span class="co">#&gt; Warning: Removed 3639 rows containing non-finite values (stat_summary).</span></pre></body></html></div>
+<p>The data here is an eyetracking experiment with hard and easy trials,
+performed on 9 participants. Participant 8 needs to be removed (more
+details on Sylvain’s tutorial).</p>
+<p>It’s important here to make sure that the missing data get set to
+<em>NA</em> and not to a numeric value (such as -1) or deleted.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"pupil_data"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#Check that IDs are not numeric</span></span>
+<span><span class="va">pupil_data</span><span class="op">$</span><span class="va">ID</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">pupil_data</span><span class="op">$</span><span class="va">ID</span><span class="op">)</span></span>
+<span><span class="co">#remove participant number 8, who had problematic data</span></span>
+<span><span class="va">pupil_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">pupil_data</span>, <span class="va">ID</span> <span class="op">!=</span> <span class="fl">8</span><span class="op">)</span></span>
+<span><span class="co">#blinks were registered as -1, so replace with NAs</span></span>
+<span><span class="va">pupil_data</span><span class="op">$</span><span class="va">LPupil</span><span class="op">[</span><span class="va">pupil_data</span><span class="op">$</span><span class="va">LPupil</span> <span class="op">==</span> <span class="op">-</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></span>
+<span><span class="va">pupil_data</span><span class="op">$</span><span class="va">RPupil</span><span class="op">[</span><span class="va">pupil_data</span><span class="op">$</span><span class="va">RPupil</span> <span class="op">==</span> <span class="op">-</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></span></code></pre></div>
+<p>The plotting is also a theme of this tutorial, so I will set a nice
+theme that makes the plots look pretty:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme_get.html" class="external-link">theme_set</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_classic</a></span><span class="op">(</span>base_size <span class="op">=</span> <span class="fl">12</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>First up, we need to put the data into pupillometryR format for
+further analysis</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">Sdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_pupillometryr_data.html">make_pupillometryr_data</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">pupil_data</span>,</span>
+<span>                                 subject <span class="op">=</span> <span class="va">ID</span>,</span>
+<span>                                 trial <span class="op">=</span> <span class="va">Trial</span>,</span>
+<span>                                 time <span class="op">=</span> <span class="va">Time</span>,</span>
+<span>                                 condition <span class="op">=</span> <span class="va">Type</span><span class="op">)</span></span></code></pre></div>
+<p>In the current data, it is not a concern, but there may be a
+situation where certain timebins are missing from your data. This can be
+fixed here, and we will look at the raw data:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">new_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/replace_missing_data.html">replace_missing_data</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">Sdata</span><span class="op">)</span></span>
+<span><span class="co">#&gt; replace_missing_data will only help if you have missing timepoints, and a reliable time column.</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">new_data</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   ID Trial      Time   RPupil   LPupil Timebin Type</span></span>
+<span><span class="co">#&gt; 1  1 Easy1  16.66667 3.233615 2.935160       1 Easy</span></span>
+<span><span class="co">#&gt; 2  1 Easy1  33.33333 3.216972 2.919698       2 Easy</span></span>
+<span><span class="co">#&gt; 3  1 Easy1  50.00000 3.205405 2.924402       3 Easy</span></span>
+<span><span class="co">#&gt; 4  1 Easy1  66.66667 3.217505 2.935777       4 Easy</span></span>
+<span><span class="co">#&gt; 5  1 Easy1  83.33333 3.214905 2.928921       5 Easy</span></span>
+<span><span class="co">#&gt; 6  1 Easy1 100.00000 3.211777 2.922048       6 Easy</span></span></code></pre></div>
+<p>Equally, if your data is not cut to the time windows that you are
+interested in, the subset_data function allows trimming. PupillometryR
+has some built-in plotting functions to allow you to look at certain
+data types. You simply need to specify a pupil column to display, and
+how you would like the data displayed in groups. The plots are ggplot
+items, so can be edited with themes, and arguments such as ylab(). Below
+we display it first by condition, then by subject:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">new_data</span>, pupil <span class="op">=</span> <span class="va">LPupil</span>, group <span class="op">=</span> <span class="st">'condition'</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Removed 3639 rows containing non-finite values</span></span>
+<span><span class="co">#&gt; (`stat_summary()`).</span></span></code></pre></div>
 <p><img src="PupillometryR_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r">
-<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">new_data</span>, <span class="kw">pupil</span> <span class="kw">=</span> <span class="no">LPupil</span>, <span class="kw">group</span> <span class="kw">=</span> <span class="st">'subject'</span>)
-<span class="co">#&gt; Warning: Removed 3639 rows containing non-finite values (stat_summary).</span></pre></body></html></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">new_data</span>, pupil <span class="op">=</span> <span class="va">LPupil</span>, group <span class="op">=</span> <span class="st">'subject'</span><span class="op">)</span> </span>
+<span><span class="co">#&gt; Warning: Removed 3639 rows containing non-finite values</span></span>
+<span><span class="co">#&gt; (`stat_summary()`).</span></span></code></pre></div>
 <p><img src="PupillometryR_files/figure-html/unnamed-chunk-6-2.png" width="700"></p>
 </div>
-<div id="smoothing-and-cleanup" class="section level2">
-<h2 class="hasAnchor">
-<a href="#smoothing-and-cleanup" class="anchor"></a>Smoothing and cleanup</h2>
-<p>PupillometryR offers a few smoothing options to make processing the data a little easier. We’ll do the full set here. A great reference for these is Sylvain’s tutorial, and also Jackson and Sirois, 2009, Dev. Sci. First off, we can regress one pupil against the other to get some measure of smoothing.</p>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">regressed_data</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/regress_data.html">regress_data</a></span>(<span class="kw">data</span> <span class="kw">=</span> <span class="no">new_data</span>,
-                               <span class="kw">pupil1</span> <span class="kw">=</span> <span class="no">RPupil</span>,
-                               <span class="kw">pupil2</span> <span class="kw">=</span> <span class="no">LPupil</span>)</pre></body></html></div>
-<p>Now that we have done that, we want the mean of the two pupil sizes, so let’s see how that looks:</p>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="no">mean_data</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/calculate_mean_pupil_size.html">calculate_mean_pupil_size</a></span>(<span class="kw">data</span> <span class="kw">=</span> <span class="no">regressed_data</span>,
-                                       <span class="kw">pupil1</span> <span class="kw">=</span> <span class="no">RPupil</span>,
-                                       <span class="kw">pupil2</span> <span class="kw">=</span> <span class="no">LPupil</span>)
-
-<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">mean_data</span>, <span class="kw">pupil</span> <span class="kw">=</span> <span class="no">mean_pupil</span>, <span class="kw">group</span> <span class="kw">=</span> <span class="st">'subject'</span>)
-<span class="co">#&gt; Warning: Removed 3591 rows containing non-finite values (stat_summary).</span></pre></body></html></div>
+<div class="section level2">
+<h2 id="smoothing-and-cleanup">Smoothing and cleanup<a class="anchor" aria-label="anchor" href="#smoothing-and-cleanup"></a>
+</h2>
+<p>PupillometryR offers a few smoothing options to make processing the
+data a little easier. We’ll do the full set here. A great reference for
+these is Sylvain’s tutorial, and also Jackson and Sirois, 2009, Dev.
+Sci. First off, we can regress one pupil against the other to get some
+measure of smoothing.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">regressed_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/regress_data.html">regress_data</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">new_data</span>,</span>
+<span>                               pupil1 <span class="op">=</span> <span class="va">RPupil</span>,</span>
+<span>                               pupil2 <span class="op">=</span> <span class="va">LPupil</span><span class="op">)</span></span></code></pre></div>
+<p>Now that we have done that, we want the mean of the two pupil sizes,
+so let’s see how that looks:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mean_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calculate_mean_pupil_size.html">calculate_mean_pupil_size</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">regressed_data</span>, </span>
+<span>                                       pupil1 <span class="op">=</span> <span class="va">RPupil</span>, </span>
+<span>                                       pupil2 <span class="op">=</span> <span class="va">LPupil</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mean_data</span>, pupil <span class="op">=</span> <span class="va">mean_pupil</span>, group <span class="op">=</span> <span class="st">'subject'</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Removed 3591 rows containing non-finite values</span></span>
+<span><span class="co">#&gt; (`stat_summary()`).</span></span></code></pre></div>
 <p><img src="PupillometryR_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
-<p>Now that we have a single pupil measure to work with, we can manipulate the data a little more easily. First thing we can do is to downsample the data. This is useful when we have large scale data, or when we have sampled at a really high rate, and we need to reduce it so we are measuring meaningful change. Here we have taken the median, but he mean could also be taken. We just need to specify the timebin size, in ms:</p>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">mean_data</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/downsample_time_data.html">downsample_time_data</a></span>(<span class="kw">data</span> <span class="kw">=</span> <span class="no">mean_data</span>,
-                              <span class="kw">pupil</span> <span class="kw">=</span> <span class="no">mean_pupil</span>,
-                              <span class="kw">timebin_size</span> <span class="kw">=</span> <span class="fl">50</span>,
-                              <span class="kw">option</span> <span class="kw">=</span> <span class="st">'median'</span>)
-<span class="co">#&gt; Calculating median pupil size in each timebin</span></pre></body></html></div>
-<p>Now we need to clean up our data - let’s first assess how much missing data there is:</p>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">missing</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/calculate_missing_data.html">calculate_missing_data</a></span>(<span class="no">mean_data</span>,
-                                  <span class="no">mean_pupil</span>)
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">missing</span>)
-<span class="co">#&gt; # A tibble: 6 x 3</span>
-<span class="co">#&gt;   ID    Trial Missing</span>
-<span class="co">#&gt;   &lt;chr&gt; &lt;fct&gt;   &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 1     Easy1  0.104 </span>
-<span class="co">#&gt; 2 1     Hard1  0.144 </span>
-<span class="co">#&gt; 3 1     Easy2  0.0846</span>
-<span class="co">#&gt; 4 1     Hard2  0.104 </span>
-<span class="co">#&gt; 5 1     Easy3  0.149 </span>
-<span class="co">#&gt; 6 1     Hard3  0.139</span></pre></body></html></div>
-<p>We can see if we view the whole file that participant 6 has a fair amount of trials with a high missing data proportion. Now we need to clean this up. We have two parameters to do this - first is the proportion of <em>data</em> that we can accept missing in one trial before removing it from analysis. The second is what proportion of <em>trials</em> we can accept as missing before removing a participant for being unreliable. In this example, we will remove trials that have more than 75% of data missing, and we will remove participants that have more than 75% of trials removed.</p>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="no">mean_data2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/clean_missing_data.html">clean_missing_data</a></span>(<span class="no">mean_data</span>,
-                                 <span class="kw">pupil</span> <span class="kw">=</span> <span class="no">mean_pupil</span>,
-                                 <span class="kw">trial_threshold</span> <span class="kw">=</span> <span class="fl">.75</span>,
-                                 <span class="kw">subject_trial_threshold</span> <span class="kw">=</span> <span class="fl">.75</span>)
-<span class="co">#&gt; Removing trials with a proportion missing &gt; 0.75 </span>
-<span class="co">#&gt;  ...removed 0 trials</span>
-<span class="co">#&gt; Removing subjects with a proportion of missing trials &gt; 0.75 </span>
-<span class="co">#&gt;  ...removed 0 subjects</span></pre></body></html></div>
-<p>Now we come to filtering the data. PupillometryR offers 3 filter types: A hanning window, a low-pass butterworth filter, and a median filter. The low-pass filter can be a little unstable at the beginning and end of each trial, so it’s worth looking at your data to see if it’s appropriate. Here we will use the median filter. The degree gives the size of the rolling window.</p>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="no">filtered_data</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/filter_data.html">filter_data</a></span>(<span class="kw">data</span> <span class="kw">=</span> <span class="no">mean_data2</span>,
-                             <span class="kw">pupil</span> <span class="kw">=</span> <span class="no">mean_pupil</span>,
-                             <span class="kw">filter</span> <span class="kw">=</span> <span class="st">'median'</span>,
-                             <span class="kw">degree</span> <span class="kw">=</span> <span class="fl">11</span>)
-<span class="co">#&gt; Performing median filter</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">filtered_data</span>, <span class="kw">pupil</span> <span class="kw">=</span> <span class="no">mean_pupil</span>, <span class="kw">group</span> <span class="kw">=</span> <span class="st">'subject'</span>)
-<span class="co">#&gt; Warning: Removed 1376 rows containing non-finite values (stat_summary).</span></pre></body></html></div>
+<p>Now that we have a single pupil measure to work with, we can
+manipulate the data a little more easily. First thing we can do is to
+downsample the data. This is useful when we have large scale data, or
+when we have sampled at a really high rate, and we need to reduce it so
+we are measuring meaningful change. Here we have taken the median, but
+he mean could also be taken. We just need to specify the timebin size,
+in ms:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mean_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/downsample_time_data.html">downsample_time_data</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">mean_data</span>,</span>
+<span>                              pupil <span class="op">=</span> <span class="va">mean_pupil</span>,</span>
+<span>                              timebin_size <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>                              option <span class="op">=</span> <span class="st">'median'</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Calculating median pupil size in each timebin</span></span></code></pre></div>
+<p>Now we need to clean up our data - let’s first assess how much
+missing data there is:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">missing</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calculate_missing_data.html">calculate_missing_data</a></span><span class="op">(</span><span class="va">mean_data</span>, </span>
+<span>                                  <span class="va">mean_pupil</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">missing</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 3</span></span></span>
+<span><span class="co">#&gt;   ID    Trial Missing</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 1     Easy1  0.104 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 1     Hard1  0.144 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 1     Easy2  0.084<span style="text-decoration: underline;">6</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 1     Hard2  0.104 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 1     Easy3  0.149 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 1     Hard3  0.139</span></span></code></pre></div>
+<p>We can see if we view the whole file that participant 6 has a fair
+amount of trials with a high missing data proportion. Now we need to
+clean this up. We have two parameters to do this - first is the
+proportion of <em>data</em> that we can accept missing in one trial
+before removing it from analysis. The second is what proportion of
+<em>trials</em> we can accept as missing before removing a participant
+for being unreliable. In this example, we will remove trials that have
+more than 75% of data missing, and we will remove participants that have
+more than 75% of trials removed.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mean_data2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/clean_missing_data.html">clean_missing_data</a></span><span class="op">(</span><span class="va">mean_data</span>,</span>
+<span>                                 pupil <span class="op">=</span> <span class="va">mean_pupil</span>,</span>
+<span>                                 trial_threshold <span class="op">=</span> <span class="fl">.75</span>,</span>
+<span>                                 subject_trial_threshold <span class="op">=</span> <span class="fl">.75</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Removing trials with a proportion missing &gt; 0.75 </span></span>
+<span><span class="co">#&gt;  ...removed 0 trials</span></span>
+<span><span class="co">#&gt; Removing subjects with a proportion of missing trials &gt; 0.75 </span></span>
+<span><span class="co">#&gt;  ...removed 0 subjects</span></span></code></pre></div>
+<p>Now we come to filtering the data. PupillometryR offers 3 filter
+types: A hanning window, a low-pass butterworth filter, and a median
+filter. The low-pass filter can be a little unstable at the beginning
+and end of each trial, so it’s worth looking at your data to see if it’s
+appropriate. Here we will use the median filter. The degree gives the
+size of the rolling window.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">filtered_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/filter_data.html">filter_data</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">mean_data2</span>,</span>
+<span>                             pupil <span class="op">=</span> <span class="va">mean_pupil</span>,</span>
+<span>                             filter <span class="op">=</span> <span class="st">'median'</span>,</span>
+<span>                             degree <span class="op">=</span> <span class="fl">11</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Performing median filter</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">filtered_data</span>, pupil <span class="op">=</span> <span class="va">mean_pupil</span>, group <span class="op">=</span> <span class="st">'subject'</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Removed 1376 rows containing non-finite values</span></span>
+<span><span class="co">#&gt; (`stat_summary()`).</span></span></code></pre></div>
 <p><img src="PupillometryR_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
-<p>The next step is to interpolate across blinks. Filtering before the interpolation generally allows more sensible interpolation, but the way this is done varies a bit on the data, and you will see examples without this. We can interpolate in this package either linear or cubic, but again, it’s best to always check your data afterwards to make sure it looks the way you might expect. Here we opt for the linear interpolation:</p>
-<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="no">int_data</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/interpolate_data.html">interpolate_data</a></span>(<span class="kw">data</span> <span class="kw">=</span> <span class="no">filtered_data</span>,
-                             <span class="kw">pupil</span> <span class="kw">=</span> <span class="no">mean_pupil</span>,
-                             <span class="kw">type</span> <span class="kw">=</span> <span class="st">'linear'</span>)
-<span class="co">#&gt; Performing linear interpolation</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">int_data</span>, <span class="kw">pupil</span> <span class="kw">=</span> <span class="no">mean_pupil</span>, <span class="kw">group</span> <span class="kw">=</span> <span class="st">'subject'</span>)</pre></body></html></div>
+<p>The next step is to interpolate across blinks. Filtering before the
+interpolation generally allows more sensible interpolation, but the way
+this is done varies a bit on the data, and you will see examples without
+this. We can interpolate in this package either linear or cubic, but
+again, it’s best to always check your data afterwards to make sure it
+looks the way you might expect. Here we opt for the linear
+interpolation:</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">int_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/interpolate_data.html">interpolate_data</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">filtered_data</span>,</span>
+<span>                             pupil <span class="op">=</span> <span class="va">mean_pupil</span>,</span>
+<span>                             type <span class="op">=</span> <span class="st">'linear'</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Performing linear interpolation</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">int_data</span>, pupil <span class="op">=</span> <span class="va">mean_pupil</span>, group <span class="op">=</span> <span class="st">'subject'</span><span class="op">)</span></span></code></pre></div>
 <p><img src="PupillometryR_files/figure-html/unnamed-chunk-13-1.png" width="700"></p>
-<p>Baselining the data is a powerful way of making sure we control for between-participant variance of average pupil size. If we are looking at analyses that are largely within-subject, as we do here, this may not be such an issue, but we will do this anyway. This function allows us to baseline to the mean pupil size within a time window. Here we are just taking the first 100ms of the trial. If your baseline period is just outside of your analysis window (which it often will be), you can use subset_data() to remove that after baselining.</p>
-<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="no">base_data</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/baseline_data.html">baseline_data</a></span>(<span class="kw">data</span> <span class="kw">=</span> <span class="no">int_data</span>,
-                           <span class="kw">pupil</span> <span class="kw">=</span> <span class="no">mean_pupil</span>,
-                           <span class="kw">start</span> <span class="kw">=</span> <span class="fl">0</span>,
-                           <span class="kw">stop</span> <span class="kw">=</span> <span class="fl">100</span>)
-
-<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">base_data</span>, <span class="kw">pupil</span> <span class="kw">=</span> <span class="no">mean_pupil</span>, <span class="kw">group</span> <span class="kw">=</span> <span class="st">'subject'</span>)</pre></body></html></div>
+<p>Baselining the data is a powerful way of making sure we control for
+between-participant variance of average pupil size. If we are looking at
+analyses that are largely within-subject, as we do here, this may not be
+such an issue, but we will do this anyway. This function allows us to
+baseline to the mean pupil size within a time window. Here we are just
+taking the first 100ms of the trial. If your baseline period is just
+outside of your analysis window (which it often will be), you can use
+subset_data() to remove that after baselining.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">base_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/baseline_data.html">baseline_data</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">int_data</span>,</span>
+<span>                           pupil <span class="op">=</span> <span class="va">mean_pupil</span>,</span>
+<span>                           start <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>                           stop <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Baselining for each subject and trial. If this is not the intended behaviour you may wish to do this manually.</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">base_data</span>, pupil <span class="op">=</span> <span class="va">mean_pupil</span>, group <span class="op">=</span> <span class="st">'subject'</span><span class="op">)</span></span></code></pre></div>
 <p><img src="PupillometryR_files/figure-html/unnamed-chunk-14-1.png" width="700"></p>
 </div>
-<div id="window-analyses" class="section level2">
-<h2 class="hasAnchor">
-<a href="#window-analyses" class="anchor"></a>Window analyses</h2>
-<p>PupillometryR gives us a couple of options for window analysis. One is overall averages, the other is to break the data up into discrete time windows, and to analyse them. First we will opt for the overall averages. We can plot these with any of boxplots, violin plots, or, since the new edition, Micah Allen-esque raincloud plots (Allen et al., 2018).</p>
-<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="no">window</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/create_window_data.html">create_window_data</a></span>(<span class="kw">data</span> <span class="kw">=</span> <span class="no">base_data</span>,
-                             <span class="kw">pupil</span> <span class="kw">=</span> <span class="no">mean_pupil</span>)
-
-<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">window</span>, <span class="kw">pupil</span> <span class="kw">=</span> <span class="no">mean_pupil</span>, <span class="kw">windows</span> <span class="kw">=</span> <span class="no">F</span>, <span class="kw">geom</span> <span class="kw">=</span> <span class="st">'boxplot'</span>)</pre></body></html></div>
+<div class="section level2">
+<h2 id="window-analyses">Window analyses<a class="anchor" aria-label="anchor" href="#window-analyses"></a>
+</h2>
+<p>PupillometryR gives us a couple of options for window analysis. One
+is overall averages, the other is to break the data up into discrete
+time windows, and to analyse them. First we will opt for the overall
+averages. We can plot these with any of boxplots, violin plots, or,
+since the new edition, Micah Allen-esque raincloud plots (Allen et al.,
+2018).</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">window</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_window_data.html">create_window_data</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">base_data</span>,</span>
+<span>                             pupil <span class="op">=</span> <span class="va">mean_pupil</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">window</span>, pupil <span class="op">=</span> <span class="va">mean_pupil</span>, windows <span class="op">=</span> <span class="cn">F</span>, geom <span class="op">=</span> <span class="st">'boxplot'</span><span class="op">)</span></span></code></pre></div>
 <p><img src="PupillometryR_files/figure-html/unnamed-chunk-15-1.png" width="700"></p>
-<div class="sourceCode" id="cb17"><html><body><pre class="r">
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">window</span>)
-<span class="co">#&gt;   ID Type   mean_pupil</span>
-<span class="co">#&gt; 1  1 Easy -0.227838342</span>
-<span class="co">#&gt; 2  1 Hard -0.069627994</span>
-<span class="co">#&gt; 3  2 Easy -0.100820080</span>
-<span class="co">#&gt; 4  2 Hard  0.001625416</span>
-<span class="co">#&gt; 5  3 Easy -0.092679658</span>
-<span class="co">#&gt; 6  3 Hard  0.000489152</span></pre></body></html></div>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">window</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   ID Type   mean_pupil</span></span>
+<span><span class="co">#&gt; 1  1 Easy -0.227838342</span></span>
+<span><span class="co">#&gt; 2  1 Hard -0.069627994</span></span>
+<span><span class="co">#&gt; 3  2 Easy -0.100820080</span></span>
+<span><span class="co">#&gt; 4  2 Hard  0.001625416</span></span>
+<span><span class="co">#&gt; 5  3 Easy -0.092679658</span></span>
+<span><span class="co">#&gt; 6  3 Hard  0.000489152</span></span></code></pre></div>
 <p>We could then simply analyse this with a t-test if we wished.</p>
-<div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/stats/t.test.html">t.test</a></span>(<span class="no">mean_pupil</span> ~ <span class="no">Type</span>, <span class="kw">paired</span> <span class="kw">=</span> <span class="no">T</span>, <span class="kw">data</span> <span class="kw">=</span> <span class="no">window</span>)
-<span class="co">#&gt; </span>
-<span class="co">#&gt;  Paired t-test</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; data:  mean_pupil by Type</span>
-<span class="co">#&gt; t = -3.8043, df = 7, p-value = 0.006677</span>
-<span class="co">#&gt; alternative hypothesis: true difference in means is not equal to 0</span>
-<span class="co">#&gt; 95 percent confidence interval:</span>
-<span class="co">#&gt;  -0.20721815 -0.04835966</span>
-<span class="co">#&gt; sample estimates:</span>
-<span class="co">#&gt; mean of the differences </span>
-<span class="co">#&gt;              -0.1277889</span></pre></body></html></div>
-<p>Alternatively, we may wish to look at the data in chunks. Here we group the data in to 2000ms timebins for analysis (and we will opt for the raincloud plot in this instance):</p>
-<div class="sourceCode" id="cb19"><html><body><pre class="r"><span class="no">timeslots</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/create_time_windows.html">create_time_windows</a></span>(<span class="kw">data</span> <span class="kw">=</span> <span class="no">base_data</span>,
-                                 <span class="kw">pupil</span> <span class="kw">=</span> <span class="no">mean_pupil</span>,
-                                 <span class="kw">breaks</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">2000</span>, <span class="fl">4000</span>, <span class="fl">6000</span>, <span class="fl">8000</span>, <span class="fl">10000</span>))
-
-<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">timeslots</span>, <span class="kw">pupil</span> <span class="kw">=</span> <span class="no">mean_pupil</span>, <span class="kw">windows</span> <span class="kw">=</span> <span class="no">T</span>, <span class="kw">geom</span> <span class="kw">=</span> <span class="st">'raincloud'</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">window</span>, <span class="fu"><a href="https://rdrr.io/r/stats/t.test.html" class="external-link">t.test</a></span><span class="op">(</span><span class="va">mean_pupil</span><span class="op">[</span><span class="va">Type</span> <span class="op">==</span> <span class="st">'Easy'</span><span class="op">]</span>, <span class="va">mean_pupil</span><span class="op">[</span><span class="va">Type</span> <span class="op">==</span> <span class="st">'Hard'</span><span class="op">]</span>, paired <span class="op">=</span> <span class="cn">T</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  Paired t-test</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; data:  mean_pupil[Type == "Easy"] and mean_pupil[Type == "Hard"]</span></span>
+<span><span class="co">#&gt; t = -3.8043, df = 7, p-value = 0.006677</span></span>
+<span><span class="co">#&gt; alternative hypothesis: true mean difference is not equal to 0</span></span>
+<span><span class="co">#&gt; 95 percent confidence interval:</span></span>
+<span><span class="co">#&gt;  -0.20721815 -0.04835966</span></span>
+<span><span class="co">#&gt; sample estimates:</span></span>
+<span><span class="co">#&gt; mean difference </span></span>
+<span><span class="co">#&gt;      -0.1277889</span></span></code></pre></div>
+<p>Alternatively, we may wish to look at the data in chunks. Here we
+group the data in to 2000ms timebins for analysis (and we will opt for
+the raincloud plot in this instance):</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">timeslots</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_time_windows.html">create_time_windows</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">base_data</span>,</span>
+<span>                                 pupil <span class="op">=</span> <span class="va">mean_pupil</span>,</span>
+<span>                                 breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2000</span>, <span class="fl">4000</span>, <span class="fl">6000</span>, <span class="fl">8000</span>, <span class="fl">10000</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">timeslots</span>, pupil <span class="op">=</span> <span class="va">mean_pupil</span>, windows <span class="op">=</span> <span class="cn">T</span>, geom <span class="op">=</span> <span class="st">'raincloud'</span><span class="op">)</span></span></code></pre></div>
 <p><img src="PupillometryR_files/figure-html/unnamed-chunk-17-1.png" width="700"></p>
-<div class="sourceCode" id="cb20"><html><body><pre class="r">
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">timeslots</span>)
-<span class="co">#&gt;   ID Type Window  mean_pupil</span>
-<span class="co">#&gt; 1  1 Easy      1 -0.01558936</span>
-<span class="co">#&gt; 2  1 Easy      2 -0.19736969</span>
-<span class="co">#&gt; 3  1 Easy      3 -0.38981814</span>
-<span class="co">#&gt; 4  1 Easy      4 -0.29046219</span>
-<span class="co">#&gt; 5  1 Easy      5 -0.25125856</span>
-<span class="co">#&gt; 6  1 Hard      1  0.03128440</span></pre></body></html></div>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">timeslots</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   ID Type Window  mean_pupil</span></span>
+<span><span class="co">#&gt; 1  1 Easy      1 -0.01558936</span></span>
+<span><span class="co">#&gt; 2  1 Easy      2 -0.19736969</span></span>
+<span><span class="co">#&gt; 3  1 Easy      3 -0.38981814</span></span>
+<span><span class="co">#&gt; 4  1 Easy      4 -0.29046219</span></span>
+<span><span class="co">#&gt; 5  1 Easy      5 -0.25125856</span></span>
+<span><span class="co">#&gt; 6  1 Hard      1  0.03128440</span></span></code></pre></div>
 <p>And again, we could analyse this with a linear model or an anova:</p>
-<div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span>(<span class="no">mean_pupil</span> ~ <span class="no">Window</span> * <span class="no">Type</span>, <span class="kw">data</span> <span class="kw">=</span> <span class="no">timeslots</span>)
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Call:</span>
-<span class="co">#&gt; lm(formula = mean_pupil ~ Window * Type, data = timeslots)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Coefficients:</span>
-<span class="co">#&gt;      (Intercept)           Window2           Window3           Window4  </span>
-<span class="co">#&gt;       -0.0164128        -0.0655360        -0.1741322        -0.2827709  </span>
-<span class="co">#&gt;          Window5          TypeHard  Window2:TypeHard  Window3:TypeHard  </span>
-<span class="co">#&gt;       -0.3049736         0.0504154         0.0758177         0.1709178  </span>
-<span class="co">#&gt; Window4:TypeHard  Window5:TypeHard  </span>
-<span class="co">#&gt;        0.1426255        -0.0005589</span></pre></body></html></div>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">mean_pupil</span> <span class="op">~</span> <span class="va">Window</span> <span class="op">*</span> <span class="va">Type</span>, data <span class="op">=</span> <span class="va">timeslots</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Call:</span></span>
+<span><span class="co">#&gt; lm(formula = mean_pupil ~ Window * Type, data = timeslots)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Coefficients:</span></span>
+<span><span class="co">#&gt;      (Intercept)           Window2           Window3           Window4  </span></span>
+<span><span class="co">#&gt;       -0.0164128        -0.0655360        -0.1741322        -0.2827709  </span></span>
+<span><span class="co">#&gt;          Window5          TypeHard  Window2:TypeHard  Window3:TypeHard  </span></span>
+<span><span class="co">#&gt;       -0.3049736         0.0504154         0.0758177         0.1709178  </span></span>
+<span><span class="co">#&gt; Window4:TypeHard  Window5:TypeHard  </span></span>
+<span><span class="co">#&gt;        0.1426255        -0.0005589</span></span></code></pre></div>
 </div>
-<div id="modelling-with-generalised-additive-models" class="section level2">
-<h2 class="hasAnchor">
-<a href="#modelling-with-generalised-additive-models" class="anchor"></a>Modelling with Generalised Additive Models</h2>
-<p>Here we interfact with the mgcv package, an exceptionally powerful package for GAM data, by Simon Wood. I strongly encourage reading the vignette and checking out some of the great online tutorials (of which there are plenty; I quite like Michael Clark’s one <a href="https://m-clark.github.io/generalized-additive-models/case_for_gam.html">here</a>) before proceeding with these.</p>
-<p>We have to do a little bit of setting up of our variables (scaling and centering) before we continue. I need to make some variables numeric (the ones with an n on the end), and I am using the way trials are labelled to make this a numeric variable (this would probably be different for your data).</p>
-<div class="sourceCode" id="cb22"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">mgcv</span>)
-<span class="co">#&gt; Loading required package: nlme</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Attaching package: 'nlme'</span>
-<span class="co">#&gt; The following object is masked from 'package:dplyr':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     collapse</span>
-<span class="co">#&gt; This is mgcv 1.8-31. For overview type 'help("mgcv-package")'.</span>
-
-<span class="no">base_data</span>$<span class="no">IDn</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="no">base_data</span>$<span class="no">ID</span>)
-<span class="no">base_data</span>$<span class="no">Typen</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(<span class="no">base_data</span>$<span class="no">Type</span> <span class="kw">==</span> <span class="st">'Easy'</span>, <span class="fl">.5</span>, -<span class="fl">.5</span>)
-<span class="no">base_data</span>$<span class="no">Trialn</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/substr.html">substr</a></span>(<span class="no">base_data</span>$<span class="no">Trial</span>, <span class="fl">5</span>, <span class="fl">5</span>))
-<span class="no">base_data</span>$<span class="no">Trialn</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(<span class="no">base_data</span>$<span class="no">Typen</span> <span class="kw">==</span> <span class="fl">.5</span>, <span class="no">base_data</span>$<span class="no">Trialn</span>, <span class="no">base_data</span>$<span class="no">Trialn</span> + <span class="fl">3</span>)
-<span class="no">base_data</span>$<span class="no">ID</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span>(<span class="no">base_data</span>$<span class="no">ID</span>)
-<span class="no">base_data</span>$<span class="no">Trial</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span>(<span class="no">base_data</span>$<span class="no">Trial</span>)</pre></body></html></div>
-<p>Right, let’s proceed with setting up a simple model. It’s recommended for the amount of data points we might have for PupillometryR, bams might be a better option, but both gam() and bam() will work.</p>
-<div class="sourceCode" id="cb23"><html><body><pre class="r"><span class="no">m1</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/mgcv/man/bam.html">bam</a></span>(<span class="no">mean_pupil</span> ~ <span class="fu"><a href="https://rdrr.io/pkg/mgcv/man/s.html">s</a></span>(<span class="no">Time</span>) +
-            <span class="fu"><a href="https://rdrr.io/pkg/mgcv/man/s.html">s</a></span>(<span class="no">Time</span>,  <span class="kw">by</span> <span class="kw">=</span> <span class="no">Typen</span>),
-          <span class="kw">data</span> <span class="kw">=</span> <span class="no">base_data</span>,
-          <span class="kw">family</span> <span class="kw">=</span> <span class="no">gaussian</span>)
-
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="no">m1</span>)
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Family: gaussian </span>
-<span class="co">#&gt; Link function: identity </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Formula:</span>
-<span class="co">#&gt; mean_pupil ~ s(Time) + s(Time, by = Typen)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Parametric coefficients:</span>
-<span class="co">#&gt;              Estimate Std. Error t value Pr(&gt;|t|)    </span>
-<span class="co">#&gt; (Intercept) -0.117178   0.001984  -59.05   &lt;2e-16 ***</span>
-<span class="co">#&gt; ---</span>
-<span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Approximate significance of smooth terms:</span>
-<span class="co">#&gt;                 edf Ref.df     F p-value    </span>
-<span class="co">#&gt; s(Time)       7.197  8.226 434.7  &lt;2e-16 ***</span>
-<span class="co">#&gt; s(Time):Typen 7.331  8.483 167.2  &lt;2e-16 ***</span>
-<span class="co">#&gt; ---</span>
-<span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; R-sq.(adj) =  0.341   Deviance explained = 34.2%</span>
-<span class="co">#&gt; fREML = -2050.2  Scale est. = 0.037995  n = 9648</span></pre></body></html></div>
-<p>We can use our default plotting function to see how it looks compared to the raw data, just by specifying the model= argument.</p>
-<div class="sourceCode" id="cb24"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">base_data</span>, <span class="kw">pupil</span> <span class="kw">=</span> <span class="no">mean_pupil</span>, <span class="kw">group</span> <span class="kw">=</span> <span class="st">'condition'</span>, <span class="kw">model</span> <span class="kw">=</span> <span class="no">m1</span>)</pre></body></html></div>
+<div class="section level2">
+<h2 id="modelling-with-generalised-additive-models">Modelling with Generalised Additive Models<a class="anchor" aria-label="anchor" href="#modelling-with-generalised-additive-models"></a>
+</h2>
+<p>Here we interfact with the mgcv package, an exceptionally powerful
+package for GAM data, by Simon Wood. I strongly encourage reading the
+vignette and checking out some of the great online tutorials (of which
+there are plenty; I quite like Michael Clark’s one <a href="https://m-clark.github.io/generalized-additive-models/case_for_gam.html" class="external-link">here</a>)
+before proceeding with these.</p>
+<p>We have to do a little bit of setting up of our variables (scaling
+and centering) before we continue. I need to make some variables numeric
+(the ones with an n on the end), and I am using the way trials are
+labelled to make this a numeric variable (this would probably be
+different for your data).</p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">mgcv</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Loading required package: nlme</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'nlme'</span></span>
+<span><span class="co">#&gt; The following object is masked from 'package:dplyr':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     collapse</span></span>
+<span><span class="co">#&gt; This is mgcv 1.8-42. For overview type 'help("mgcv-package")'.</span></span>
+<span></span>
+<span><span class="va">base_data</span><span class="op">$</span><span class="va">IDn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">base_data</span><span class="op">$</span><span class="va">ID</span><span class="op">)</span></span>
+<span><span class="va">base_data</span><span class="op">$</span><span class="va">Typen</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">base_data</span><span class="op">$</span><span class="va">Type</span> <span class="op">==</span> <span class="st">'Easy'</span>, <span class="fl">.5</span>, <span class="op">-</span><span class="fl">.5</span><span class="op">)</span></span>
+<span><span class="va">base_data</span><span class="op">$</span><span class="va">Trialn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/substr.html" class="external-link">substr</a></span><span class="op">(</span><span class="va">base_data</span><span class="op">$</span><span class="va">Trial</span>, <span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">base_data</span><span class="op">$</span><span class="va">Trialn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">base_data</span><span class="op">$</span><span class="va">Typen</span> <span class="op">==</span> <span class="fl">.5</span>, <span class="va">base_data</span><span class="op">$</span><span class="va">Trialn</span>, <span class="va">base_data</span><span class="op">$</span><span class="va">Trialn</span> <span class="op">+</span> <span class="fl">3</span><span class="op">)</span></span>
+<span><span class="va">base_data</span><span class="op">$</span><span class="va">ID</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">base_data</span><span class="op">$</span><span class="va">ID</span><span class="op">)</span></span>
+<span><span class="va">base_data</span><span class="op">$</span><span class="va">Trial</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">base_data</span><span class="op">$</span><span class="va">Trial</span><span class="op">)</span></span></code></pre></div>
+<p>Right, let’s proceed with setting up a simple model. It’s recommended
+for the amount of data points we might have for PupillometryR, bams
+might be a better option, but both gam() and bam() will work.</p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">m1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/mgcv/man/bam.html" class="external-link">bam</a></span><span class="op">(</span><span class="va">mean_pupil</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/pkg/mgcv/man/s.html" class="external-link">s</a></span><span class="op">(</span><span class="va">Time</span><span class="op">)</span> <span class="op">+</span></span>
+<span>            <span class="fu"><a href="https://rdrr.io/pkg/mgcv/man/s.html" class="external-link">s</a></span><span class="op">(</span><span class="va">Time</span>,  by <span class="op">=</span> <span class="va">Typen</span><span class="op">)</span>,</span>
+<span>          data <span class="op">=</span> <span class="va">base_data</span>,</span>
+<span>          family <span class="op">=</span> <span class="va">gaussian</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">m1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Family: gaussian </span></span>
+<span><span class="co">#&gt; Link function: identity </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Formula:</span></span>
+<span><span class="co">#&gt; mean_pupil ~ s(Time) + s(Time, by = Typen)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Parametric coefficients:</span></span>
+<span><span class="co">#&gt;              Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
+<span><span class="co">#&gt; (Intercept) -0.117178   0.001984  -59.05   &lt;2e-16 ***</span></span>
+<span><span class="co">#&gt; ---</span></span>
+<span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Approximate significance of smooth terms:</span></span>
+<span><span class="co">#&gt;                 edf Ref.df     F p-value    </span></span>
+<span><span class="co">#&gt; s(Time)       7.197  8.226 435.0  &lt;2e-16 ***</span></span>
+<span><span class="co">#&gt; s(Time):Typen 7.331  8.483 167.2  &lt;2e-16 ***</span></span>
+<span><span class="co">#&gt; ---</span></span>
+<span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; R-sq.(adj) =  0.341   Deviance explained = 34.2%</span></span>
+<span><span class="co">#&gt; fREML = -2050.2  Scale est. = 0.037995  n = 9648</span></span></code></pre></div>
+<p>We can use our default plotting function to see how it looks compared
+to the raw data, just by specifying the model= argument.</p>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">base_data</span>, pupil <span class="op">=</span> <span class="va">mean_pupil</span>, group <span class="op">=</span> <span class="st">'condition'</span>, model <span class="op">=</span> <span class="va">m1</span><span class="op">)</span></span></code></pre></div>
 <p><img src="PupillometryR_files/figure-html/unnamed-chunk-21-1.png" width="700"></p>
-<p>Of course there is the fact that we expect there to by some variation by trial, and that we should expect there to be differences for each participant. Our model also only accounts for a small amount of the variance. This model, therefore is no good. The way to check this is to assess model fit with the qqnorm, and to check the autocorrelation. We can do this with the help of the itsadug package:</p>
-<div class="sourceCode" id="cb25"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/stats/qqnorm.html">qqnorm</a></span>(<span class="fu"><a href="https://rdrr.io/r/stats/residuals.html">resid</a></span>(<span class="no">m1</span>))</pre></body></html></div>
+<p>Of course there is the fact that we expect there to by some variation
+by trial, and that we should expect there to be differences for each
+participant. Our model also only accounts for a small amount of the
+variance. This model, therefore is no good. The way to check this is to
+assess model fit with the qqnorm, and to check the autocorrelation. We
+can do this with the help of the itsadug package:</p>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/qqnorm.html" class="external-link">qqnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/residuals.html" class="external-link">resid</a></span><span class="op">(</span><span class="va">m1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="PupillometryR_files/figure-html/unnamed-chunk-22-1.png" width="700"></p>
-<div class="sourceCode" id="cb26"><html><body><pre class="r">
-<span class="kw pkg">itsadug</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/itsadug/man/acf_resid.html">acf_resid</a></span>(<span class="no">m1</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="fu">itsadug</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/itsadug/man/acf_resid.html" class="external-link">acf_resid</a></span><span class="op">(</span><span class="va">m1</span><span class="op">)</span></span></code></pre></div>
 <p><img src="PupillometryR_files/figure-html/unnamed-chunk-22-2.png" width="700"></p>
-<p>While the qqnorm looks to be almost passable, the autocorrelation in the second plot is very high. This is an important consideration in time-series data, and due consideration needs to be given to this. For a full discussion of how this issue affects time course data, and specifically pupil data, I highly recommend <a href="https://journals.sagepub.com/doi/10.1177/2331216519832483">Jacolien van Rij et al’s paper here</a>.</p>
-<p>To reduce autocorrelation there are many methods we can try, as you will see from the above paper. I will stop short of repeating each of the steps taken in the excellent paper above, and jump straight away to a much more appropriate model for this data. First I will code in events (participant per trial). I will also create a second data frame to do this (model_data), so that the data we are working with doesn’t lose its properties, and we can keep using the plotting functions.</p>
-<div class="sourceCode" id="cb27"><html><body><pre class="r"><span class="no">base_data</span>$<span class="no">Event</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/interaction.html">interaction</a></span>(<span class="no">base_data</span>$<span class="no">ID</span>, <span class="no">base_data</span>$<span class="no">Trial</span>, <span class="kw">drop</span> <span class="kw">=</span> <span class="no">T</span>)
-
-<span class="no">model_data</span> <span class="kw">&lt;-</span> <span class="no">base_data</span>
-<span class="no">model_data</span> <span class="kw">&lt;-</span> <span class="kw pkg">itsadug</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/itsadug/man/start_event.html">start_event</a></span>(<span class="no">model_data</span>,
-                          <span class="kw">column</span> <span class="kw">=</span> <span class="st">'Time'</span>, <span class="kw">event</span> <span class="kw">=</span> <span class="st">'Event'</span>)
-
-<span class="no">model_data</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/droplevels.html">droplevels</a></span>(<span class="no">model_data</span>[<span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span>(<span class="no">model_data</span>$<span class="no">ID</span>,
-                                          <span class="no">model_data</span>$<span class="no">Trial</span>,
-                                          <span class="no">model_data</span>$<span class="no">Time</span>),])</pre></body></html></div>
-<p>We now need to model this. We are setting an AR parameter, and allowing events to vary by time. You will see our deviance accounted for is now up around 96% - much better! The qqnorm is still far from perfect, and the commented-out model below m2 would do a bit better at this (again from van Rij et al) by using a scaled t distribution - but would take ages to run.</p>
-<div class="sourceCode" id="cb28"><html><body><pre class="r"><span class="no">m2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/mgcv/man/bam.html">bam</a></span>(<span class="no">mean_pupil</span> ~ <span class="no">Typen</span> +
-            <span class="fu"><a href="https://rdrr.io/pkg/mgcv/man/s.html">s</a></span>(<span class="no">Time</span>,  <span class="kw">by</span> <span class="kw">=</span> <span class="no">Typen</span>) +
-            <span class="fu"><a href="https://rdrr.io/pkg/mgcv/man/s.html">s</a></span>(<span class="no">Time</span>, <span class="no">Event</span>, <span class="kw">bs</span> <span class="kw">=</span> <span class="st">'fs'</span>, <span class="kw">m</span> <span class="kw">=</span> <span class="fl">1</span>),
-          <span class="kw">data</span> <span class="kw">=</span> <span class="no">base_data</span>,
-          <span class="kw">family</span> <span class="kw">=</span> <span class="no">gaussian</span>,
-          <span class="kw">discrete</span> <span class="kw">=</span> <span class="no">T</span>,
-          <span class="kw">AR.start</span> <span class="kw">=</span> <span class="no">model_data</span>$<span class="no">start.event</span>, <span class="kw">rho</span> <span class="kw">=</span> <span class="fl">.6</span>)
-
-<span class="co"># m2 &lt;- bam(mean_pupil ~ </span>
-          <span class="co">#   s(Time,  by = Typen) +</span>
-          <span class="co">#   s(Time, Event, bs = 'fs', m = 1),</span>
-          <span class="co"># data = base_data,</span>
-          <span class="co"># family = scat,</span>
-          <span class="co"># discrete = T,</span>
-          <span class="co"># AR.start = model_data$start.event, rho = .6)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="no">m2</span>)
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Family: gaussian </span>
-<span class="co">#&gt; Link function: identity </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Formula:</span>
-<span class="co">#&gt; mean_pupil ~ Typen + s(Time, by = Typen) + s(Time, Event, bs = "fs", </span>
-<span class="co">#&gt;     m = 1)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Parametric coefficients:</span>
-<span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)    </span>
-<span class="co">#&gt; (Intercept) -0.16315    0.01448 -11.268   &lt;2e-16 ***</span>
-<span class="co">#&gt; Typen        0.03605    0.08891   0.406    0.685    </span>
-<span class="co">#&gt; ---</span>
-<span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Approximate significance of smooth terms:</span>
-<span class="co">#&gt;                   edf  Ref.df       F p-value    </span>
-<span class="co">#&gt; s(Time):Typen   6.361   6.624   2.367  0.0165 *  </span>
-<span class="co">#&gt; s(Time,Event) 418.828 431.000 357.310  &lt;2e-16 ***</span>
-<span class="co">#&gt; ---</span>
-<span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Rank: 443/444</span>
-<span class="co">#&gt; R-sq.(adj) =   0.96   Deviance explained = 96.2%</span>
-<span class="co">#&gt; fREML = -21837  Scale est. = 0.0007909  n = 9648</span>
-<span class="fu"><a href="https://rdrr.io/r/stats/qqnorm.html">qqnorm</a></span>(<span class="fu"><a href="https://rdrr.io/r/stats/residuals.html">resid</a></span>(<span class="no">m2</span>))</pre></body></html></div>
+<p>While the qqnorm looks to be almost passable, the autocorrelation in
+the second plot is very high. This is an important consideration in
+time-series data, and due consideration needs to be given to this. For a
+full discussion of how this issue affects time course data, and
+specifically pupil data, I highly recommend <a href="https://journals.sagepub.com/doi/10.1177/2331216519832483" class="external-link">Jacolien
+van Rij et al’s paper here</a>.</p>
+<p>To reduce autocorrelation there are many methods we can try, as you
+will see from the above paper. I will stop short of repeating each of
+the steps taken in the excellent paper above, and jump straight away to
+a much more appropriate model for this data. First I will code in events
+(participant per trial). I will also create a second data frame to do
+this (model_data), so that the data we are working with doesn’t lose its
+properties, and we can keep using the plotting functions.</p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">itsadug</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Loading required package: plotfunctions</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'plotfunctions'</span></span>
+<span><span class="co">#&gt; The following object is masked from 'package:ggplot2':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     alpha</span></span>
+<span><span class="co">#&gt; Loaded package itsadug 2.4 (see 'help("itsadug")' ).</span></span>
+<span><span class="va">base_data</span><span class="op">$</span><span class="va">Event</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/interaction.html" class="external-link">interaction</a></span><span class="op">(</span><span class="va">base_data</span><span class="op">$</span><span class="va">ID</span>, <span class="va">base_data</span><span class="op">$</span><span class="va">Trial</span>, drop <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">model_data</span> <span class="op">&lt;-</span> <span class="va">base_data</span></span>
+<span><span class="va">model_data</span> <span class="op">&lt;-</span> <span class="fu">itsadug</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/itsadug/man/start_event.html" class="external-link">start_event</a></span><span class="op">(</span><span class="va">model_data</span>,</span>
+<span>                          column <span class="op">=</span> <span class="st">'Time'</span>, event <span class="op">=</span> <span class="st">'Event'</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">model_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/droplevels.html" class="external-link">droplevels</a></span><span class="op">(</span><span class="va">model_data</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">model_data</span><span class="op">$</span><span class="va">ID</span>,</span>
+<span>                                          <span class="va">model_data</span><span class="op">$</span><span class="va">Trial</span>,</span>
+<span>                                          <span class="va">model_data</span><span class="op">$</span><span class="va">Time</span><span class="op">)</span>,<span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<p>We now need to model this. We are setting an AR parameter, and
+allowing events to vary by time. You will see our deviance accounted for
+is now up around 96% - much better! The qqnorm is still far from
+perfect, and the commented-out model below m2 would do a bit better at
+this (again from van Rij et al) by using a scaled t distribution - but
+would take ages to run.</p>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">m2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/mgcv/man/bam.html" class="external-link">bam</a></span><span class="op">(</span><span class="va">mean_pupil</span> <span class="op">~</span> <span class="va">Typen</span> <span class="op">+</span></span>
+<span>            <span class="fu"><a href="https://rdrr.io/pkg/mgcv/man/s.html" class="external-link">s</a></span><span class="op">(</span><span class="va">Time</span>,  by <span class="op">=</span> <span class="va">Typen</span><span class="op">)</span> <span class="op">+</span></span>
+<span>            <span class="fu"><a href="https://rdrr.io/pkg/mgcv/man/s.html" class="external-link">s</a></span><span class="op">(</span><span class="va">Time</span>, <span class="va">Event</span>, bs <span class="op">=</span> <span class="st">'fs'</span>, m <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
+<span>          data <span class="op">=</span> <span class="va">base_data</span>,</span>
+<span>          family <span class="op">=</span> <span class="va">gaussian</span>,</span>
+<span>          discrete <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>          AR.start <span class="op">=</span> <span class="va">model_data</span><span class="op">$</span><span class="va">start.event</span>, rho <span class="op">=</span> <span class="fl">.6</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># m2 &lt;- bam(mean_pupil ~ </span></span>
+<span>          <span class="co">#   s(Time,  by = Typen) +</span></span>
+<span>          <span class="co">#   s(Time, Event, bs = 'fs', m = 1),</span></span>
+<span>          <span class="co"># data = base_data,</span></span>
+<span>          <span class="co"># family = scat,</span></span>
+<span>          <span class="co"># discrete = T,</span></span>
+<span>          <span class="co"># AR.start = model_data$start.event, rho = .6)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">m2</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Family: gaussian </span></span>
+<span><span class="co">#&gt; Link function: identity </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Formula:</span></span>
+<span><span class="co">#&gt; mean_pupil ~ Typen + s(Time, by = Typen) + s(Time, Event, bs = "fs", </span></span>
+<span><span class="co">#&gt;     m = 1)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Parametric coefficients:</span></span>
+<span><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
+<span><span class="co">#&gt; (Intercept) -0.11924    0.02027  -5.883 4.17e-09 ***</span></span>
+<span><span class="co">#&gt; Typen       -0.01090    0.08366  -0.130    0.896    </span></span>
+<span><span class="co">#&gt; ---</span></span>
+<span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Approximate significance of smooth terms:</span></span>
+<span><span class="co">#&gt;                  edf  Ref.df       F p-value    </span></span>
+<span><span class="co">#&gt; s(Time):Typen   6.36   6.624   2.689  0.0174 *  </span></span>
+<span><span class="co">#&gt; s(Time,Event) 419.34 430.000 358.150  &lt;2e-16 ***</span></span>
+<span><span class="co">#&gt; ---</span></span>
+<span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Rank: 443/444</span></span>
+<span><span class="co">#&gt; R-sq.(adj) =   0.96   Deviance explained = 96.2%</span></span>
+<span><span class="co">#&gt; fREML = -21822  Scale est. = 0.00079088  n = 9648</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/qqnorm.html" class="external-link">qqnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/residuals.html" class="external-link">resid</a></span><span class="op">(</span><span class="va">m2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="PupillometryR_files/figure-html/unnamed-chunk-24-1.png" width="700"></p>
-<div class="sourceCode" id="cb29"><html><body><pre class="r"><span class="kw pkg">itsadug</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/itsadug/man/acf_resid.html">acf_resid</a></span>(<span class="no">m2</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">itsadug</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/itsadug/man/acf_resid.html" class="external-link">acf_resid</a></span><span class="op">(</span><span class="va">m2</span><span class="op">)</span></span></code></pre></div>
 <p><img src="PupillometryR_files/figure-html/unnamed-chunk-24-2.png" width="700"></p>
-<div class="sourceCode" id="cb30"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">base_data</span>, <span class="kw">pupil</span> <span class="kw">=</span> <span class="no">mean_pupil</span>, <span class="kw">group</span> <span class="kw">=</span> <span class="st">'condition'</span>, <span class="kw">model</span> <span class="kw">=</span> <span class="no">m2</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">base_data</span>, pupil <span class="op">=</span> <span class="va">mean_pupil</span>, group <span class="op">=</span> <span class="st">'condition'</span>, model <span class="op">=</span> <span class="va">m2</span><span class="op">)</span></span></code></pre></div>
 <p><img src="PupillometryR_files/figure-html/unnamed-chunk-24-3.png" width="700"></p>
-<p>The summary from our second model indicates that there may be marginal evidence for this effect of condition. But how and when do they diverge???</p>
-<p>(In fact, TJ Mahr was good enough to point out this elegant solution for this using GAM methods with the itsadug package, which I will <a href="https://gist.github.com/tjmahr/0d2b41ea1525205a99b19770fc916a90">link to</a> rather than take credit for)</p>
+<p>The summary from our second model indicates that there may be
+marginal evidence for this effect of condition. But how and when do they
+diverge???</p>
+<p>(In fact, TJ Mahr was good enough to point out this elegant solution
+for this using GAM methods with the itsadug package, which I will <a href="https://gist.github.com/tjmahr/0d2b41ea1525205a99b19770fc916a90" class="external-link">link
+to</a> rather than take credit for)</p>
 </div>
-<div id="estimating-divergences-with-functional-data-analysis" class="section level2">
-<h2 class="hasAnchor">
-<a href="#estimating-divergences-with-functional-data-analysis" class="anchor"></a>Estimating divergences with functional data analysis</h2>
-<p>The above analyses may well suffice for what we have planned. However, sometimes it’s useful for analysis to examine change over time, especially how and when two conditions diverge, and we can do that with Functional Data Analysis (FDA). This part of the package makes usage of the fda package. The complete guide really has been written in 1997 by Ramsay and Silverman, and there is a very helpful website on FDA <a href="http://www.psych.mcgill.ca/misc/fda/resources.html">here</a>. This package is currently only setup to use this analysis for two-condition experiments, but I hope to add options for functional ANOVA in the future.</p>
-<p>To do this, first we want get the difference between the two conditions for each participant. By default this package wil take condition 2 - condition 1, so reorder the factors if required.</p>
-<div class="sourceCode" id="cb31"><html><body><pre class="r"><span class="no">differences</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/create_difference_data.html">create_difference_data</a></span>(<span class="kw">data</span> <span class="kw">=</span> <span class="no">base_data</span>,
-                                      <span class="kw">pupil</span> <span class="kw">=</span> <span class="no">mean_pupil</span>)
-<span class="co">#&gt; Hard minus Easy  -- relevel condition if this is not the intended outcome</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">differences</span>, <span class="kw">pupil</span> <span class="kw">=</span> <span class="no">mean_pupil</span>, <span class="kw">geom</span> <span class="kw">=</span> <span class="st">'line'</span>)</pre></body></html></div>
+<div class="section level2">
+<h2 id="estimating-divergences-with-functional-data-analysis">Estimating divergences with functional data analysis<a class="anchor" aria-label="anchor" href="#estimating-divergences-with-functional-data-analysis"></a>
+</h2>
+<p>The above analyses may well suffice for what we have planned.
+However, sometimes it’s useful for analysis to examine change over time,
+especially how and when two conditions diverge, and we can do that with
+Functional Data Analysis (FDA). This part of the package makes usage of
+the fda package. The complete guide really has been written in 1997 by
+Ramsay and Silverman, and there is a very helpful website on FDA <a href="https://www.psych.mcgill.ca/misc/fda/resources.html" class="external-link">here</a>.
+This package is currently only setup to use this analysis for
+two-condition experiments, but I hope to add options for functional
+ANOVA in the future.</p>
+<p>To do this, first we want get the difference between the two
+conditions for each participant. By default this package wil take
+condition 2 - condition 1, so reorder the factors if required.</p>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">differences</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_difference_data.html">create_difference_data</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">base_data</span>,</span>
+<span>                                      pupil <span class="op">=</span> <span class="va">mean_pupil</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Hard minus Easy  -- relevel condition if this is not the intended outcome</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">differences</span>, pupil <span class="op">=</span> <span class="va">mean_pupil</span>, geom <span class="op">=</span> <span class="st">'line'</span><span class="op">)</span></span></code></pre></div>
 <p><img src="PupillometryR_files/figure-html/unnamed-chunk-25-1.png" width="700"></p>
-<p>We can now convert this to a functional data structure, made up of curves. To do this for this data we are going to make it up of cubics (order = 4) with 10 knots (basis = 10). The appropriate numbers here will depend on your dataset, and I strongly advise consulting Ramsay and Silverman’s book, and the FDA website, as well as Sylvain’s paper mentioned above. This interfaces with the fda package.</p>
-<div class="sourceCode" id="cb32"><html><body><pre class="r"><span class="no">spline_data</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/create_functional_data.html">create_functional_data</a></span>(<span class="kw">data</span> <span class="kw">=</span> <span class="no">differences</span>,
-                                      <span class="kw">pupil</span> <span class="kw">=</span> <span class="no">mean_pupil</span>,
-                                      <span class="kw">basis</span> <span class="kw">=</span> <span class="fl">10</span>,
-                                      <span class="kw">order</span> <span class="kw">=</span> <span class="fl">4</span>)
-
-
-<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">spline_data</span>, <span class="kw">pupil</span> <span class="kw">=</span> <span class="no">mean_pupil</span>, <span class="kw">geom</span> <span class="kw">=</span> <span class="st">'line'</span>, <span class="kw">colour</span> <span class="kw">=</span> <span class="st">'blue'</span>)</pre></body></html></div>
+<p>We can now convert this to a functional data structure, made up of
+curves. To do this for this data we are going to make it up of cubics
+(order = 4) with 10 knots (basis = 10). The appropriate numbers here
+will depend on your dataset, and I strongly advise consulting Ramsay and
+Silverman’s book, and the FDA website, as well as Sylvain’s paper
+mentioned above. This interfaces with the fda package.</p>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">spline_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_functional_data.html">create_functional_data</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">differences</span>,</span>
+<span>                                      pupil <span class="op">=</span> <span class="va">mean_pupil</span>,</span>
+<span>                                      basis <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>                                      order <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">spline_data</span>, pupil <span class="op">=</span> <span class="va">mean_pupil</span>, geom <span class="op">=</span> <span class="st">'line'</span>, colour <span class="op">=</span> <span class="st">'blue'</span><span class="op">)</span></span></code></pre></div>
 <p><img src="PupillometryR_files/figure-html/unnamed-chunk-26-1.png" width="700"></p>
-<p>That looks like it’s done a pretty good job capturing the data. The advantage of this kind of analysis is that we can treat each curve as a function, and run a single functional t-test to work out during which window there are divergences. This package allows us to do that directly, and to observe the results.</p>
-<div class="sourceCode" id="cb33"><html><body><pre class="r"><span class="no">ft_data</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/run_functional_t_test.html">run_functional_t_test</a></span>(<span class="kw">data</span> <span class="kw">=</span> <span class="no">spline_data</span>,
-                                 <span class="kw">pupil</span> <span class="kw">=</span> <span class="no">mean_pupil</span>,
-                                 <span class="kw">alpha</span> <span class="kw">=</span> <span class="fl">0.05</span>)
-<span class="co">#&gt; critical value for n = 8 is 2.36462425159278</span>
-
-
-<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">ft_data</span>, <span class="kw">show_divergence</span> <span class="kw">=</span> <span class="no">T</span>, <span class="kw">colour</span> <span class="kw">=</span> <span class="st">'red'</span>, <span class="kw">fill</span> <span class="kw">=</span> <span class="st">'orange'</span>)</pre></body></html></div>
+<p>That looks like it’s done a pretty good job capturing the data. The
+advantage of this kind of analysis is that we can treat each curve as a
+function, and run a single functional t-test to work out during which
+window there are divergences. This package allows us to do that
+directly, and to observe the results.</p>
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ft_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_functional_t_test.html">run_functional_t_test</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">spline_data</span>,</span>
+<span>                                 pupil <span class="op">=</span> <span class="va">mean_pupil</span>,</span>
+<span>                                 alpha <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span>
+<span><span class="co">#&gt; critical value for n = 8 is 2.36462425159278</span></span>
+<span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ft_data</span>, show_divergence <span class="op">=</span> <span class="cn">T</span>, colour <span class="op">=</span> <span class="st">'red'</span>, fill <span class="op">=</span> <span class="st">'orange'</span><span class="op">)</span></span></code></pre></div>
 <p><img src="PupillometryR_files/figure-html/unnamed-chunk-27-1.png" width="700"></p>
-<p>If show_divergence is set to TRUE, the plot will highlight where the two conditions diverge at the alpha you set.</p>
-<p><em>NB</em> Remember the above discussion on autocorrelation in the GAMMs portion of this walkthrough? We are still dealing with time-series data, so this hasn’t necessarily gone away. I am working on adding more powerful FDA techniques into this package to deal with these issues, so please watch this space.</p>
+<p>If show_divergence is set to TRUE, the plot will highlight where the
+two conditions diverge at the alpha you set.</p>
+<p><em>NB</em> Remember the above discussion on autocorrelation in the
+GAMMs portion of this walkthrough? We are still dealing with time-series
+data, so this hasn’t necessarily gone away. I am working on adding more
+powerful FDA techniques into this package to deal with these issues, so
+please watch this space.</p>
 </div>
-<div id="acknowledgements" class="section level2">
-<h2 class="hasAnchor">
-<a href="#acknowledgements" class="anchor"></a>Acknowledgements</h2>
-<p>This package has had suggestions, encouragement, and help from a number of people, but I wish to especially highlight Sylvain Sirois and Mihaela Duta, whose input has been instrumental. I’d also like to thank Jacolien van Rij for her input with the GAMMs modelling portion of this tutorial.</p>
+<div class="section level2">
+<h2 id="acknowledgements">Acknowledgements<a class="anchor" aria-label="anchor" href="#acknowledgements"></a>
+</h2>
+<p>This package has had suggestions, encouragement, and help from a
+number of people, but I wish to especially highlight Sylvain Sirois and
+Mihaela Duta, whose input has been instrumental. I’d also like to thank
+Jacolien van Rij for her input with the GAMMs modelling portion of this
+tutorial.</p>
 </div>
-<div id="references" class="section level2">
-<h2 class="hasAnchor">
-<a href="#references" class="anchor"></a>References</h2>
-<p>[1] Jackson, I., &amp; Sirois, S. (2009). Infant cognition: Going full factorial with pupil dilation. <em>Developmental Science</em>, 12(4), 670-679. <a href="http://doi.org/10.1111/j.1467-7687.2008.00805.x" class="uri">http://doi.org/10.1111/j.1467-7687.2008.00805.x</a></p>
-<p>[2] Allen, M., Poggiali, D., Whitaker, K., Marshall, T. R., &amp; Kievit, R. (2019). Raincloud plots: a multi-platform tool for robust data visualization. <em>Wellcome Open Research</em>, 4, 1-41. <a href="http://doi.org/10.12688/wellcomeopenres.15191.1" class="uri">http://doi.org/10.12688/wellcomeopenres.15191.1</a></p>
-<p>[3] Ramsay, J.O., &amp; Silverman, B.W. (1997). <em>Functional data analysis</em>. New York: Springer-Verlag.</p>
-<p>[4] van Rij, J., Hendriks, P., van Rijn, H., Baayen, R. H., &amp; Wood, S. N. (2019). Analyzing the time course of pupillometric data. Trends in Hearing, 23, 233121651983248. <a href="https://doi.org/10.1177/2331216519832483" class="uri">https://doi.org/10.1177/2331216519832483</a></p>
+<div class="section level2">
+<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
+<p>[1] Jackson, I., &amp; Sirois, S. (2009). Infant cognition: Going
+full factorial with pupil dilation. <em>Developmental Science</em>,
+12(4), 670-679. <a href="https://doi.org/10.1111/j.1467-7687.2008.00805.x" class="external-link uri">https://doi.org/10.1111/j.1467-7687.2008.00805.x</a></p>
+<p>[2] Allen, M., Poggiali, D., Whitaker, K., Marshall, T. R., &amp;
+Kievit, R. (2019). Raincloud plots: a multi-platform tool for robust
+data visualization. <em>Wellcome Open Research</em>, 4, 1-41. <a href="https://doi.org/10.12688/wellcomeopenres.15191.1" class="external-link uri">https://doi.org/10.12688/wellcomeopenres.15191.1</a></p>
+<p>[3] Ramsay, J.O., &amp; Silverman, B.W. (1997). <em>Functional data
+analysis</em>. New York: Springer-Verlag.</p>
+<p>[4] van Rij, J., Hendriks, P., van Rijn, H., Baayen, R. H., &amp;
+Wood, S. N. (2019). Analyzing the time course of pupillometric data.
+Trends in Hearing, 23, 233121651983248. <a href="https://doi.org/10.1177/2331216519832483" class="external-link uri">https://doi.org/10.1177/2331216519832483</a></p>
 </div>
   </div>
 
@@ -458,11 +643,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Samuel Forbes.</p>
+  <p></p>
+<p>Developed by Samuel Forbes.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -470,6 +657,8 @@
 
   
 
+
+  
 
   </body>
 </html>
