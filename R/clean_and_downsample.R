@@ -124,34 +124,40 @@ calculate_missing_data <- function(data, pupil){
 
 #' Clean missing data above an acceptable threshold
 #'
-#' This function can be used to remove trials and participants
-#' who do not meet the threshold for a study. Note that there are two parameters for
-#' cleaning, one to remove trials above a threshold,
-#' the second to remove participants who drop more than a certain amount of trials.
+#' This function removes trials and participants who exceed specified thresholds for missing data. 
+#' There are two main parameters for cleaning: one to remove trials with excessive missing data, 
+#' and another to remove participants who drop more than a specified proportion of trials. 
+#' An optional parameter allows you to specify the total number of trials expected for each participant, 
+#' which is used to calculate the proportion of missing trials.
 #'
-#' @param data your data of class PupillometryR
-#' @param pupil a column name denoting pupil size
-#' @param trial_threshold a proportion of missing data over which a trial can be considered lost
-#' @param subject_trial_threshold a proportion of missing trials over which a participant can be considered lost.
+#' @param data Your data of class PupillometryR.
+#' @param pupil A column name denoting pupil size.
+#' @param trial_threshold A proportion of missing data over which a trial is considered lost.
+#' @param subject_trial_threshold A proportion of missing trials over which a participant is considered lost.
+#' @param total_trials_expected (Optional) The total number of trials expected for each participant. 
+#' If specified, it will be used to calculate the proportion of missing trials. 
+#' If not specified, the proportion is calculated based on the total number of trials in the data.
+#'
 #' @examples
 #' data(pupil_data)
 #' Sdata <- make_pupillometryr_data(data = pupil_data,
-#' subject = ID,
-#' trial = Trial,
-#' time = Time,
-#' condition = Type)
+#'                                  subject = ID,
+#'                                  trial = Trial,
+#'                                  time = Time,
+#'                                  condition = Type)
 #' new_data <- downsample_time_data(data = Sdata,
-#' pupil = LPupil,
-#' timebin_size = 50,
-#' option = 'mean')
+#'                                  pupil = LPupil,
+#'                                  timebin_size = 50,
+#'                                  option = 'mean')
 #' calculate_missing_data(data = new_data, pupil = LPupil)
+#'
 #' @import dplyr
 #' @import rlang
 #'
 #' @export
-#' @return A cleaned PupillometryR dataframe
+#' @return A cleaned PupillometryR dataframe with trials and participants exceeding the thresholds removed.
 
-clean_missing_data <- function(data, pupil, trial_threshold = 1, subject_trial_threshold = 1){
+clean_missing_data <- function(data, pupil, trial_threshold = 1, subject_trial_threshold = 1, total_trials_expected = NULL){
 
   if('PupillometryR' %in% class(data) == FALSE){
     stop('Dataframe is not of class PupillometryR.
@@ -220,11 +226,18 @@ clean_missing_data <- function(data, pupil, trial_threshold = 1, subject_trial_t
                     '\n ...removed', bad_num, 'trials \n'))
 
       # by participant
-     data_part <- data_trial %>%
-        group_by(!!sym(subject)) %>%
-        summarise(SubjProp = sum(Remove)/length(Remove)) %>%
-       ungroup()
-
+      if (!is.null(total_trials_expected)) {
+        data_part <- data_trial %>%
+          group_by(!!sym(subject)) %>%
+          summarise(SubjProp = sum(Remove)/total_trials_expected) %>%
+         ungroup()
+      }else{
+        data_part <- data_trial %>%
+          group_by(!!sym(subject)) %>%
+          summarise(SubjProp = sum(Remove)/length(Remove)) %>%
+        ungroup()
+      }
+        
      data_part2 <- data_part[data_part[['SubjProp']] < subject_trial_threshold,]
      data_bad2 <- data_part[data_part[['SubjProp']] > subject_trial_threshold,]
 
@@ -237,7 +250,7 @@ clean_missing_data <- function(data, pupil, trial_threshold = 1, subject_trial_t
      data_out2 <- left_join(data_trial2, data, by = c(subject, trial))
      data_out <- left_join(data_part2, data_out2, by = subject)
 
-  }
+      }
   data_out <- data_out %>%
     select(-SubjProp, -PropMissing, -SumMissing)
 
