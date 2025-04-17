@@ -252,8 +252,11 @@ regress_data <- function(data, pupil1, pupil2) {
 
   regdata <- data
 
-  #make functions
-  .predict_right = function(x, y){
+  # make helper functions
+  .predict_right <- function(x, y) {
+    if (all(is.na(x)) || all(is.na(y))) {
+      return(rep(NA, length(x)))
+    }
     pupilz <- predict(lm(x ~ y, na.action = na.exclude))
     return(pupilz)
   }
