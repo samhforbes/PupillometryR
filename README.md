@@ -130,7 +130,8 @@ of people, but I wish to especially highlight Sylvain Sirois and Mihaela
 Duta, whose input has been instrumental. I’d also like to thank Jacolien
 van Rij for her input with the GAMs modelling portion of this tutorial,
 and TJ Mahr for contributing to extending the use of GAMs in the
-vignette.
+vignette. I'm also very grateful to Tommaso Ghilardi and Francesco Poli for 
+suggestions and edits.
 
 ## References
 
