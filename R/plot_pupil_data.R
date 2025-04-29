@@ -357,3 +357,99 @@ plot.Pupil_test_data <- function(x, show_divergence = TRUE, colour = 'black', fi
   q
 
 }
+
+#' Plot results from a functional ANOVA
+#'
+#' This function creates plots for functional ANOVA results, showing F-values over time
+#' with rectangle highlighting for significant time periods.
+#'
+#' @param x a Pupil_anova_data object from run_functional_anova
+#' @param show_divergence logical, whether to highlight divergent/significant time periods
+#' @param use_adjusted use FDR adjustment for divergence highlight? defaults to FALSE
+#' @param colour line color for the F-value curve
+#' @param fill fill color for the divergence rectangles
+#' @param ... additional parameters passed to ggplot
+#'
+#' @import ggplot2
+#' @export
+#'
+#' @return a ggplot object
+plot.Pupil_anova_data <- function(x, show_divergence = TRUE, use_adjusted = FALSE, colour = 'black', fill = 'grey', ...){
+  data <- x
+  if('Pupil_anova_data' %in% class(data) == FALSE){
+    stop('Dataframe is not of class Pupil_anova_data. Make the functional data before proceeding. Some tidyverse functions associated with dplyr and tidyr can also interfere with this functionality.')
+  }
+
+  # Get attributes
+  options <- attr(data, 'Pupil_anova_data')
+  subject <- options$Subject
+  time <- options$Time
+  other <- options$Other
+  test <- "F"  # For ANOVA we plot F values
+  critical <- options$Critical
+
+  # Choose which divergence column to use based on use_adjusted parameter
+  if(use_adjusted && "Divergence_adj" %in% colnames(data)){
+    divergence <- "Divergence_adj"
+    divergence_label <- "FDR-adjusted"
+    message("Using FDR-adjusted divergence")
+  } else {
+    divergence <- "Divergence"
+    divergence_label <- "uncorrected"
+    if(use_adjusted && !("Divergence_adj" %in% colnames(data))){
+      message("FDR-adjusted divergence not available, using uncorrected divergence")
+    }
+  }
+
+  # Check if there's any divergence to show
+  if(show_divergence && !(TRUE %in% data[[divergence]])){
+    show_divergence <- FALSE
+    message('No ', divergence_label, ' divergence to show')
+  }
+
+  # Basic plot without divergence highlighting
+  if(!show_divergence){
+    p <- ggplot2::ggplot(data = data,
+                         ggplot2::aes_string(x = time, y = test))
+    q <- p + ggplot2::geom_line(size = 1, color = colour) +
+      ggplot2::geom_hline(yintercept = critical, linetype = 'dotted')
+  } else {
+    # Set up divergences - similar to plot.Pupil_test_data
+    data2 <- data
+    data2[['div']] <- ifelse(data2[[divergence]] == TRUE, 1, 0)
+    data2[['inds']] <- diff(c(0, data2$div))
+    start <- data2[[time]][data2$inds == 1]
+    end <- data2[[time]][data2$inds == -1]
+
+    # Handle case where last point is divergent
+    if (length(start) > length(end)) {
+      end <- c(end, tail(data2[[time]], 1))
+    }
+
+    # Create rectangle data frame
+    rects <- data.frame(start=start, end=end, group=seq_along(start))
+
+    # Get min and max for y-axis limits
+    min_val <- min(data2[[test]], na.rm = TRUE)
+    max_val <- max(data2[[test]], na.rm = TRUE)
+
+    # Create plot with divergence rectangles (matching the t-test plot style)
+    p <- ggplot2::ggplot(data = data2,
+                         ggplot2::aes_string(x = time, y = test))
+    q <- p + ggplot2::stat_summary(geom = 'line', fun = 'mean', size = 1, colour = colour) +
+      ggplot2::geom_rect(data = rects, inherit.aes = FALSE,
+                         ggplot2::aes(xmin = start, xmax = end,
+                                      ymin = -100*max_val, ymax = 100*max_val,
+                                      group = group),
+                         colour = 'transparent', fill = fill, alpha = 0.3) +
+      ggplot2::geom_hline(yintercept = critical, linetype = 'dotted') +
+      ggplot2::coord_cartesian(ylim = c(0, max_val * 1.1))
+  }
+
+  q <- q + ggplot2::labs(
+    x = time,
+    y = "F value"
+  )
+
+  return(q)
+}

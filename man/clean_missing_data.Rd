@@ -8,37 +8,44 @@ clean_missing_data(
   data,
   pupil,
   trial_threshold = 1,
-  subject_trial_threshold = 1
+  subject_trial_threshold = 1,
+  total_trials_expected = NULL
 )
 }
 \arguments{
-\item{data}{your data of class PupillometryR}
+\item{data}{Your data of class PupillometryR.}
 
-\item{pupil}{a column name denoting pupil size}
+\item{pupil}{A column name denoting pupil size.}
 
-\item{trial_threshold}{a proportion of missing data over which a trial can be considered lost}
+\item{trial_threshold}{A proportion of missing data over which a trial is considered lost.}
 
-\item{subject_trial_threshold}{a proportion of missing trials over which a participant can be considered lost.}
+\item{subject_trial_threshold}{A proportion of missing trials over which a participant is considered lost.}
+
+\item{total_trials_expected}{(Optional) The total number of trials expected for each participant. 
+If specified, it will be used to calculate the proportion of missing trials. 
+If not specified, the proportion is calculated based on the total number of trials in the data.}
 }
 \value{
-A cleaned PupillometryR dataframe
+A cleaned PupillometryR dataframe with trials and participants exceeding the thresholds removed.
 }
 \description{
-This function can be used to remove trials and participants
-who do not meet the threshold for a study. Note that there are two parameters for
-cleaning, one to remove trials above a threshold,
-the second to remove participants who drop more than a certain amount of trials.
+This function removes trials and participants who exceed specified thresholds for missing data. 
+There are two main parameters for cleaning: one to remove trials with excessive missing data, 
+and another to remove participants who drop more than a specified proportion of trials. 
+An optional parameter allows you to specify the total number of trials expected for each participant, 
+which is used to calculate the proportion of missing trials.
 }
 \examples{
 data(pupil_data)
 Sdata <- make_pupillometryr_data(data = pupil_data,
-subject = ID,
-trial = Trial,
-time = Time,
-condition = Type)
+                                 subject = ID,
+                                 trial = Trial,
+                                 time = Time,
+                                 condition = Type)
 new_data <- downsample_time_data(data = Sdata,
-pupil = LPupil,
-timebin_size = 50,
-option = 'mean')
+                                 pupil = LPupil,
+                                 timebin_size = 50,
+                                 option = 'mean')
 calculate_missing_data(data = new_data, pupil = LPupil)
+
 }

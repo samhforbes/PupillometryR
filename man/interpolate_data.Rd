@@ -4,7 +4,7 @@
 \alias{interpolate_data}
 \title{Interpolate across the gaps in data}
 \usage{
-interpolate_data(data, pupil, type = c("linear", "cubic"))
+interpolate_data(data, pupil, type = c("linear", "cubic"), maxgap = Inf)
 }
 \arguments{
 \item{data}{a PupillometryR dataframe}
@@ -12,6 +12,9 @@ interpolate_data(data, pupil, type = c("linear", "cubic"))
 \item{pupil}{Column name for pupil data to be interpolated}
 
 \item{type}{string indicating linear or cubic interpolation to be performed.}
+
+\item{maxgap}{numeric value specifying the maximum gap size (number of consecutive NAs) to interpolate. 
+Default is Inf (interpolates gaps of any length).}
 }
 \value{
 interpolated pupillometry data
