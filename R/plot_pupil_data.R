@@ -453,3 +453,103 @@ plot.Pupil_anova_data <- function(x, show_divergence = TRUE, use_adjusted = FALS
 
   return(q)
 }
+
+#' Plot method for Pupil_anova_fda objects
+#'
+#' @param x A Pupil_anova_fda object
+#' @param show_divergence Logical; whether to show divergence regions
+#' @param use_adjusted Logical; whether to use FDR/permutation-adjusted divergence
+#' @param colour Line color for F statistic
+#' @param fill Fill color for divergence regions
+#' @param ... Additional parameters passed to plotting functions
+#'
+#' @return A ggplot2 object
+#' @export
+plot.Pupil_anova_fda <- function(x, show_divergence = TRUE, use_adjusted = TRUE,
+                                 colour = 'black', fill = 'grey', smoothed = FALSE, ...) {
+  data <- x
+  if(!('Pupil_anova_fda' %in% class(data))){
+    stop('Object is not of class Pupil_anova_fda.')
+  }
+
+  # Get attributes
+  options <- attr(data, 'Pupil_anova_data')
+  time <- options$Time
+  critical <- options$Critical
+  test <- "F"  # For ANOVA we plot F values
+  method <- options$Method
+
+  # Choose which divergence column to use based on use_adjusted parameter
+  if(use_adjusted){
+    divergence <- "Divergence_adj"
+    divergence_label <- ifelse(grepl("permutation", method), "permutation-adjusted", "FDR-adjusted")
+  } else {
+    divergence <- "Divergence"
+    divergence_label <- "uncorrected"
+  }
+
+  # Check if there's any divergence to show
+  if(show_divergence && !(TRUE %in% data[[divergence]])){
+    show_divergence <- FALSE
+    message(paste('No', divergence_label, 'divergence to show'))
+  }
+
+  # Simple plotting with just the data points - more reliable
+  if(!show_divergence){
+    p <- ggplot2::ggplot(data = data, ggplot2::aes_string(x = time, y = test))
+    q <- p + ggplot2::geom_line(size = 1, color = colour) +
+      ggplot2::geom_hline(yintercept = critical, linetype = 'dotted')
+  } else {
+    # Set up divergences
+    data2 <- data
+    data2[['div']] <- ifelse(data2[[divergence]] == TRUE, 1, 0)
+    data2[['inds']] <- diff(c(0, data2$div))
+    start <- data2[[time]][data2$inds == 1]
+    end <- data2[[time]][data2$inds == -1]
+
+    # Handle case where last point is divergent
+    if (length(start) > length(end)) {
+      end <- c(end, tail(data2[[time]], 1))
+    }
+
+    # Create rectangle data frame if we have any divergences
+    if(length(start) > 0) {
+      rects <- data.frame(start=start, end=end, group=seq_along(start))
+
+      # Get min and max for y-axis limits
+      min_val <- min(data2[[test]], na.rm = TRUE)
+      max_val <- max(data2[[test]], na.rm = TRUE)
+
+      # Create plot with divergence rectangles
+      p <- ggplot2::ggplot(data = data2, ggplot2::aes_string(x = time, y = test))
+      q <- p + ggplot2::geom_line(size = 1, colour = colour) +
+        ggplot2::geom_rect(data = rects, inherit.aes = FALSE,
+                           ggplot2::aes(xmin = start, xmax = end,
+                                        ymin = -100*max_val, ymax = 100*max_val,
+                                        group = group),
+                           colour = 'transparent', fill = fill, alpha = 0.3) +
+        ggplot2::geom_hline(yintercept = critical, linetype = 'dotted') +
+        ggplot2::coord_cartesian(ylim = c(0, max_val * 1.1))
+    } else {
+      # No divergences to show
+      p <- ggplot2::ggplot(data = data2, ggplot2::aes_string(x = time, y = test))
+      q <- p + ggplot2::geom_line(size = 1, colour = colour) +
+        ggplot2::geom_hline(yintercept = critical, linetype = 'dotted')
+    }
+  }
+
+  # Add appropriate labels
+  title_text <- paste0("Functional ANOVA Results (",
+                       ifelse(show_divergence,
+                              paste0("with ", divergence_label, " divergence"),
+                              "no divergence highlighting"),
+                       ")\n", method)
+
+  q <- q + ggplot2::labs(
+    x = time,
+    y = "F value",
+    title = title_text
+  )
+
+  return(q)
+}
