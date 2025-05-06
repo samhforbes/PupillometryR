@@ -533,8 +533,7 @@ plot.Pupil_anova_fda <- function(x, show_divergence = TRUE, use_adjusted = TRUE,
     } else {
       # No divergences to show
       p <- ggplot2::ggplot(data = data2, ggplot2::aes_string(x = time, y = test))
-      q <- p + ggplot2::geom_line(size = 1, colour = colour) +
-        ggplot2::geom_hline(yintercept = critical, linetype = 'dotted')
+      q <- p + ggplot2::stat_summary(geom = 'line', fun = 'mean', size = 1, colour = colour)
     }
   }
 

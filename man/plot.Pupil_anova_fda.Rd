@@ -10,7 +10,7 @@
   use_adjusted = TRUE,
   colour = "black",
   fill = "grey",
-  smoothed = TRUE,
+  smoothed = FALSE,
   ...
 )
 }
