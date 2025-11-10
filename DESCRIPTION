@@ -1,7 +1,7 @@
 Package: PupillometryR
 Type: Package
 Title: A Unified Pipeline for Pupillometry Data
-Version: 0.0.5
+Version: 0.0.6
 Authors@R: 
         c(person("Samuel", "Forbes", email = "samuel.h.forbes@gmail.com", role = c("aut", "cre")),
         person("David", "Robinson", email = "admiral.david@gmail.com", role = "ctb"))
@@ -16,7 +16,6 @@ Depends: R (>= 3.5.0),
          ggplot2,
          rlang
 Imports: fda,
-         itsadug,
          mgcv,
          signal,
          stats,
@@ -24,8 +23,9 @@ Imports: fda,
          tidyr,
          utils,
          zoo
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Suggests: 
     knitr,
+    itsadug,
     rmarkdown
 VignetteBuilder: knitr
