@@ -36,14 +36,14 @@ devtools::install_github("samhforbes/PupillometryR")
 
 This package (and the example dataset) was designed in part, based on
 Sylvain Sirois’ MATLAB tutorial, [which can be found
-here](https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&owa_no_fiche=3&owa_bottin=https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&owa_no_fiche=3&owa_bottin=).
+here](https://oraprdnt.uqtr.uquebec.ca/portail/gscw031?owa_no_site=314&owa_no_fiche=3&owa_bottin=https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&owa_no_fiche=3&owa_bottin=).
 
 The intention is an integrated pipeline for pupillometric experiments,
 from data cleaning, pre-processing, various analysis techniques, and
 visualising results.
 
 To use all the functionality and plots that follow from the
-PupillometryR pipeline, please start with *make\_pupillometryr\_data*,
+PupillometryR pipeline, please start with *make_pupillometryr_data*,
 e.g.:
 
 ``` r
@@ -59,6 +59,7 @@ library(PupillometryR)
 #>     intersect, setdiff, setequal, union
 #> Loading required package: ggplot2
 #> Loading required package: rlang
+
 data("pupil_data")
 
 #Check that IDs are not numeric
@@ -81,7 +82,8 @@ example:
 
 ``` r
 plot(Sdata, pupil = LPupil, group = 'condition')
-#> Warning: Removed 3639 rows containing non-finite values (stat_summary).
+#> Warning: Removed 3639 rows containing non-finite outside the scale range
+#> (`stat_summary()`).
 ```
 
 <img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
@@ -93,7 +95,7 @@ vignette('PupillometryR')
 ```
 
 or head to
-[samforbes.me/PupillometryR](http://samforbes.me/PupillometryR/).
+[samforbes.me/PupillometryR](https://samforbes.me/PupillometryR/).
 
 ## Getting help
 
@@ -101,7 +103,7 @@ Please use the issues tab
 (<https://github.com/samhforbes/PupillometryR/issues>) to file any bugs
 or suggestions. For general pupillometry information, I recommend
 [Sylvain’s
-website](https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&owa_no_fiche=3&owa_bottin=https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&owa_no_fiche=3&owa_bottin=),
+website](https://oraprdnt.uqtr.uquebec.ca/portail/gscw031?owa_no_site=314&owa_no_fiche=3&owa_bottin=https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&owa_no_fiche=3&owa_bottin=),
 [as well as Jackson and Sirois
 (2009)](https://doi.org/10.1111/j.1467-7687.2008.00805.x). For reading
 about using GAMs in pupillometry [this paper by van Rij et al. is
@@ -130,8 +132,8 @@ of people, but I wish to especially highlight Sylvain Sirois and Mihaela
 Duta, whose input has been instrumental. I’d also like to thank Jacolien
 van Rij for her input with the GAMs modelling portion of this tutorial,
 and TJ Mahr for contributing to extending the use of GAMs in the
-vignette. I'm also very grateful to Tommaso Ghilardi and Francesco Poli for 
-suggestions and edits.
+vignette. I’m also very grateful to Tommaso Ghilardi and Francesco Poli
+for suggestions and edits.
 
 ## References
 

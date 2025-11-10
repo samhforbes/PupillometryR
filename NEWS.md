@@ -1,5 +1,10 @@
 # News
 
+## Update Nov 2025 PupillometryR 0.0.6
+
+* Added options for filtering and missing data
+* itsadug now recommended rather than imported by default
+
 ## Update Sept 2021 PupillometryR 0.0.4
 
 * Updated to remove warnings from new version of dplyr

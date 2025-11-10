@@ -20,13 +20,13 @@ library(PupillometryR)
 
 This package is designed to make dealing with pupil data (perhaps more traditionally done in MATLAB) easier to wrangle in R. It makes heavy use of a few packages which should be acknowledged here, especially the (excellent) packages fda and signal.
 
-As well as the above packages, it is very important to note that the type of analysis shown here has been available in MATLAB for a while, and there is an excellent tutorial on it, which I thoroughly recommend reading first, written by Sylvain Sirois, [here:](https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&owa_no_fiche=3&owa_bottin=https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&owa_no_fiche=3&owa_bottin=).
+As well as the above packages, it is very important to note that the type of analysis shown here has been available in MATLAB for a while, and there is an excellent tutorial on it, which I thoroughly recommend reading first, written by Sylvain Sirois, [here:](https://oraprdnt.uqtr.uquebec.ca/portail/gscw031?owa_no_site=314&owa_no_fiche=3&owa_bottin=https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&owa_no_fiche=3&owa_bottin=).
 
 It's worth making sure that your setup and experiment do facilitate the use of pupillometry - it may not be suited for all kinds of experiment.
 
 ## Getting started
 
-We will first run through an example analysis with the data provided in the package, which, again, comes from Sylvain Sirois' tutorial on [his webpage](https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&owa_no_fiche=3&owa_bottin=https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&owa_no_fiche=3&owa_bottin=).
+We will first run through an example analysis with the data provided in the package, which, again, comes from Sylvain Sirois' tutorial on [his webpage](https://oraprdnt.uqtr.uquebec.ca/portail/gscw031?owa_no_site=314&owa_no_fiche=3&owa_bottin=https://oraprdnt.uqtr.uquebec.ca/pls/public/gscw031?owa_no_site=314&owa_no_fiche=3&owa_bottin=).
 
 The first thing I would recommend doing is having a close look at the pupil data. Eyetrackers have a couple of different ways of dealing with this, so it's important to know a few things:
 
