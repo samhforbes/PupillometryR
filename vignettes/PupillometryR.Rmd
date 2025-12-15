@@ -240,36 +240,38 @@ Of course there is the fact that we expect there to by some variation by trial, 
 ```{r}
 qqnorm(resid(m1))
 
-itsadug::acf_resid(m1)
+# itsadug::acf_resid(m1)
 ```
 
-While the qqnorm looks to be almost passable, the autocorrelation in the second plot is very high. This is an important consideration in time-series data, and due consideration needs to be given to this. For a full discussion of how this issue affects time course data, and specifically pupil data, I highly recommend [Jacolien van Rij et al's paper here](https://journals.sagepub.com/doi/10.1177/2331216519832483). 
+While the qqnorm looks to be almost passable, the autocorrelation in the acf plot is very high. This is an important consideration in time-series data, and due consideration needs to be given to this. For a full discussion of how this issue affects time course data, and specifically pupil data, I highly recommend [Jacolien van Rij et al's paper here](https://journals.sagepub.com/doi/10.1177/2331216519832483). 
 
 To reduce autocorrelation there are many methods we can try, as you will see from the above paper. I will stop short of repeating each of the steps taken in the excellent paper above, and jump straight away to a much more appropriate model for this data. First I will code in events (participant per trial). I will also create a second data frame to do this (model_data), so that the data we are working with doesn't lose its properties, and we can keep using the plotting functions.
 
+Note the solution below shows what you can do with help from the itsadug package. I've commented this out for now due to itsadug's CRAN status.
+
 ```{r}
-library(itsadug)
-base_data$Event <- interaction(base_data$ID, base_data$Trial, drop = T)
-
-model_data <- base_data
-model_data <- itsadug::start_event(model_data,
-                          column = 'Time', event = 'Event')
-
-model_data <- droplevels(model_data[order(model_data$ID,
-                                          model_data$Trial,
-                                          model_data$Time),])
+# library(itsadug)
+# base_data$Event <- interaction(base_data$ID, base_data$Trial, drop = T)
+# 
+# model_data <- base_data
+# model_data <- itsadug::start_event(model_data,
+#                           column = 'Time', event = 'Event')
+# 
+# model_data <- droplevels(model_data[order(model_data$ID,
+#                                           model_data$Trial,
+#                                           model_data$Time),])
 ```
 
 We now need to model this. We are setting an AR parameter, and allowing events to vary by time. You will see our deviance accounted for is now up around 96% - much better! The qqnorm is still far from perfect, and the commented-out model below m2 would do a bit better at this (again from van Rij et al) by using a scaled t distribution - but would take ages to run. 
 
 ```{r}
-m2 <- bam(mean_pupil ~ Typen +
-            s(Time,  by = Typen) +
-            s(Time, Event, bs = 'fs', m = 1),
-          data = base_data,
-          family = gaussian,
-          discrete = T,
-          AR.start = model_data$start.event, rho = .6)
+# m2 <- bam(mean_pupil ~ Typen +
+#             s(Time,  by = Typen) +
+#             s(Time, Event, bs = 'fs', m = 1),
+#           data = base_data,
+#           family = gaussian,
+#           discrete = T,
+#           AR.start = model_data$start.event, rho = .6)
 
 # m2 <- bam(mean_pupil ~ 
           #   s(Time,  by = Typen) +
@@ -279,10 +281,10 @@ m2 <- bam(mean_pupil ~ Typen +
           # discrete = T,
           # AR.start = model_data$start.event, rho = .6)
 
-summary(m2)
-qqnorm(resid(m2))
-itsadug::acf_resid(m2)
-plot(base_data, pupil = mean_pupil, group = 'condition', model = m2)
+# summary(m2)
+# qqnorm(resid(m2))
+# itsadug::acf_resid(m2)
+# plot(base_data, pupil = mean_pupil, group = 'condition', model = m2)
 ```
 
 The summary from our second model indicates that there may be marginal evidence for this effect of condition. But how and when do they diverge???

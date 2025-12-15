@@ -82,6 +82,15 @@ example:
 
 ``` r
 plot(Sdata, pupil = LPupil, group = 'condition')
+#> Warning: `aes_string()` was deprecated in ggplot2 3.0.0.
+#> ℹ Please use tidy evaluation idioms with `aes()`.
+#> ℹ See also `vignette("ggplot2-in-packages")` for more information.
+#> ℹ The deprecated feature was likely used in the PupillometryR package.
+#>   Please report the issue at
+#>   <https://github.com/samhforbes/PupillometryR/issues>.
+#> This warning is displayed once every 8 hours.
+#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+#> generated.
 #> Warning: Removed 3639 rows containing non-finite outside the scale range
 #> (`stat_summary()`).
 ```
@@ -95,7 +104,7 @@ vignette('PupillometryR')
 ```
 
 or head to
-[samforbes.me/PupillometryR](https://samforbes.me/PupillometryR/).
+[samhforbes.github.io/PupillometryR](https://samhforbes.github.io/PupillometryR/).
 
 ## Getting help
 
