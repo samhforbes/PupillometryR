@@ -149,7 +149,7 @@ GeomFlatViolin <-
       weight = 1,
       colour = "grey20",
       fill = "white",
-      size = 0.5,
+      linewidth = 0.5,
       alpha = NA,
       linetype = "solid"
     ),
